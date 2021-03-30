@@ -5,7 +5,10 @@
  */
 package Interface;
 
+import java.awt.event.MouseListener;
 import javax.swing.JInternalFrame;
+import javax.swing.JRootPane;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
  *
@@ -18,10 +21,13 @@ public class frmMenu extends javax.swing.JFrame {
      */
     
     frmStaff frmStaff;
+    frmCate frmCate;
+    
     public frmMenu() {
         initComponents();
         setSize(794,612);
         setLocationRelativeTo(null);
+        
     }
 
     /**
@@ -34,60 +40,102 @@ public class frmMenu extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        button1 = new java.awt.Button();
         jPanel2 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnMenu = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        btnStaff = new javax.swing.JButton();
+        btnCate = new javax.swing.JButton();
+        btnDish = new javax.swing.JButton();
+        btnCombo = new javax.swing.JButton();
+        btnCustomer = new javax.swing.JButton();
         jDesktopPane1 = new javax.swing.JDesktopPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocationByPlatform(true);
         setSize(new java.awt.Dimension(100, 100));
 
-        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+        jPanel1.setBackground(new java.awt.Color(207, 244, 210));
+        jPanel1.setPreferredSize(new java.awt.Dimension(809, 70));
+        jPanel1.setLayout(new java.awt.BorderLayout());
 
-        button1.setBackground(new java.awt.Color(125, 94, 191));
-        button1.setForeground(new java.awt.Color(255, 255, 255));
-        button1.setLabel("button1");
-        button1.setPreferredSize(new java.awt.Dimension(67, 39));
-        jPanel1.add(button1);
+        jPanel2.setBackground(new java.awt.Color(207, 244, 210));
 
-        jPanel2.setBackground(new java.awt.Color(125, 94, 191));
-        jPanel2.setPreferredSize(new java.awt.Dimension(67, 39));
+        btnMenu.setBackground(new java.awt.Color(32, 80, 114));
+        btnMenu.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnMenu.setForeground(new java.awt.Color(255, 255, 255));
+        btnMenu.setText("MENU");
+        btnMenu.setBorderPainted(false);
+        btnMenu.setMaximumSize(new java.awt.Dimension(75, 60));
+        btnMenu.setMinimumSize(new java.awt.Dimension(75, 60));
+        btnMenu.setPreferredSize(new java.awt.Dimension(75, 60));
+        jPanel2.add(btnMenu);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 67, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 39, Short.MAX_VALUE)
-        );
+        jPanel1.add(jPanel2, java.awt.BorderLayout.LINE_START);
 
-        jPanel1.add(jPanel2);
+        jPanel3.setBackground(new java.awt.Color(207, 244, 210));
+        jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
-        jButton2.setText("jButton1");
-        jButton2.setMargin(new java.awt.Insets(10, 10, 10, 10));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnStaff.setBackground(new java.awt.Color(32, 80, 114));
+        btnStaff.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnStaff.setForeground(new java.awt.Color(255, 255, 255));
+        btnStaff.setText("STAFF");
+        btnStaff.setBorderPainted(false);
+        btnStaff.setMaximumSize(new java.awt.Dimension(75, 60));
+        btnStaff.setMinimumSize(new java.awt.Dimension(75, 60));
+        btnStaff.setPreferredSize(new java.awt.Dimension(75, 60));
+        btnStaff.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnStaffActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2);
+        jPanel3.add(btnStaff);
 
-        jButton1.setBackground(new java.awt.Color(125, 94, 191));
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("jButton1");
-        jButton1.setBorderPainted(false);
-        jButton1.setMargin(new java.awt.Insets(10, 10, 10, 10));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnCate.setBackground(new java.awt.Color(32, 80, 114));
+        btnCate.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnCate.setForeground(new java.awt.Color(255, 255, 255));
+        btnCate.setText("CATE");
+        btnCate.setBorderPainted(false);
+        btnCate.setMaximumSize(new java.awt.Dimension(75, 60));
+        btnCate.setMinimumSize(new java.awt.Dimension(75, 60));
+        btnCate.setPreferredSize(new java.awt.Dimension(75, 60));
+        btnCate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnCateActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1);
+        jPanel3.add(btnCate);
+
+        btnDish.setBackground(new java.awt.Color(32, 80, 114));
+        btnDish.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnDish.setForeground(new java.awt.Color(255, 255, 255));
+        btnDish.setText("DISH");
+        btnDish.setBorderPainted(false);
+        btnDish.setMaximumSize(new java.awt.Dimension(75, 60));
+        btnDish.setMinimumSize(new java.awt.Dimension(75, 60));
+        btnDish.setPreferredSize(new java.awt.Dimension(75, 60));
+        jPanel3.add(btnDish);
+
+        btnCombo.setBackground(new java.awt.Color(32, 80, 114));
+        btnCombo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnCombo.setForeground(new java.awt.Color(255, 255, 255));
+        btnCombo.setText("COMBO");
+        btnCombo.setBorderPainted(false);
+        btnCombo.setMaximumSize(new java.awt.Dimension(75, 60));
+        btnCombo.setMinimumSize(new java.awt.Dimension(75, 60));
+        btnCombo.setPreferredSize(new java.awt.Dimension(75, 60));
+        jPanel3.add(btnCombo);
+
+        btnCustomer.setBackground(new java.awt.Color(32, 80, 114));
+        btnCustomer.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnCustomer.setForeground(new java.awt.Color(255, 255, 255));
+        btnCustomer.setText("CUSTOMER");
+        btnCustomer.setBorderPainted(false);
+        btnCustomer.setMaximumSize(new java.awt.Dimension(75, 60));
+        btnCustomer.setMinimumSize(new java.awt.Dimension(75, 60));
+        btnCustomer.setPreferredSize(new java.awt.Dimension(100, 60));
+        jPanel3.add(btnCustomer);
+
+        jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);
 
         jDesktopPane1.setLayout(new java.awt.BorderLayout());
 
@@ -95,37 +143,26 @@ public class frmMenu extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 794, Short.MAX_VALUE)
+            .addComponent(jDesktopPane1)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE))
+                .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 536, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffActionPerformed
         // TODO add your handling code here:
         for (JInternalFrame frmChild : jDesktopPane1.getAllFrames()) {
-        frmChild.dispose();
+            frmChild.dispose();
         }
-
-        frmStaff newForm = new frmStaff();
-        newForm.setTitle("Login to system");
-        newForm.setSize(this.getWidth(),this.getHeight());
-        newForm.setLocation(0,0);
-        jDesktopPane1.add(newForm);
-        newForm.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        // TODO add your handling code here:
+        
         if(frmStaff == null || frmStaff.isClosed())
         {
             frmStaff = new frmStaff();
@@ -141,7 +178,31 @@ public class frmMenu extends javax.swing.JFrame {
                 frmStaff.setLocation(0,0);
                 frmStaff.setVisible(true);
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+        
+    }//GEN-LAST:event_btnStaffActionPerformed
+
+    private void btnCateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCateActionPerformed
+        // TODO add your handling code here:
+        for (JInternalFrame frmChild : jDesktopPane1.getAllFrames()) {
+            frmChild.dispose();
+        }
+        
+        if(frmCate == null || frmCate.isClosed())
+        {
+            frmCate = new frmCate();
+            jDesktopPane1.add(frmCate);
+            frmCate.setSize(this.getWidth(),this.getHeight());
+            frmCate.setLocation(0,0);
+            frmCate.setVisible(true);
+            }
+            else
+            {
+            
+                frmCate.setSize(this.getWidth(),this.getHeight());
+                frmCate.setLocation(0,0);
+                frmCate.setVisible(true);
+        }
+    }//GEN-LAST:event_btnCateActionPerformed
 
     /**
      * @param args the command line arguments
@@ -180,11 +241,15 @@ public class frmMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private java.awt.Button button1;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnCate;
+    private javax.swing.JButton btnCombo;
+    private javax.swing.JButton btnCustomer;
+    private javax.swing.JButton btnDish;
+    private javax.swing.JButton btnMenu;
+    private javax.swing.JButton btnStaff;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
 }
