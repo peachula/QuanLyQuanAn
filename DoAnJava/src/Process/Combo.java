@@ -30,6 +30,13 @@ public class Combo {
         String sql = "SELECT * FROM Combo where ComboID ='" + combo_id +"'";
         return cn.LoadData(sql);
     }
+    //Truy van du lieu trong Table theo name
+    public ResultSet Combo_NAME(String combo_name) throws SQLException{
+        cn.connectSQL();
+        String sql = "SELECT * FROM Combo where ComboName LIKE N'%"+ combo_name +"%'";
+        return cn.LoadData(sql);
+    }
+    
     
     //Theo moi 1 dong du lieu vao table
     public void InsertCombo(String combo_name, long combo_price) throws SQLException{

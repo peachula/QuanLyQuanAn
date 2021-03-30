@@ -30,6 +30,13 @@ public class Category {
         String sql = "SELECT * FROM Category where CateID ='" + cate_id +"'";
         return cn.LoadData(sql);
     }
+    //Truy van du lieu trong Table theo name
+    public ResultSet Category_NAME(String cate_name) throws SQLException{
+        cn.connectSQL();
+        String sql = "SELECT * FROM Category where CateName LIKE N'%"+ cate_name +"%'";
+        return cn.LoadData(sql);
+    }
+    
     //Theo moi 1 dong du lieu vao table
     public void InsertCategory(String cate_name) throws SQLException{
         String sql = "INSERT INTO Category values(N'" + cate_name +"')";

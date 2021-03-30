@@ -30,7 +30,7 @@ public class Staff {
     //Truy van du lieu trong Table theo Name
     public ResultSet Staff_Name(String s_name) throws SQLException{
         cn.connectSQL();
-        String sql = "SELECT * FROM Staff where StaffName = N'"+ s_name +"'";
+        String sql = "SELECT * FROM Staff where StaffName LIKE N'%"+ s_name +"%'";
         return cn.LoadData(sql);
     }
     

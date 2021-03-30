@@ -29,7 +29,7 @@ public class Dish {
        //Truy van du lieu trong Table theo name
     public ResultSet Dish_Name(String d_name) throws SQLException{
         cn.connectSQL();
-        String sql = "SELECT * FROM Dish where DishName = N'"+ d_name+"'";
+        String sql = "SELECT * FROM Dish where DishName LIKE N'%"+ d_name+"%'";
         return cn.LoadData(sql);
     }
     
