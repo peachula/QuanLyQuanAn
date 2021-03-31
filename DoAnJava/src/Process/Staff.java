@@ -20,6 +20,20 @@ public class Staff {
         return cn.LoadData(sql);
     }
     
+    //Truy van du lieu trong Table theo ID
+    public ResultSet Staff_ID(int s_id) throws SQLException{
+        cn.connectSQL();
+        String sql = "SELECT * FROM Staff where StaffID ='" + s_id +"'";
+        return cn.LoadData(sql);
+    }
+    
+    //Truy van du lieu trong Table theo Name
+    public ResultSet Staff_Name(String s_name) throws SQLException{
+        cn.connectSQL();
+        String sql = "SELECT * FROM Staff where StaffName LIKE N'%"+ s_name +"%'";
+        return cn.LoadData(sql);
+    }
+    
     //Theo moi 1 dong du lieu vao table
     public void InsertStaff(String s_name, int s_role, String s_password) throws SQLException{
         String sql = "INSERT INTO Staff values(N'" + s_name +"'," + s_role + ", '"+ s_password +"')";
