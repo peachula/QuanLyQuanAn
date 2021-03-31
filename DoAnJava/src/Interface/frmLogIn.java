@@ -155,7 +155,6 @@ public class frmLogIn extends javax.swing.JFrame {
                 this.setVisible(false);
                 this.dispose();
                 new frmAdmin().setVisible(true);
-                System.out.println("true");
             }
             else
             {

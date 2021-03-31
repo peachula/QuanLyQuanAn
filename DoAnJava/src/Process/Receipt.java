@@ -6,8 +6,7 @@
 package Process;
 
 import Database.Connect;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Date;
 
 /**
@@ -19,27 +18,28 @@ public class Receipt {
     public Connect cn= new Connect();
     
     //Truy van tat ca du lieu trong Table 
-    public ResultSet Receipt() throws SQLException{
+    public ResultSet ShowReceipt() throws SQLException{
         cn.connectSQL();
         String sql = "SELECT * FROM Receipt";
         return cn.LoadData(sql);
     }
     
     //Truy van du lieu trong Table theo ID 
-    public ResultSet Receipt_ID(int r_id) throws SQLException{
+    public ResultSet GetReceipt(String r_id) throws SQLException{
         cn.connectSQL();
         String sql = "SELECT * FROM Receipt WHERE ReceiptID ='" + r_id +"'";
         return cn.LoadData(sql);
     }
     
     //Theo moi 1 dong du lieu vao table
-    public void InsertReceipt(Date date, int c_id, long total) throws SQLException{
-        String sql = "INSERT INTO Receipt values(N'" + date +"'," + c_id + ", '"+ total +"')";
+    public void InsertReceipt(String date, String r_id) throws SQLException{
+        String sql = "INSERT INTO Receipt (ReceiptID, Date, State, Total) values('" + r_id +"','" + date + "', 0, 0)";
+        
         cn.UpdateData(sql);
     }
     
     //Dieu chinh 1 dong du lieu vao table
-    public void EditReceipt(int r_id, Date date, int c_id, long total) throws SQLException{
+    public void EditReceipt(String r_id, Date date, String c_id, long total) throws SQLException{
         String sql = "Update Receipt set Date = N'"+ date +"', CustomerID = "+ c_id +", Total = '"+
                 total + "' where ReceiptID ='" + r_id +"'";
         cn.UpdateData(sql);
@@ -49,6 +49,20 @@ public class Receipt {
     public void DeleteStaff(int r_id ) throws SQLException{
         String sql = "Delete from Receipt where StaffID='" + r_id +"'";
         cn.UpdateData(sql);
+    }
+    
+    ///complete order
+    public void CompleteReceipt(String r_id, long total) throws SQLException{
+        String sql = "Update Receipt set Total = '"+
+                total + "', State = '1' where ReceiptID ='" + r_id +"'";
+        cn.UpdateData(sql);
+    }
+    
+    //get all uncomplete order
+    public ResultSet UncompleteReceipt() throws SQLException{
+        cn.connectSQL();
+        String sql = "SELECT * FROM Receipt where State = 0";
+        return cn.LoadData(sql);
     }
     
 }
