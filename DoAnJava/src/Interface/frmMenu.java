@@ -55,7 +55,7 @@ public class frmMenu extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(100, 100));
 
         jPanel1.setBackground(new java.awt.Color(207, 244, 210));
-        jPanel1.setPreferredSize(new java.awt.Dimension(809, 70));
+        jPanel1.setPreferredSize(new java.awt.Dimension(809, 612));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         jPanel2.setBackground(new java.awt.Color(207, 244, 210));
