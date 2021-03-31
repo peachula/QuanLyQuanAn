@@ -20,6 +20,14 @@ public class Staff {
         return cn.LoadData(sql);
     }
     
+    //Kiem tra thong tin dang nhap
+    public boolean Staff_LogIn(int s_id, String s_pass) throws SQLException{
+        cn.connectSQL();
+        String sql = "SELECT * FROM Staff where StaffID =" + s_id +" and Password =  '"+ s_pass +"'";
+        if (cn.LoadData(sql).next()) return true;
+        return false;
+    }
+    
     //Truy van du lieu trong Table theo ID
     public ResultSet Staff_ID(int s_id) throws SQLException{
         cn.connectSQL();

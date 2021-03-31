@@ -14,7 +14,7 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  *
  * @author kieef
  */
-public class frmMenu extends javax.swing.JFrame {
+public class frmAdmin extends javax.swing.JFrame {
 
     /**
      * Creates new form frmCategory
@@ -23,7 +23,7 @@ public class frmMenu extends javax.swing.JFrame {
     frmStaff frmStaff;
     frmCate frmCate;
     
-    public frmMenu() {
+    public frmAdmin() {
         initComponents();
         setSize(794,612);
         setLocationRelativeTo(null);
@@ -221,21 +221,23 @@ public class frmMenu extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(frmMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(frmMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(frmMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(frmMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(frmAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new frmMenu().setVisible(true);
+                new frmAdmin().setVisible(true);
             }
         });
     }
