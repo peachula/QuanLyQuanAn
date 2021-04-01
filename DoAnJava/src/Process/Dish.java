@@ -26,6 +26,13 @@ public class Dish {
         return cn.LoadData(sql);
     }
     
+    //Truy van du lieu trong Table theo cate id
+    public ResultSet DishFromCate(int c_id) throws SQLException{
+        cn.connectSQL();
+        String sql = "SELECT * FROM Dish where CateID ='" + c_id +"'";
+        return cn.LoadData(sql);
+    }
+    
        //Truy van du lieu trong Table theo name
     public ResultSet Dish_Name(String d_name) throws SQLException{
         cn.connectSQL();

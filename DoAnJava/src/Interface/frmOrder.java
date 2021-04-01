@@ -5,8 +5,7 @@
  */
 package Interface;
 
-import Process.Receipt;
-import Process.Staff;
+import Process.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -28,12 +27,22 @@ import javax.swing.table.DefaultTableModel;
 
 public class frmOrder extends javax.swing.JFrame {
 
-    private final Receipt  order = new Receipt();
+    private final Receipt  main_order = new Receipt();
+    private final ReceiptDetail main_detail = new ReceiptDetail();
+    private final Category main_cate = new Category();
+    private final Dish main_dish = new Dish();
+    
+    
     private long total;
-    private String id;
+    private String order_id = "";
     private int customerID;
     
+    private int cateID = 0;
+    
     private final DefaultTableModel tableModel = new DefaultTableModel();
+    private final DefaultTableModel tableModelDish = new DefaultTableModel();
+    private final DefaultTableModel tableModelCate = new DefaultTableModel();
+    private final DefaultTableModel tableModelDetail = new DefaultTableModel();
     /**
      * Creates new form frmOrder
      */
@@ -49,7 +58,30 @@ public class frmOrder extends javax.swing.JFrame {
         tableModel.setColumnIdentifiers(colsName_OrderID);
         tbOrderID.setModel(tableModel);
         //gọi hàm ShowData để đưa dữ liệu vào tableModel
-        ShowData();
+        ShowUncompleteOrderData();
+        
+        ///setting for tbCate
+        String []colsName_Cate = {"ID","Cate Name"};
+        // đặt tiêu đề cột cho tableModel
+        tableModelCate.setColumnIdentifiers(colsName_Cate);
+        tbCate.setModel(tableModelCate);
+        ShowCateList();
+        
+        ///setting for tbDish
+        String []colsName_Dish = {"ID","Dish Name","Price"};
+        // đặt tiêu đề cột cho tableModel
+        tableModelDish.setColumnIdentifiers(colsName_Dish);
+        tbDish.setModel(tableModelDish);
+        ShowDishList();
+        
+        ///setting for tbDetail
+        String []colsName_Detail = {"Dish Name","Quantity", "Total"};
+        // đặt tiêu đề cột cho tableModel
+        tableModelDetail.setColumnIdentifiers(colsName_Detail);
+        tbOrderDetail.setModel(tableModelDetail);
+        
+        
+        
     }
 
     /**
@@ -63,6 +95,8 @@ public class frmOrder extends javax.swing.JFrame {
 
         jPanel2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
+        jPanel10 = new javax.swing.JPanel();
+        btnBack = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbOrderID = new javax.swing.JTable();
         btnNewOrder = new javax.swing.JButton();
@@ -76,11 +110,12 @@ public class frmOrder extends javax.swing.JFrame {
         txtDateTime = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txtCustomerID = new javax.swing.JTextField();
-        btnComplete = new javax.swing.JButton();
+        btnDeleteOrder = new javax.swing.JButton();
         txtOrderID = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         txtTotal = new javax.swing.JTextField();
+        btnComplete = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -90,6 +125,7 @@ public class frmOrder extends javax.swing.JFrame {
         jPanel12 = new javax.swing.JPanel();
         spQuantity = new javax.swing.JSpinner();
         btnAdd = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
         tbDish = new javax.swing.JTable();
 
@@ -106,6 +142,22 @@ public class frmOrder extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanel1.setPreferredSize(new java.awt.Dimension(150, 100));
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanel10.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        jPanel10.setMaximumSize(new java.awt.Dimension(300, 50));
+        jPanel10.setMinimumSize(new java.awt.Dimension(300, 50));
+        jPanel10.setPreferredSize(new java.awt.Dimension(300, 50));
+        jPanel10.setLayout(new java.awt.BorderLayout());
+
+        btnBack.setText("BACK");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+        jPanel10.add(btnBack, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(jPanel10);
 
         tbOrderID.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -167,16 +219,26 @@ public class frmOrder extends javax.swing.JFrame {
 
         tbOrderDetail.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Dish Name", "Quantity", "Total"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Integer.class, java.lang.Long.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         tbOrderDetail.setMinimumSize(new java.awt.Dimension(60, 280));
+        tbOrderDetail.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbOrderDetailMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tbOrderDetail);
 
         jPanel7.add(jScrollPane3, java.awt.BorderLayout.CENTER);
@@ -187,16 +249,23 @@ public class frmOrder extends javax.swing.JFrame {
 
         jLabel2.setText("Customer");
 
-        btnComplete.setText("COMPLETE");
-        btnComplete.addActionListener(new java.awt.event.ActionListener() {
+        btnDeleteOrder.setText("DELETE");
+        btnDeleteOrder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCompleteActionPerformed(evt);
+                btnDeleteOrderActionPerformed(evt);
             }
         });
 
         jLabel4.setText("Order ID");
 
         jLabel5.setText("Total");
+
+        btnComplete.setText("COMPLETE");
+        btnComplete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCompleteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
@@ -224,31 +293,28 @@ public class frmOrder extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtOrderID, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addComponent(btnComplete, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnDeleteOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnComplete, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(20, 20, 20))
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel11Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel11Layout.createSequentialGroup()
-                        .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtOrderID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel11Layout.createSequentialGroup()
-                        .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(txtCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(btnComplete, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel1)
+                    .addComponent(txtDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtOrderID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnComplete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel2)
+                    .addComponent(txtCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5)
+                    .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDeleteOrder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -269,20 +335,20 @@ public class frmOrder extends javax.swing.JFrame {
 
         tbCate.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
             },
             new String [] {
-                ""
+                "ID", "Cate Name"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false
+                false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -293,9 +359,15 @@ public class frmOrder extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tbCate.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbCateMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tbCate);
         if (tbCate.getColumnModel().getColumnCount() > 0) {
             tbCate.getColumnModel().getColumn(0).setResizable(false);
+            tbCate.getColumnModel().getColumn(1).setResizable(false);
         }
 
         jPanel9.add(jScrollPane2, java.awt.BorderLayout.CENTER);
@@ -314,7 +386,26 @@ public class frmOrder extends javax.swing.JFrame {
         jPanel8.setPreferredSize(new java.awt.Dimension(612, 150));
         jPanel8.setLayout(new java.awt.BorderLayout());
 
+        spQuantity.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
+        spQuantity.setEnabled(false);
+        spQuantity.setMinimumSize(new java.awt.Dimension(32, 20));
+        spQuantity.setPreferredSize(new java.awt.Dimension(32, 20));
+
         btnAdd.setText("ADD");
+        btnAdd.setEnabled(false);
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
+
+        btnDelete.setText("DELETE");
+        btnDelete.setEnabled(false);
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
@@ -323,33 +414,55 @@ public class frmOrder extends javax.swing.JFrame {
             .addGroup(jPanel12Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
-                    .addComponent(spQuantity, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(spQuantity, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnDelete, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel12Layout.setVerticalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel12Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(spQuantity, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
+                .addComponent(spQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                .addGap(7, 7, 7))
         );
 
         jPanel8.add(jPanel12, java.awt.BorderLayout.LINE_END);
 
         tbDish.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Dish Name", "Price"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.Long.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbDish.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbDishMouseClicked(evt);
+            }
+        });
         jScrollPane5.setViewportView(tbDish);
 
         jPanel8.add(jScrollPane5, java.awt.BorderLayout.CENTER);
@@ -373,8 +486,10 @@ public class frmOrder extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    public void ShowData() throws SQLException{
-        ResultSet result= order.UncompleteReceipt();
+    ///show order uncomplte
+    public void ShowUncompleteOrderData() throws SQLException{
+        tableModel.getDataVector().removeAllElements();
+        ResultSet result= main_order.UncompleteReceipt();
         try {
             while(result.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
             String rows[] = new String[5];
@@ -386,61 +501,275 @@ public class frmOrder extends javax.swing.JFrame {
         catch (SQLException e) {
         }
     }
-    private void btnCompleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompleteActionPerformed
-        // TODO add your handling code here:
-        total = Long.parseLong(txtTotal.getText());
-        id = txtOrderID.getText();
-        customerID = Integer.parseInt(txtCustomerID.getText());
-        
+    
+    ///đưa ra cái list các order detail được chọn cho bảng tbDetail
+    public void ShowDetailList() throws SQLException
+    {
+        tableModelDetail.setRowCount(0);
+        tableModelDetail.getDataVector().removeAllElements();
+        ResultSet result= main_detail.ShowDetail(order_id);
         try {
-            order.CompleteReceipt(id, total);
-            JOptionPane.showMessageDialog(this, "Order completed");
+            while(result.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
+            String rows[] = new String[5];
+            rows[0] = result.getString(2);
+            rows[1] = result.getString(3);
+            rows[2] = result.getString(4);
+            tableModelDetail.addRow(rows); // đưa dòng dữ liệu vào tableModel
+            //mỗi lần có sự thay đổi dữ liệu ở tableModel thì Jtable sẽ tự động update
+            }
+            
+        }
+        catch (SQLException e) {
+        }
+    }
+        
+    ///show selected order lên các txt
+    public void ShowOrderDetail(String orderid) throws SQLException
+    {
+        ResultSet rs= main_order.GetReceipt(orderid);//Goi ham lay du lieu theo ma loai
+            if(rs.next())//Neu co du lieu
+            {
+                order_id = rs.getString("ReceiptID");
+                total = rs.getLong("Total");
+                customerID = rs.getInt("CustomerID");
+                
+                this.txtCustomerID.setText(String.valueOf(customerID));
+                this.txtDateTime.setText(rs.getString("Date"));
+                this.txtTotal.setText(String.valueOf(total));
+                this.txtOrderID.setText(order_id);
+            }
+    }
+    
+    ///show dish of the selected cate tbDish 
+    public void ShowDishFromCate() throws SQLException
+    {
+        tableModelDish.getDataVector().removeAllElements();
+        ResultSet rs= main_dish.DishFromCate(cateID);
+        try {
+            while(rs.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
+            String rows[] = new String[4];
+            rows[0] = rs.getString(1); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
+            rows[1] = rs.getString(2); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
+            rows[2] = rs.getString(3); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
+            tableModelDish.addRow(rows); // đưa dòng dữ liệu vào tableModelDish
+            //mỗi lần có sự thay đổi dữ liệu ở tableModelDish thì Jtable sẽ tự động update
+            }
+        }
+        catch (SQLException e) {
+        }
+    }
+    
+    ///show dish tbDish
+    public void ShowDishList() throws SQLException
+    {
+        tableModelDish.getDataVector().removeAllElements();
+        ResultSet rs= main_dish.Dish();
+        try {
+            while(rs.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
+            String rows[] = new String[4];
+            rows[0] = rs.getString(1); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
+            rows[1] = rs.getString(2); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
+            rows[2] = rs.getString(3); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
+            tableModelDish.addRow(rows); // đưa dòng dữ liệu vào tableModelDish
+            //mỗi lần có sự thay đổi dữ liệu ở tableModelDish thì Jtable sẽ tự động update
+            }
+        }
+        catch (SQLException e) {
+        }
+    }
+    
+    ///show cate list tbCate
+    public void ShowCateList() throws SQLException
+    {
+        ResultSet rs= main_cate.Category();
+        try {
+            while(rs.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
+            String rows[] = new String[2];
+            rows[0] = rs.getString(1); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
+            rows[1] = rs.getString(2); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
+            tableModelCate.addRow(rows); // đưa dòng dữ liệu vào tableModelDish
+            //mỗi lần có sự thay đổi dữ liệu ở tableModelDish thì Jtable sẽ tự động update
+            }
+        }
+        catch (SQLException e) {
+        }
+    }
+    
+    ///adđ dish into order detail
+    public void AddDishToOrder(int d_id, int qua, long pri) throws SQLException
+    {
+                
+        ///kiểm tra xem đã chọn order chưa
+        if (order_id.equals(""))
+        {
+            JOptionPane.showMessageDialog(this, "PLEASE ADD OR CHOOSE AN ORDER");
+        }
+        else 
+        {
+            ///kiểm tra xem đã tồn tại chưa, nếu đã tồn tại thì cộng dồn
+            for (int i = 0; i < tbOrderDetail.getRowCount(); i++) {
+                if (Integer.parseInt(tbOrderDetail.getModel().getValueAt(i, 0).toString()) == d_id)
+                {
+                    int pre_quan = Integer.parseInt(tbOrderDetail.getModel().getValueAt(i, 1).toString());
+                    int new_quan = pre_quan + qua;
+                    main_detail.EditReceiptDetail(order_id,d_id,new_quan ,new_quan*pri );
+                    return;
+                }
+            }
+            
+            ///nếu k thì add mới vào
+            main_detail.InsertReceiptDetail(order_id,d_id, qua,qua*pri);
+        }
+    }
+    
+    public void UpdateTotal()
+    {
+        long sum = 0;
+        for (int i = 0; i < tbOrderDetail.getRowCount(); i++) 
+        {
+            sum = sum + Long.parseLong(tbOrderDetail.getModel().getValueAt(i, 2).toString());
+        }
+        txtTotal.setText(String.valueOf(sum));
+    }
+    
+    private void btnDeleteOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteOrderActionPerformed
+        // TODO add your handling code here:
+        ///xóa order xuông và hiện thông báo
+        try {
+            main_order.DeleteReceipt(order_id);
+            JOptionPane.showMessageDialog(this, "Delete completed");
+            ShowUncompleteOrderData();
         } catch (SQLException ex) {
             Logger.getLogger(frmOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-    }//GEN-LAST:event_btnCompleteActionPerformed
+    }//GEN-LAST:event_btnDeleteOrderActionPerformed
 
     private void btnNewOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewOrderActionPerformed
         // TODO add your handling code here:
         ///tạo OrderID 
         Date rightNow = Calendar.getInstance().getTime();
         LocalDateTime now = LocalDateTime.now();  
-        DateTimeFormatter id = DateTimeFormatter.ofPattern("yyMMddHHmmss");  
+        DateTimeFormatter id_new = DateTimeFormatter.ofPattern("yyMMddHHmmss");  
         DateTimeFormatter date = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");         
         String o_date = date.format(now);
-        String o_id = id.format(now);
-        
+        String o_id = id_new.format(now);
         
         try {
             ///thêm order vào csdl
-            order.InsertReceipt(o_date, o_id);
+            main_order.InsertReceipt(o_date, o_id);
+            order_id = o_id;
+            
+            ShowUncompleteOrderData(); ///load lại table
+            ShowOrderDetail(order_id); ///lấy cái id của order mới tạo qua bảng detail luôn
+            ShowDetailList();
+            UpdateTotal();
             
         } catch (SQLException ex) {
             Logger.getLogger(frmOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        ///hiển thị order vừa tạo qua form
     }//GEN-LAST:event_btnNewOrderActionPerformed
 
     private void tbOrderIDMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbOrderIDMouseClicked
         // TODO add your handling code here:
-        try{
             //Lay chi so dong dang chon
-            int row =this.tbOrderID.getSelectedRow();
-            String ml=(this.tbOrderID.getModel().getValueAt(row,0)).toString();
-            ResultSet rs= order.GetReceipt(ml);//Goi ham lay du lieu theo ma loai
-            if(rs.next())//Neu co du lieu
-            {
-                //this.txtCustomerID.setText(rs.getString("CustomerID"));
-                this.txtDateTime.setText(rs.getString("Date"));
-                this.txtTotal.setText(rs.getString("Total"));
-                this.txtOrderID.setText(rs.getString("ReceiptID"));
-            }
+        int row =this.tbOrderID.getSelectedRow();
+        String ml=(this.tbOrderID.getModel().getValueAt(row,0)).toString();
+            
+        try {
+            ShowOrderDetail(ml);
+            ShowDetailList();
+            UpdateTotal();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(frmOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
-        catch (SQLException e) {
-        }
+        btnDelete.setEnabled(false);
     }//GEN-LAST:event_tbOrderIDMouseClicked
+
+    private void tbCateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbCateMouseClicked
+        try {
+            // TODO add your handling code here:
+            ///hien thi cac dish thuoc cate do
+            int row =this.tbCate.getSelectedRow();
+            cateID = Integer.parseInt((this.tbCate.getModel().getValueAt(row,0)).toString());
+            ShowDishFromCate();
+        } catch (SQLException ex) {
+            Logger.getLogger(frmOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        btnDelete.setEnabled(false);
+    }//GEN-LAST:event_tbCateMouseClicked
+
+    private void tbDishMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbDishMouseClicked
+        // TODO add your handling code here:
+        ///co the add
+        btnAdd.setEnabled(true);
+        spQuantity.setValue(1);
+        spQuantity.setEnabled(true);
+        btnDelete.setEnabled(false);
+    }//GEN-LAST:event_tbDishMouseClicked
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        // TODO add your handling code here:
+        ///lấy giá trị của dish được chọn
+        int row =this.tbDish.getSelectedRow();
+        int dish_id = Integer.parseInt((this.tbDish.getModel().getValueAt(row,0)).toString());
+        long dish_price = Long.parseLong((this.tbDish.getModel().getValueAt(row,2)).toString());
+        int quan = Integer.parseInt(spQuantity.getValue().toString());
+        
+        try {
+            ///thêm vào detail
+            AddDishToOrder(dish_id, quan, dish_price);
+            UpdateTotal();
+            ShowDetailList();
+        } catch (SQLException ex) {
+            Logger.getLogger(frmOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        /// nut add tro ve trang thai k the nhấn
+        btnAdd.setEnabled(false);
+        spQuantity.setEnabled(false);
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        try {
+            int row =this.tbOrderDetail.getSelectedRow();
+            int sel_dish= Integer.parseInt((this.tbOrderDetail.getModel().getValueAt(row,0)).toString());
+            main_detail.DeleteReceiptDetail(order_id,sel_dish);
+            ShowDetailList();
+        } catch (SQLException ex) {
+            Logger.getLogger(frmOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        btnDelete.setEnabled(false);
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnCompleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompleteActionPerformed
+        // TODO add your handling code here:
+        total = Long.parseLong(txtTotal.getText());
+        order_id = txtOrderID.getText();
+        customerID = Integer.parseInt(txtCustomerID.getText());
+        
+        ///luu order xuông và hiện thông báo
+        try {
+            main_order.CompleteReceipt(order_id, total);
+            JOptionPane.showMessageDialog(this, "Order completed");
+        } catch (SQLException ex) {
+            Logger.getLogger(frmOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnCompleteActionPerformed
+
+    private void tbOrderDetailMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbOrderDetailMouseClicked
+        // TODO add your handling code here:
+        btnDelete.setEnabled(true);
+    }//GEN-LAST:event_tbOrderDetailMouseClicked
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        new frmMenu().setVisible(true);
+    }//GEN-LAST:event_btnBackActionPerformed
 
     /**
      * @param args the command line arguments
@@ -483,13 +812,17 @@ public class frmOrder extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnBack;
     private javax.swing.JButton btnComplete;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnDeleteOrder;
     private javax.swing.JButton btnNewOrder;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel2;

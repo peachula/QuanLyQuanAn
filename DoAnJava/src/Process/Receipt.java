@@ -33,8 +33,7 @@ public class Receipt {
     
     //Theo moi 1 dong du lieu vao table
     public void InsertReceipt(String date, String r_id) throws SQLException{
-        String sql = "INSERT INTO Receipt (ReceiptID, Date, State, Total) values('" + r_id +"','" + date + "', 0, 0)";
-        
+        String sql = "INSERT INTO Receipt (ReceiptID, Date, State, Total, CustomerID) values('" + r_id +"','" + date + "', 0, 0, 1)";  
         cn.UpdateData(sql);
     }
     
@@ -46,8 +45,8 @@ public class Receipt {
     }
     
     //Xoa 1 dong du lieu vao table 
-    public void DeleteStaff(int r_id ) throws SQLException{
-        String sql = "Delete from Receipt where StaffID='" + r_id +"'";
+    public void DeleteReceipt(String r_id ) throws SQLException{
+        String sql = "Delete from Receipt where ReceiptID='" + r_id +"'";
         cn.UpdateData(sql);
     }
     

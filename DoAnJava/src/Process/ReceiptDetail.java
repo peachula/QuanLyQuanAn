@@ -15,30 +15,38 @@ import java.sql.SQLException;
  */
 public class ReceiptDetail {
       public Connect cn= new Connect();
+      
     //Truy van tat ca du lieu trong Table 
-    public ResultSet ReceiptDetail(int r_id, int d_id) throws SQLException{
+    public ResultSet ReceiptDishDetail(int r_id, int d_id) throws SQLException{
         cn.connectSQL();
         String sql = "SELECT * FROM ReceiptDetail WHERE ReceiptID = '"+r_id+"' AND DishID = '"+d_id+"'";
         return cn.LoadData(sql);
     }
     
     //Theo moi 1 dong du lieu vao table
-    public void InsertReceiptDetail(int r_id, int d_id,int quantity, long total) throws SQLException{
-        String sql = "INSERT INTO ReceiptDetail values(N'" + r_id +"'," + d_id+"',"+quantity+"',"+total +"')";
+    public void InsertReceiptDetail(String r_id, int d_id,int quantity, long total) throws SQLException{
+        String sql = "INSERT INTO ReceiptDetail values(N'" + r_id +"','" + d_id+"',"+quantity+","+total +")";
         cn.UpdateData(sql);
     }
     
     //Dieu chinh 1 dong du lieu vao table
-    public void EditReceiptDetail(int r_id, int d_id,int quantity, long total) throws SQLException{
+    public void EditReceiptDetail(String r_id, int d_id,int quantity, long total) throws SQLException{
         String sql = "Update ReceiptDetail set Quantity = N'"+ quantity +
                    "', Total_ReceiptDetail = '"+total+"' where ReceiptID = '"+r_id+"' AND DishID ='" + d_id +"'";
         cn.UpdateData(sql);
     }
     
     //Xoa 1 dong du lieu vao table 
-    public void DeleteReceiptDetail(int r_id,int d_id ) throws SQLException{
+    public void DeleteReceiptDetail(String r_id,int d_id ) throws SQLException{
         String sql = "Delete from ReceiptDetail where ReceiptID = '"+r_id+"' AND DishID='" + d_id +"'";
         cn.UpdateData(sql);
+    }
+    
+    //Truy van cac detail duoc chon
+    public ResultSet ShowDetail(String r_id) throws SQLException{
+        cn.connectSQL();
+        String sql = "SELECT * FROM ReceiptDetail WHERE ReceiptID = '"+r_id+ "'";
+        return cn.LoadData(sql);
     }
    
 }
