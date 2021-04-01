@@ -6,6 +6,7 @@
 package Interface;
 
 import Process.Staff;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,6 +19,9 @@ import javax.swing.JOptionPane;
 public class frmLogIn extends javax.swing.JFrame {
 
     private final Staff staff = new Staff();
+    static int role;
+    String name;
+    
     /**
      * Creates new form frmLogIn
      */
@@ -26,6 +30,9 @@ public class frmLogIn extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
 
+    public static int get_info(){
+        return role;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -137,7 +144,7 @@ public class frmLogIn extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         // TODO add your handling code here:
         setVisible(false);
@@ -154,7 +161,17 @@ public class frmLogIn extends javax.swing.JFrame {
             {
                 this.setVisible(false);
                 this.dispose();
-                new frmAdmin().setVisible(true);
+                ResultSet rs= staff.Staff_ID(username);
+                try {
+                    while(rs.next()){ 
+                        role = Integer.parseInt(rs.getString(3)); 
+                        name = rs.getString(2);
+                        break;
+                    }
+                }
+                catch (SQLException e) {
+                }
+                new frmMenu().setVisible(true);
             }
             else
             {

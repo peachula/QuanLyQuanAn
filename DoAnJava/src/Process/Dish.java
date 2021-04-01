@@ -58,4 +58,21 @@ public class Dish {
         String sql = "Delete from Dish where DishID='" + d_id +"'";
         cn.UpdateData(sql);
     }
+    
+    ///report most used dish
+    public ResultSet DishSold(String date, int sort) throws SQLException{
+        cn.connectSQL();
+        String sql = "";
+        if (sort == 0) ///0 là giảm dần
+        {
+            sql = "select DishID, sum(Quantity) from ReceiptDetail where ReceiptID in (" +
+        "select ReceiptID from Receipt where date > '"+ date+"' ) group by DishID order by sum(Quantity) DESC";
+        }
+        else ///1 là tăng dần
+        {
+            sql = "select DishID, sum(Quantity) from ReceiptDetail where ReceiptID in (" +
+        "select ReceiptID from Receipt where date > '"+ date+"' ) group by DishID order by sum(Quantity) ASC";
+        }
+        return cn.LoadData(sql);
+    }
 }

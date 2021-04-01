@@ -7,6 +7,9 @@ package Process;
 
 import Database.Connect;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
@@ -61,6 +64,18 @@ public class Receipt {
     public ResultSet UncompleteReceipt() throws SQLException{
         cn.connectSQL();
         String sql = "SELECT * FROM Receipt where State = 0";
+        return cn.LoadData(sql);
+    }
+    
+    
+    ///select for report
+    public ResultSet ReceiptReport() throws SQLException{
+        LocalDateTime now = LocalDateTime.now().minus(Period.ofDays( 30 ));  
+        DateTimeFormatter date_f = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
+        String date = date_f.format(now);
+        
+        cn.connectSQL();
+        String sql = "select Receipt.Date, sum(total) from Receipt where date > '"+date+"' group by Receipt.Date";
         return cn.LoadData(sql);
     }
     

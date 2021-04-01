@@ -5,83 +5,32 @@
  */
 package Interface;
 
-import Process.*;
-import java.sql.ResultSet;
+import java.awt.event.MouseListener;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.JInternalFrame;
+import javax.swing.JRootPane;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
  *
  * @author kieef
  */
-
-
 public class frmReport extends javax.swing.JFrame {
 
-    private final Receipt  main_order = new Receipt();
-    private final ReceiptDetail main_detail = new ReceiptDetail();
-    private final Category main_cate = new Category();
-    private final Dish main_dish = new Dish();
-    
-    
-    private long total;
-    private String order_id = "";
-    private int customerID;
-    
-    private int cateID = 0;
-    
-    private final DefaultTableModel tableModel = new DefaultTableModel();
-    private final DefaultTableModel tableModelDish = new DefaultTableModel();
-    private final DefaultTableModel tableModelCate = new DefaultTableModel();
-    private final DefaultTableModel tableModelDetail = new DefaultTableModel();
     /**
-     * Creates new form frmOrder
+     * Creates new form frmCategory
      */
-    public frmReport() throws SQLException {
+    
+    frmReport_DishSold frmDishSold;
+    frmReport_Income frmIncome;
+    
+    public frmReport() {
         initComponents();
         setSize(794,612);
         setLocationRelativeTo(null);
-        
-        
-        ///setting for tbOrderID
-        String []colsName_OrderID = {"ORDER NUM"};
-        // đặt tiêu đề cột cho tableModel
-        tableModel.setColumnIdentifiers(colsName_OrderID);
-        tbOrderID.setModel(tableModel);
-        //gọi hàm ShowData để đưa dữ liệu vào tableModel
-        ShowUncompleteOrderData();
-        
-        ///setting for tbCate
-        String []colsName_Cate = {"ID","Cate Name"};
-        // đặt tiêu đề cột cho tableModel
-        tableModelCate.setColumnIdentifiers(colsName_Cate);
-        tbCate.setModel(tableModelCate);
-        ShowCateList();
-        
-        ///setting for tbDish
-        String []colsName_Dish = {"ID","Dish Name","Price"};
-        // đặt tiêu đề cột cho tableModel
-        tableModelDish.setColumnIdentifiers(colsName_Dish);
-        tbDish.setModel(tableModelDish);
-        ShowDishList();
-        
-        ///setting for tbDetail
-        String []colsName_Detail = {"Dish Name","Quantity", "Total"};
-        // đặt tiêu đề cột cho tableModel
-        tableModelDetail.setColumnIdentifiers(colsName_Detail);
-        tbOrderDetail.setModel(tableModelDetail);
-        
-        
-        
+
     }
 
     /**
@@ -93,170 +42,199 @@ public class frmReport extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        btnMenu = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        btnCustomer = new javax.swing.JButton();
+        btnImcome = new javax.swing.JButton();
+        btnDishSold = new javax.swing.JButton();
+        jDesktopPane1 = new javax.swing.JDesktopPane();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setLocation(new java.awt.Point(794, 612));
-        setMinimumSize(new java.awt.Dimension(794, 612));
-        setSize(new java.awt.Dimension(794, 612));
+        setLocationByPlatform(true);
+        setSize(new java.awt.Dimension(100, 100));
+
+        jPanel1.setBackground(new java.awt.Color(207, 244, 210));
+        jPanel1.setPreferredSize(new java.awt.Dimension(809, 612));
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        jPanel2.setBackground(new java.awt.Color(207, 244, 210));
+
+        btnMenu.setBackground(new java.awt.Color(32, 80, 114));
+        btnMenu.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnMenu.setForeground(new java.awt.Color(255, 255, 255));
+        btnMenu.setText("MENU");
+        btnMenu.setBorderPainted(false);
+        btnMenu.setMaximumSize(new java.awt.Dimension(75, 60));
+        btnMenu.setMinimumSize(new java.awt.Dimension(75, 60));
+        btnMenu.setPreferredSize(new java.awt.Dimension(75, 60));
+        btnMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMenuActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnMenu);
+
+        jPanel1.add(jPanel2, java.awt.BorderLayout.LINE_START);
+
+        jPanel3.setBackground(new java.awt.Color(207, 244, 210));
+        jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+
+        btnCustomer.setBackground(new java.awt.Color(32, 80, 114));
+        btnCustomer.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnCustomer.setForeground(new java.awt.Color(255, 255, 255));
+        btnCustomer.setText("CUSTOMER");
+        btnCustomer.setBorderPainted(false);
+        btnCustomer.setMaximumSize(new java.awt.Dimension(75, 60));
+        btnCustomer.setMinimumSize(new java.awt.Dimension(75, 60));
+        btnCustomer.setPreferredSize(new java.awt.Dimension(100, 60));
+        btnCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCustomerActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btnCustomer);
+
+        btnImcome.setBackground(new java.awt.Color(32, 80, 114));
+        btnImcome.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnImcome.setForeground(new java.awt.Color(255, 255, 255));
+        btnImcome.setText("INCOME");
+        btnImcome.setBorderPainted(false);
+        btnImcome.setMaximumSize(new java.awt.Dimension(75, 60));
+        btnImcome.setMinimumSize(new java.awt.Dimension(75, 60));
+        btnImcome.setPreferredSize(new java.awt.Dimension(100, 60));
+        btnImcome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImcomeActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btnImcome);
+
+        btnDishSold.setBackground(new java.awt.Color(32, 80, 114));
+        btnDishSold.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnDishSold.setForeground(new java.awt.Color(255, 255, 255));
+        btnDishSold.setText("DISH SOLD");
+        btnDishSold.setBorderPainted(false);
+        btnDishSold.setMaximumSize(new java.awt.Dimension(75, 60));
+        btnDishSold.setMinimumSize(new java.awt.Dimension(75, 60));
+        btnDishSold.setPreferredSize(new java.awt.Dimension(100, 60));
+        btnDishSold.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDishSoldActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btnDishSold);
+
+        jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);
+
+        jDesktopPane1.setLayout(new java.awt.BorderLayout());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 762, Short.MAX_VALUE)
+            .addComponent(jDesktopPane1)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 542, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 536, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    ///show order uncomplte
-    public void ShowUncompleteOrderData() throws SQLException{
-        tableModel.getDataVector().removeAllElements();
-        ResultSet result= main_order.UncompleteReceipt();
-        try {
-            while(result.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
-            String rows[] = new String[5];
-            rows[0] = result.getString(1); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
-            tableModel.addRow(rows); // đưa dòng dữ liệu vào tableModel
-            //mỗi lần có sự thay đổi dữ liệu ở tableModel thì Jtable sẽ tự động update
-            }
+
+    private void btnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        new frmMenu().setVisible(true);
+    }//GEN-LAST:event_btnMenuActionPerformed
+
+    private void btnCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerActionPerformed
+        // TODO add your handling code here:
+        for (JInternalFrame frmChild : jDesktopPane1.getAllFrames()) {
+            frmChild.dispose();
         }
-        catch (SQLException e) {
-        }
-    }
-    
-    ///đưa ra cái list các order detail được chọn cho bảng tbDetail
-    public void ShowDetailList() throws SQLException
-    {
-        tableModelDetail.setRowCount(0);
-        tableModelDetail.getDataVector().removeAllElements();
-        ResultSet result= main_detail.ShowDetail(order_id);
-        try {
-            while(result.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
-            String rows[] = new String[5];
-            rows[0] = result.getString(2);
-            rows[1] = result.getString(3);
-            rows[2] = result.getString(4);
-            tableModelDetail.addRow(rows); // đưa dòng dữ liệu vào tableModel
-            //mỗi lần có sự thay đổi dữ liệu ở tableModel thì Jtable sẽ tự động update
-            }
-            
-        }
-        catch (SQLException e) {
-        }
-    }
         
-    ///show selected order lên các txt
-    public void ShowOrderDetail(String orderid) throws SQLException
-    {
-        ResultSet rs= main_order.GetReceipt(orderid);//Goi ham lay du lieu theo ma loai
-            if(rs.next())//Neu co du lieu
+        if(frmDishSold == null || frmDishSold.isClosed())
+        {
+            try {
+                frmDishSold = new frmReport_DishSold();
+            } catch (SQLException ex) {
+                Logger.getLogger(frmReport.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            jDesktopPane1.add(frmDishSold);
+            frmDishSold.setSize(this.getWidth(),this.getHeight());
+            frmDishSold.setLocation(0,0);
+            frmDishSold.setVisible(true);
+            }
+            else
             {
-                order_id = rs.getString("ReceiptID");
-                total = rs.getLong("Total");
-                customerID = rs.getInt("CustomerID");
-                
-                this.txtCustomerID.setText(String.valueOf(customerID));
-                this.txtDateTime.setText(rs.getString("Date"));
-                this.txtTotal.setText(String.valueOf(total));
-                this.txtOrderID.setText(order_id);
-            }
-    }
-    
-    ///show dish of the selected cate tbDish 
-    public void ShowDishFromCate() throws SQLException
-    {
-        tableModelDish.getDataVector().removeAllElements();
-        ResultSet rs= main_dish.DishFromCate(cateID);
-        try {
-            while(rs.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
-            String rows[] = new String[4];
-            rows[0] = rs.getString(1); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
-            rows[1] = rs.getString(2); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
-            rows[2] = rs.getString(3); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
-            tableModelDish.addRow(rows); // đưa dòng dữ liệu vào tableModelDish
-            //mỗi lần có sự thay đổi dữ liệu ở tableModelDish thì Jtable sẽ tự động update
-            }
-        }
-        catch (SQLException e) {
-        }
-    }
-    
-    ///show dish tbDish
-    public void ShowDishList() throws SQLException
-    {
-        tableModelDish.getDataVector().removeAllElements();
-        ResultSet rs= main_dish.Dish();
-        try {
-            while(rs.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
-            String rows[] = new String[4];
-            rows[0] = rs.getString(1); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
-            rows[1] = rs.getString(2); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
-            rows[2] = rs.getString(3); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
-            tableModelDish.addRow(rows); // đưa dòng dữ liệu vào tableModelDish
-            //mỗi lần có sự thay đổi dữ liệu ở tableModelDish thì Jtable sẽ tự động update
-            }
-        }
-        catch (SQLException e) {
-        }
-    }
-    
-    ///show cate list tbCate
-    public void ShowCateList() throws SQLException
-    {
-        ResultSet rs= main_cate.Category();
-        try {
-            while(rs.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
-            String rows[] = new String[2];
-            rows[0] = rs.getString(1); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
-            rows[1] = rs.getString(2); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
-            tableModelCate.addRow(rows); // đưa dòng dữ liệu vào tableModelDish
-            //mỗi lần có sự thay đổi dữ liệu ở tableModelDish thì Jtable sẽ tự động update
-            }
-        }
-        catch (SQLException e) {
-        }
-    }
-    
-    ///adđ dish into order detail
-    public void AddDishToOrder(int d_id, int qua, long pri) throws SQLException
-    {
-                
-        ///kiểm tra xem đã chọn order chưa
-        if (order_id.equals(""))
-        {
-            JOptionPane.showMessageDialog(this, "PLEASE ADD OR CHOOSE AN ORDER");
-        }
-        else 
-        {
-            ///kiểm tra xem đã tồn tại chưa, nếu đã tồn tại thì cộng dồn
-            for (int i = 0; i < tbOrderDetail.getRowCount(); i++) {
-                if (Integer.parseInt(tbOrderDetail.getModel().getValueAt(i, 0).toString()) == d_id)
-                {
-                    int pre_quan = Integer.parseInt(tbOrderDetail.getModel().getValueAt(i, 1).toString());
-                    int new_quan = pre_quan + qua;
-                    main_detail.EditReceiptDetail(order_id,d_id,new_quan ,new_quan*pri );
-                    return;
-                }
-            }
             
-            ///nếu k thì add mới vào
-            main_detail.InsertReceiptDetail(order_id,d_id, qua,qua*pri);
+                frmDishSold.setSize(this.getWidth(),this.getHeight());
+                frmDishSold.setLocation(0,0);
+                frmDishSold.setVisible(true);
         }
-    }
-    
-    public void UpdateTotal()
-    {
-        long sum = 0;
-        for (int i = 0; i < tbOrderDetail.getRowCount(); i++) 
+    }//GEN-LAST:event_btnCustomerActionPerformed
+
+    private void btnImcomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImcomeActionPerformed
+        // TODO add your handling code here:
+        for (JInternalFrame frmChild : jDesktopPane1.getAllFrames()) {
+            frmChild.dispose();
+        }
+        
+        if(frmIncome == null || frmIncome.isClosed())
         {
-            sum = sum + Long.parseLong(tbOrderDetail.getModel().getValueAt(i, 2).toString());
+            try {
+                frmIncome = new frmReport_Income();
+            } catch (SQLException ex) {
+                Logger.getLogger(frmReport.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            jDesktopPane1.add(frmIncome);
+            frmIncome.setSize(this.getWidth(),this.getHeight());
+            frmIncome.setLocation(0,0);
+            frmIncome.setVisible(true);
+            }
+            else
+            {
+            
+                frmIncome.setSize(this.getWidth(),this.getHeight());
+                frmIncome.setLocation(0,0);
+                frmIncome.setVisible(true);
         }
-        txtTotal.setText(String.valueOf(sum));
-    }
-    
+    }//GEN-LAST:event_btnImcomeActionPerformed
+
+    private void btnDishSoldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDishSoldActionPerformed
+        // TODO add your handling code here:
+        for (JInternalFrame frmChild : jDesktopPane1.getAllFrames()) {
+            frmChild.dispose();
+        }
+        
+        if(frmDishSold == null || frmDishSold.isClosed())
+        {
+            try {
+                frmDishSold = new frmReport_DishSold();
+            } catch (SQLException ex) {
+                Logger.getLogger(frmReport.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            jDesktopPane1.add(frmDishSold);
+            frmDishSold.setSize(this.getWidth(),this.getHeight());
+            frmDishSold.setLocation(0,0);
+            frmDishSold.setVisible(true);
+            }
+            else
+            {
+            
+                frmDishSold.setSize(this.getWidth(),this.getHeight());
+                frmDishSold.setLocation(0,0);
+                frmDishSold.setVisible(true);
+        }
+    }//GEN-LAST:event_btnDishSoldActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -284,19 +262,29 @@ public class frmReport extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                try {
-                    new frmReport().setVisible(true);
-                } catch (SQLException ex) {
-                    Logger.getLogger(frmReport.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                new frmReport().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCustomer;
+    private javax.swing.JButton btnDishSold;
+    private javax.swing.JButton btnImcome;
+    private javax.swing.JButton btnMenu;
+    private javax.swing.JDesktopPane jDesktopPane1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
 }

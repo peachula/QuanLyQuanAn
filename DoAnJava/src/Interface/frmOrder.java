@@ -16,6 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -43,12 +44,21 @@ public class frmOrder extends javax.swing.JFrame {
     private final DefaultTableModel tableModelDish = new DefaultTableModel();
     private final DefaultTableModel tableModelCate = new DefaultTableModel();
     private final DefaultTableModel tableModelDetail = new DefaultTableModel();
+    
+//    int full_screen = 1;
     /**
      * Creates new form frmOrder
      */
     public frmOrder() throws SQLException {
         initComponents();
-        setSize(794,612);
+//        if (full_screen == 1)
+//        {  
+//            setExtendedState(JFrame.MAXIMIZED_BOTH);
+//        }
+//        else
+//        {
+            setSize(794,612);
+        //}
         setLocationRelativeTo(null);
         
         
@@ -654,7 +664,6 @@ public class frmOrder extends javax.swing.JFrame {
     private void btnNewOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewOrderActionPerformed
         // TODO add your handling code here:
         ///tạo OrderID 
-        Date rightNow = Calendar.getInstance().getTime();
         LocalDateTime now = LocalDateTime.now();  
         DateTimeFormatter id_new = DateTimeFormatter.ofPattern("yyMMddHHmmss");  
         DateTimeFormatter date = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");         
