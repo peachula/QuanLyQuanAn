@@ -99,6 +99,7 @@ public class frmOrder extends javax.swing.JFrame {
         btnBack = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbOrderID = new javax.swing.JTable();
+        jPanel13 = new javax.swing.JPanel();
         btnNewOrder = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
@@ -190,16 +191,21 @@ public class frmOrder extends javax.swing.JFrame {
 
         jPanel1.add(jScrollPane1);
 
+        jPanel13.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        jPanel13.setLayout(new java.awt.BorderLayout());
+
         btnNewOrder.setText("NEW");
-        btnNewOrder.setMaximumSize(new java.awt.Dimension(300, 100));
-        btnNewOrder.setMinimumSize(new java.awt.Dimension(300, 100));
-        btnNewOrder.setPreferredSize(new java.awt.Dimension(300, 50));
+        btnNewOrder.setMaximumSize(new java.awt.Dimension(59, 23));
+        btnNewOrder.setMinimumSize(new java.awt.Dimension(59, 23));
+        btnNewOrder.setPreferredSize(new java.awt.Dimension(59, 23));
         btnNewOrder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNewOrderActionPerformed(evt);
             }
         });
-        jPanel1.add(btnNewOrder);
+        jPanel13.add(btnNewOrder, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(jPanel13);
 
         jPanel2.add(jPanel1, java.awt.BorderLayout.LINE_START);
 
@@ -721,8 +727,8 @@ public class frmOrder extends javax.swing.JFrame {
         try {
             ///thêm vào detail
             AddDishToOrder(dish_id, quan, dish_price);
-            UpdateTotal();
             ShowDetailList();
+            UpdateTotal();
         } catch (SQLException ex) {
             Logger.getLogger(frmOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -825,6 +831,7 @@ public class frmOrder extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;

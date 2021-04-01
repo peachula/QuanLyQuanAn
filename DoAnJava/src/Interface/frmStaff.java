@@ -35,7 +35,6 @@ public class frmStaff extends javax.swing.JInternalFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel9 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
@@ -158,13 +157,18 @@ public class frmStaff extends javax.swing.JInternalFrame {
 
         jPanel2.setBackground(new java.awt.Color(207, 244, 210));
         jPanel2.setPreferredSize(new java.awt.Dimension(400, 70));
-        jPanel2.setLayout(new java.awt.GridLayout());
+        jPanel2.setLayout(new java.awt.GridLayout(1, 0));
 
         btnAdd.setBackground(new java.awt.Color(32, 80, 114));
         btnAdd.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnAdd.setForeground(new java.awt.Color(255, 255, 255));
         btnAdd.setText("ADD");
         btnAdd.setBorderPainted(false);
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnAdd);
 
         btnEdit.setBackground(new java.awt.Color(32, 80, 114));
@@ -217,6 +221,10 @@ public class frmStaff extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAddActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

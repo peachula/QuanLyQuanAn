@@ -49,6 +49,11 @@ public class frmMenu extends javax.swing.JFrame {
         btnAdmin.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         btnAdmin.setText("ADMIN");
         btnAdmin.setToolTipText("");
+        btnAdmin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdminActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnAdmin, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 230, 230, 140));
 
         btnOrder.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
@@ -62,6 +67,11 @@ public class frmMenu extends javax.swing.JFrame {
 
         btnReport.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         btnReport.setText("REPORTS");
+        btnReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReportActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnReport, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 50, 230, 140));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -93,6 +103,16 @@ public class frmMenu extends javax.swing.JFrame {
             Logger.getLogger(frmMenu.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnOrderActionPerformed
+
+    private void btnReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnReportActionPerformed
+
+    private void btnAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdminActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        new frmAdmin().setVisible(true);
+    }//GEN-LAST:event_btnAdminActionPerformed
 
     /**
      * @param args the command line arguments

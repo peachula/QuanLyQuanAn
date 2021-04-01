@@ -6,6 +6,9 @@
 package Interface;
 
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JInternalFrame;
 import javax.swing.JRootPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
@@ -68,6 +71,11 @@ public class frmAdmin extends javax.swing.JFrame {
         btnMenu.setMaximumSize(new java.awt.Dimension(75, 60));
         btnMenu.setMinimumSize(new java.awt.Dimension(75, 60));
         btnMenu.setPreferredSize(new java.awt.Dimension(75, 60));
+        btnMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMenuActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnMenu);
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.LINE_START);
@@ -203,6 +211,12 @@ public class frmAdmin extends javax.swing.JFrame {
                 frmCate.setVisible(true);
         }
     }//GEN-LAST:event_btnCateActionPerformed
+
+    private void btnMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMenuActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        new frmMenu().setVisible(true);
+    }//GEN-LAST:event_btnMenuActionPerformed
 
     /**
      * @param args the command line arguments
