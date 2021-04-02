@@ -24,7 +24,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author kieef
  */
-public class frmReport_DishSold extends javax.swing.JInternalFrame {
+public class frmReport_Customer extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form frmReport_DishSold
@@ -35,7 +35,7 @@ public class frmReport_DishSold extends javax.swing.JInternalFrame {
     String get_date = "";
     Dish dish = new Dish();
     
-    public frmReport_DishSold() throws SQLException {
+    public frmReport_Customer() throws SQLException {
         initComponents();
         setTitle("DISH SOLD PAGE");
         
@@ -233,7 +233,7 @@ public class frmReport_DishSold extends javax.swing.JInternalFrame {
             // TODO add your handling code here:
             DishSort(get_date,1);
         } catch (SQLException ex) {
-            Logger.getLogger(frmReport_DishSold.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmReport_Customer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_rdIncrMouseClicked
 
@@ -242,7 +242,7 @@ public class frmReport_DishSold extends javax.swing.JInternalFrame {
             // TODO add your handling code here:
             DishSort(get_date,0);
         } catch (SQLException ex) {
-            Logger.getLogger(frmReport_DishSold.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmReport_Customer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_rdDecMouseClicked
 

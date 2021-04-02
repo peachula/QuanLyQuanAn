@@ -49,6 +49,7 @@ public class frmReport_Income extends javax.swing.JInternalFrame {
         chartPanel.setPreferredSize( new java.awt.Dimension( 560 , 367 ) );
         setContentPane(chartPanel);
     }
+
     
     private DefaultCategoryDataset createDataset( ) throws SQLException {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
@@ -57,9 +58,7 @@ public class frmReport_Income extends javax.swing.JInternalFrame {
         try {
             while(rs.next())
             { 
-                String[] parts = rs.getString(1).split("-");
-                String date_s = parts[2];
-                dataset.addValue( Integer.parseInt(rs.getString(2)) , "Total Income a day" , date_s );
+                dataset.addValue( Integer.parseInt(rs.getString(2)) , "Total Income a day" , rs.getString(1) );
             }
         }
         catch (SQLException e) {

@@ -82,6 +82,8 @@ public class frmStaff extends javax.swing.JInternalFrame {
 
         jLabel4.setText("Pasword");
 
+        txtID.setEnabled(false);
+
         txtPassword.setText("jPasswordField1");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);

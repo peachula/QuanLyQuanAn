@@ -65,13 +65,17 @@ public class Dish {
         String sql = "";
         if (sort == 0) ///0 là giảm dần
         {
-            sql = "select DishID, sum(Quantity) from ReceiptDetail where ReceiptID in (" +
-        "select ReceiptID from Receipt where date > '"+ date+"' ) group by DishID order by sum(Quantity) DESC";
+            sql = "select B.DishID, sum(B.Quantity), DishName from (select DishName, Quantity, Dish.DishID, receipt.ReceiptID, Date " +
+                " from ReceiptDetail inner join Receipt on receipt.ReceiptID = ReceiptDetail.ReceiptID" +
+                " inner join dish on dish.DishID = ReceiptDetail.DishID where date > '"+date+"') as B" +
+                " group by B.DishID, DishName order by sum(B.Quantity) DESC";
         }
         else ///1 là tăng dần
         {
-            sql = "select DishID, sum(Quantity) from ReceiptDetail where ReceiptID in (" +
-        "select ReceiptID from Receipt where date > '"+ date+"' ) group by DishID order by sum(Quantity) ASC";
+            sql = " select B.DishID, sum(B.Quantity), DishName from (select DishName, Quantity, Dish.DishID, receipt.ReceiptID, Date" +
+                " from ReceiptDetail inner join Receipt on receipt.ReceiptID = ReceiptDetail.ReceiptID" +
+                " inner join dish on dish.DishID = ReceiptDetail.DishID where date > '"+date+"') as B" +
+                " group by B.DishID, DishName order by sum(B.Quantity) ASC";
         }
         return cn.LoadData(sql);
     }

@@ -75,7 +75,7 @@ public class Receipt {
         String date = date_f.format(now);
         
         cn.connectSQL();
-        String sql = "select Receipt.Date, sum(total) from Receipt where date > '"+date+"' group by Receipt.Date";
+        String sql = "select CONVERT(VARCHAR(10), Receipt.Date, 111), sum(total) from Receipt where date > '"+date+"' group by CONVERT(VARCHAR(10), Receipt.Date, 111)";
         return cn.LoadData(sql);
     }
     
