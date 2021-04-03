@@ -2,6 +2,7 @@ package Interface;
 
 
 import Process.Receipt;
+import java.awt.Color;
 import java.awt.event.MouseListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,10 +44,11 @@ public class frmReport_Income extends javax.swing.JInternalFrame {
 
     public void DrawChart() throws SQLException
     {
-        JFreeChart lineChart = ChartFactory.createLineChart("IMCOME REPORT", "DATE","INCOMES",createDataset(),PlotOrientation.VERTICAL,true,true,false);
+        JFreeChart lineChart = ChartFactory.createLineChart("", "DATE","INCOMES",createDataset(),PlotOrientation.VERTICAL,true,true,false);
          
         ChartPanel chartPanel = new ChartPanel( lineChart );
         chartPanel.setPreferredSize( new java.awt.Dimension( 560 , 367 ) );
+        chartPanel.setBackground(Color.white);
         setContentPane(chartPanel);
     }
 
@@ -75,6 +77,10 @@ public class frmReport_Income extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         panelChart = new javax.swing.JPanel();
+
+        setBackground(new java.awt.Color(255, 255, 255));
+
+        panelChart.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout panelChartLayout = new javax.swing.GroupLayout(panelChart);
         panelChart.setLayout(panelChartLayout);

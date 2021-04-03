@@ -53,16 +53,17 @@ public class frmReport extends javax.swing.JFrame {
         jDesktopPane1 = new javax.swing.JDesktopPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("FOOD COURT - REPORTS");
         setLocationByPlatform(true);
         setSize(new java.awt.Dimension(100, 100));
 
-        jPanel1.setBackground(new java.awt.Color(207, 244, 210));
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(809, 612));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jPanel2.setBackground(new java.awt.Color(207, 244, 210));
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        btnMenu.setBackground(new java.awt.Color(32, 80, 114));
+        btnMenu.setBackground(new java.awt.Color(237, 163, 35));
         btnMenu.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnMenu.setForeground(new java.awt.Color(255, 255, 255));
         btnMenu.setText("MENU");
@@ -79,10 +80,10 @@ public class frmReport extends javax.swing.JFrame {
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.LINE_START);
 
-        jPanel3.setBackground(new java.awt.Color(207, 244, 210));
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
-        btnCustomer.setBackground(new java.awt.Color(32, 80, 114));
+        btnCustomer.setBackground(new java.awt.Color(237, 163, 35));
         btnCustomer.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnCustomer.setForeground(new java.awt.Color(255, 255, 255));
         btnCustomer.setText("CUSTOMER");
@@ -97,7 +98,7 @@ public class frmReport extends javax.swing.JFrame {
         });
         jPanel3.add(btnCustomer);
 
-        btnImcome.setBackground(new java.awt.Color(32, 80, 114));
+        btnImcome.setBackground(new java.awt.Color(237, 163, 35));
         btnImcome.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnImcome.setForeground(new java.awt.Color(255, 255, 255));
         btnImcome.setText("INCOME");
@@ -112,7 +113,7 @@ public class frmReport extends javax.swing.JFrame {
         });
         jPanel3.add(btnImcome);
 
-        btnDishSold.setBackground(new java.awt.Color(32, 80, 114));
+        btnDishSold.setBackground(new java.awt.Color(237, 163, 35));
         btnDishSold.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnDishSold.setForeground(new java.awt.Color(255, 255, 255));
         btnDishSold.setText("DISH SOLD");
@@ -129,13 +130,14 @@ public class frmReport extends javax.swing.JFrame {
 
         jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);
 
+        jDesktopPane1.setBackground(new java.awt.Color(255, 255, 255));
         jDesktopPane1.setLayout(new java.awt.BorderLayout());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane1)
+            .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(

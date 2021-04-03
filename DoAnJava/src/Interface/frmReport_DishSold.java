@@ -87,19 +87,32 @@ public class frmReport_DishSold extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tbDish = new javax.swing.JTable();
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        jPanel1.setMinimumSize(new java.awt.Dimension(393, 100));
-        jPanel1.setPreferredSize(new java.awt.Dimension(693, 100));
+        jPanel1.setMinimumSize(new java.awt.Dimension(393, 150));
+        jPanel1.setPreferredSize(new java.awt.Dimension(693, 120));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setMaximumSize(new java.awt.Dimension(373, 100));
         jPanel3.setMinimumSize(new java.awt.Dimension(373, 100));
         jPanel3.setPreferredSize(new java.awt.Dimension(373, 100));
         jPanel3.setLayout(new java.awt.BorderLayout());
 
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("SEARH"));
 
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtSearchKeyPressed(evt);
+            }
+        });
+
+        btnSearch.setBackground(new java.awt.Color(237, 163, 35));
+        btnSearch.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnSearch.setForeground(new java.awt.Color(255, 255, 255));
         btnSearch.setText("SEARCH");
+        btnSearch.setBorderPainted(false);
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSearchActionPerformed(evt);
@@ -115,7 +128,7 @@ public class frmReport_DishSold extends javax.swing.JInternalFrame {
                 .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(52, 52, 52)
                 .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -124,18 +137,21 @@ public class frmReport_DishSold extends javax.swing.JInternalFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
                     .addComponent(txtSearch))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         jPanel3.add(jPanel6, java.awt.BorderLayout.CENTER);
 
         jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);
 
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setPreferredSize(new java.awt.Dimension(200, 100));
         jPanel4.setLayout(new java.awt.BorderLayout());
 
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("SORT"));
 
+        rdIncr.setBackground(new java.awt.Color(255, 255, 255));
         rdIncr.setText("Price increasing");
         rdIncr.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -144,6 +160,7 @@ public class frmReport_DishSold extends javax.swing.JInternalFrame {
         });
         jPanel5.add(rdIncr);
 
+        rdDec.setBackground(new java.awt.Color(255, 255, 255));
         rdDec.setText("Price decreasing");
         rdDec.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -158,7 +175,9 @@ public class frmReport_DishSold extends javax.swing.JInternalFrame {
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        jPanel2.setPreferredSize(new java.awt.Dimension(472, 382));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         tbDish.setModel(new javax.swing.table.DefaultTableModel(
@@ -220,11 +239,34 @@ public class frmReport_DishSold extends javax.swing.JInternalFrame {
         }
         catch (SQLException e) {
         }
+    }
+    
+    public void DishSearch ()
+    {
+        String search = txtSearch.getText(); 
         
+        if (search.trim() != null)
+        {
+            tableDish.getDataVector().removeAllElements();
+            try {
+                ResultSet rs= dish.DishSearch(search, get_date);
+                while(rs.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
+                String rows[] = new String[3];
+                rows[0] = rs.getString(1); // dishID
+                rows[2] = rs.getString(2); // Quantity
+                rows[1] = rs.getString(3); // Dish name
+                tableDish.addRow(rows); // đưa dòng dữ liệu vào tableModelDish
+                //mỗi lần có sự thay đổi dữ liệu ở tableModelDish thì Jtable sẽ tự động update
+
+                }
+            }
+            catch (SQLException e) {
+            }
+        }
     }
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
-        
+        DishSearch();
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void rdIncrMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rdIncrMouseClicked
@@ -245,6 +287,11 @@ public class frmReport_DishSold extends javax.swing.JInternalFrame {
             Logger.getLogger(frmReport_DishSold.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_rdDecMouseClicked
+
+    private void txtSearchKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyPressed
+        // TODO add your handling code here:
+        DishSearch();
+    }//GEN-LAST:event_txtSearchKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

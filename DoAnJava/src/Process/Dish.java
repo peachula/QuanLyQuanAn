@@ -79,4 +79,17 @@ public class Dish {
         }
         return cn.LoadData(sql);
     }
+    
+    ///search by name and id
+    public ResultSet DishSearch(String search, String date) throws SQLException{
+        cn.connectSQL();
+        
+        String sql = "select B.DishID, sum(B.Quantity), DishName from (select DishName, Quantity, Dish.DishID, receipt.ReceiptID, Date " +
+                " from ReceiptDetail inner join Receipt on receipt.ReceiptID = ReceiptDetail.ReceiptID" +
+                " inner join dish on dish.DishID = ReceiptDetail.DishID where date > '"+date+"') as B" +
+                " where DishID  like '%" + search +"%'or DishName like '%"+ search+"%'" +
+                " group by B.DishID, DishName order by sum(B.Quantity)";
+        return cn.LoadData(sql);
+    }
+    
 }

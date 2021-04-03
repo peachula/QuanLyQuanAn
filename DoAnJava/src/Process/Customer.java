@@ -59,10 +59,10 @@ public class Customer {
      //Report customer
     public ResultSet CustomerReport(int sort) throws SQLException{
         cn.connectSQL();
-        String sql = "select sum(total), customer.CustomerID, customerName " +
+        String sql = "select sum(total), customer.CustomerID, customerName, Phone " +
             "from Customer " +
             "inner join Receipt on Receipt.CustomerID = Customer.CustomerID " +
-            "group by customer.CustomerID, customerName order by sum(total)";
+            "group by customer.CustomerID, customerName, Phone order by sum(total)";
         if (sort ==0)
         {
             sql = sql + " DESC";
@@ -71,6 +71,19 @@ public class Customer {
         {
             sql = sql + "ASC";
         }
+        return cn.LoadData(sql);
+    }
+    
+    ///search customer
+    //Truy van tat ca du lieu trong Table theo id
+    public ResultSet CustomerSearch(String search) throws SQLException{
+        cn.connectSQL();
+        String sql = "select sum(total), customer.CustomerID, customerName, Phone " +
+            "from Customer " +
+            "inner join Receipt on Receipt.CustomerID = Customer.CustomerID " +
+            "where Customer.CustomerID like '%" + search +"%' or Customer.CustomerName like '%"+search+"%' or Phone like '%"+search+"%' " +
+            "group by customer.CustomerID, customerName, Phone order by sum(total)";
+        
         return cn.LoadData(sql);
     }
 }
