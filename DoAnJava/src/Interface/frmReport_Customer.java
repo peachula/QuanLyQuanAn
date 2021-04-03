@@ -1,7 +1,7 @@
 package Interface;
 
 
-import Process.Dish;
+import Process.Customer;
 import java.awt.event.MouseListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,13 +31,13 @@ public class frmReport_Customer extends javax.swing.JInternalFrame {
      */
     
     
-    private final DefaultTableModel tableDish = new DefaultTableModel();
+    private final DefaultTableModel tableCus = new DefaultTableModel();
     String get_date = "";
-    Dish dish = new Dish();
+    Customer customer = new Customer();
     
     public frmReport_Customer() throws SQLException {
         initComponents();
-        setTitle("DISH SOLD PAGE");
+        setTitle("CUSTOMER REPORTS PAGE");
         
         BasicInternalFrameUI bs = ((javax.swing.plaf.basic.BasicInternalFrameUI) this.getUI());
         for (MouseListener l: bs.getNorthPane().getMouseListeners()){
@@ -45,20 +45,12 @@ public class frmReport_Customer extends javax.swing.JInternalFrame {
         }
         
         ///setting for tbCate
-        String []colsName_Cate = {"Dish ID","Dish Name","Quantity"};
+        String []colsName_Cate = {"Customer ID","Customer Name","Total spend"};
         // đặt tiêu đề cột cho tableModel
-        tableDish.setColumnIdentifiers(colsName_Cate);
-        tbDish.setModel(tableDish);
-        tbDish.getColumnModel().getColumn(0).setWidth(0);
-        tbDish.getColumnModel().getColumn(0).setMinWidth(0);
-        tbDish.getColumnModel().getColumn(0).setMaxWidth(0);
-        
-        ///giá trị sort: 1 là tăng, 0 là giảm
-        LocalDateTime now = LocalDateTime.now().minus(Period.ofDays( 30 ));  
-        DateTimeFormatter date_f = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
-        get_date = date_f.format(now);
-        
-        DishSort(get_date,0);
+        tableCus.setColumnIdentifiers(colsName_Cate);
+        tbCustomer.setModel(tableCus);
+                
+        CustomerSort(0);
         
         ButtonGroup G = new ButtonGroup();
         G.add(rdIncr);
@@ -85,7 +77,7 @@ public class frmReport_Customer extends javax.swing.JInternalFrame {
         rdDec = new javax.swing.JRadioButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbDish = new javax.swing.JTable();
+        tbCustomer = new javax.swing.JTable();
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanel1.setMinimumSize(new java.awt.Dimension(393, 100));
@@ -161,7 +153,7 @@ public class frmReport_Customer extends javax.swing.JInternalFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        tbDish.setModel(new javax.swing.table.DefaultTableModel(
+        tbCustomer.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -169,7 +161,7 @@ public class frmReport_Customer extends javax.swing.JInternalFrame {
                 {null, null, null}
             },
             new String [] {
-                "Dish ID", "Dish Name", "Quantity"
+                "Customer ID", "Customer Name", "Total spend"
             }
         ) {
             Class[] types = new Class [] {
@@ -187,13 +179,13 @@ public class frmReport_Customer extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(tbDish);
-        if (tbDish.getColumnModel().getColumnCount() > 0) {
-            tbDish.getColumnModel().getColumn(0).setMinWidth(0);
-            tbDish.getColumnModel().getColumn(0).setPreferredWidth(0);
-            tbDish.getColumnModel().getColumn(0).setMaxWidth(0);
-            tbDish.getColumnModel().getColumn(1).setResizable(false);
-            tbDish.getColumnModel().getColumn(2).setResizable(false);
+        jScrollPane1.setViewportView(tbCustomer);
+        if (tbCustomer.getColumnModel().getColumnCount() > 0) {
+            tbCustomer.getColumnModel().getColumn(0).setMinWidth(0);
+            tbCustomer.getColumnModel().getColumn(0).setPreferredWidth(0);
+            tbCustomer.getColumnModel().getColumn(0).setMaxWidth(0);
+            tbCustomer.getColumnModel().getColumn(1).setResizable(false);
+            tbCustomer.getColumnModel().getColumn(2).setResizable(false);
         }
 
         jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -203,17 +195,17 @@ public class frmReport_Customer extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void DishSort (String date,int sort) throws SQLException
+    public void CustomerSort (int sort) throws SQLException
     {
-        tableDish.getDataVector().removeAllElements();
-        ResultSet rs= dish.DishSold(date,sort);
+        tableCus.getDataVector().removeAllElements();
+        ResultSet rs= customer.CustomerReport(sort);
         try {
             while(rs.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
             String rows[] = new String[3];
-            rows[0] = rs.getString(1); // dishID
-            rows[2] = rs.getString(2); // Quantity
-            rows[1] = rs.getString(3); // Dish name
-            tableDish.addRow(rows); // đưa dòng dữ liệu vào tableModelDish
+            rows[0] = rs.getString(1); // ID
+            rows[1] = rs.getString(2); // Nam
+            rows[2] = rs.getString(3); // Spend
+            tableCus.addRow(rows); // đưa dòng dữ liệu vào tableModelDish
             //mỗi lần có sự thay đổi dữ liệu ở tableModelDish thì Jtable sẽ tự động update
             
             }
@@ -231,7 +223,7 @@ public class frmReport_Customer extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         try {
             // TODO add your handling code here:
-            DishSort(get_date,1);
+            CustomerSort(1);
         } catch (SQLException ex) {
             Logger.getLogger(frmReport_Customer.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -240,7 +232,7 @@ public class frmReport_Customer extends javax.swing.JInternalFrame {
     private void rdDecMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rdDecMouseClicked
         try {
             // TODO add your handling code here:
-            DishSort(get_date,0);
+            CustomerSort(0);
         } catch (SQLException ex) {
             Logger.getLogger(frmReport_Customer.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -258,7 +250,7 @@ public class frmReport_Customer extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JRadioButton rdDec;
     private javax.swing.JRadioButton rdIncr;
-    private javax.swing.JTable tbDish;
+    private javax.swing.JTable tbCustomer;
     private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }

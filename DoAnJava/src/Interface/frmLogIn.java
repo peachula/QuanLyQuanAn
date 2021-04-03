@@ -6,10 +6,13 @@
 package Interface;
 
 import Process.Staff;
+import java.awt.Color;
+import java.awt.event.KeyEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -20,18 +23,27 @@ public class frmLogIn extends javax.swing.JFrame {
 
     private final Staff staff = new Staff();
     static int role;
-    String name;
+    static String s_name;
     
     /**
      * Creates new form frmLogIn
      */
     public frmLogIn() {
+        ///transparenting background
+        setUndecorated(true);
+        setBackground(new Color(1.0f,1.0f,1.0f,0.0f));
+        
         initComponents();
         setLocationRelativeTo(null);
+        
     }
 
-    public static int get_info(){
+    public static int get_role(){ ///get role
         return role;
+    }
+    
+    public static String get_name(){ ///get name
+        return s_name;
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -42,41 +54,60 @@ public class frmLogIn extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtStaffID = new javax.swing.JTextField();
+        txtPassword = new javax.swing.JPasswordField();
         jLabel4 = new javax.swing.JLabel();
         btnLogIn = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
-        txtPassword = new javax.swing.JPasswordField();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBackground(new java.awt.Color(123, 228, 149));
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jLabel5.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Interface/Untitled-1.png"))); // NOI18N
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 570, 420));
 
-        jPanel2.setBackground(new java.awt.Color(123, 228, 149));
-
-        jLabel2.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 24)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Berlin Sans FB Demi", 1, 48)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(153, 0, 51));
         jLabel2.setText("FOOD COURT");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 50, 320, 80));
 
         jLabel3.setText("Staff ID");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 170, 55, -1));
+
+        txtStaffID.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtStaffIDKeyPressed(evt);
+            }
+        });
+        getContentPane().add(txtStaffID, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 160, 163, -1));
+
+        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPasswordKeyPressed(evt);
+            }
+        });
+        getContentPane().add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 220, 163, -1));
 
         jLabel4.setText("Password");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 220, 55, -1));
 
         btnLogIn.setBackground(new java.awt.Color(32, 80, 114));
         btnLogIn.setForeground(new java.awt.Color(255, 255, 255));
         btnLogIn.setText("LOG IN");
+        btnLogIn.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         btnLogIn.setBorderPainted(false);
         btnLogIn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLogInActionPerformed(evt);
             }
         });
+        getContentPane().add(btnLogIn, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 280, 91, 51));
 
         btnCancel.setBackground(new java.awt.Color(204, 0, 0));
         btnCancel.setForeground(new java.awt.Color(255, 255, 255));
@@ -87,102 +118,107 @@ public class frmLogIn extends javax.swing.JFrame {
                 btnCancelActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(74, 74, 74)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(35, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(btnLogIn, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
-                        .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtStaffID, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
-                            .addComponent(txtPassword))))
-                .addGap(39, 39, 39))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtStaffID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(44, 44, 44)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnLogIn, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(132, Short.MAX_VALUE))
-        );
-
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(333, 0, 310, 420));
+        getContentPane().add(btnCancel, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 280, 89, 54));
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Interface/86e75c67e2cea85d40164a7034fcff8e.jpg"))); // NOI18N
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 320, 330));
-
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 330));
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Interface/Untitled-2.png"))); // NOI18N
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 0, 570, 420));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         // TODO add your handling code here:
         setVisible(false);
         dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
-
-    private void btnLogInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogInActionPerformed
-        // TODO add your handling code here:
-        int username = Integer.parseInt(txtStaffID.getText());
+    
+    public void LogIn () throws SQLException
+    {
+        
+        String username = txtStaffID.getText(); 
         String password = String.valueOf(txtPassword.getPassword());
-        try {
-            boolean r = staff.Staff_LogIn(username, password);
-            if (r) 
-            {
-                this.setVisible(false);
-                this.dispose();
-                ResultSet rs= staff.Staff_ID(username);
-                try {
-                    while(rs.next()){ 
-                        role = Integer.parseInt(rs.getString(3)); 
-                        name = rs.getString(2);
-                        break;
-                    }
-                }
-                catch (SQLException e) {
-                }
-                new frmMenu().setVisible(true);
-            }
-            else
-            {
-                JOptionPane.showMessageDialog(this, "Wrong log in information");
-            }
+        
+        if ((username == null) || (username.trim().isEmpty()) || (password == null) || (password.trim().isEmpty()))
+        {
+            JOptionPane.showMessageDialog(this,"Empty log in infomation");
+        }
+        else 
+        {
+            ///đổi username sang int vì trong db là int (whyyyyyyyy)
                 
+            try
+            {
+               int username_l = Integer.parseInt(username);
+               
+               boolean r = staff.Staff_LogIn(username_l, password);
+                if (r)
+                {
+                    this.setVisible(false);
+                    this.dispose();
+                    ResultSet rs= staff.Staff_ID(username_l);
+                    try {
+                        while(rs.next()){
+                            role = Integer.parseInt(rs.getString(3));
+                            s_name = rs.getString(2);
+                            break;
+                        }
+                    }
+                    catch (SQLException e) {
+                    }
+                    new frmMenu().setVisible(true);
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(this, "Wrong log in information");
+                }
+            }
+            catch(NumberFormatException e)
+            {
+              JOptionPane.showMessageDialog(this, "Wrong log in information");
+            }
+            
+        }        
+    }
+    
+    private void btnLogInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogInActionPerformed
+        try {
+            // TODO add your handling code here:
+            LogIn();
         } catch (SQLException ex) {
             Logger.getLogger(frmLogIn.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnLogInActionPerformed
 
+    private void txtStaffIDKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtStaffIDKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER)
+        {
+            try {
+                // TODO add your handling code here:
+                LogIn();
+            } catch (SQLException ex) {
+                Logger.getLogger(frmLogIn.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        } 
+    }//GEN-LAST:event_txtStaffIDKeyPressed
+
+    private void txtPasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER)
+        {
+            try {
+                // TODO add your handling code here:
+                LogIn();
+            } catch (SQLException ex) {
+                Logger.getLogger(frmLogIn.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        } 
+    }//GEN-LAST:event_txtPasswordKeyPressed
+    
     /**
      * @param args the command line arguments
      */
@@ -225,8 +261,7 @@ public class frmLogIn extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPasswordField txtPassword;
     private javax.swing.JTextField txtStaffID;
     // End of variables declaration//GEN-END:variables

@@ -52,7 +52,25 @@ public class Customer {
     
     //Xoa 1 dong du lieu vao table 
     public void DeleteCustomer(int c_id ) throws SQLException{
-        String sql = "Delete from Staff where CustomerID='" + c_id +"'";
+        String sql = "Delete from Customer where CustomerID='" + c_id +"'";
         cn.UpdateData(sql);
+    }
+    
+     //Report customer
+    public ResultSet CustomerReport(int sort) throws SQLException{
+        cn.connectSQL();
+        String sql = "select sum(total), customer.CustomerID, customerName " +
+            "from Customer " +
+            "inner join Receipt on Receipt.CustomerID = Customer.CustomerID " +
+            "group by customer.CustomerID, customerName order by sum(total)";
+        if (sort ==0)
+        {
+            sql = sql + " DESC";
+        }
+        else 
+        {
+            sql = sql + "ASC";
+        }
+        return cn.LoadData(sql);
     }
 }

@@ -25,6 +25,7 @@ public class frmReport extends javax.swing.JFrame {
     
     frmReport_DishSold frmDishSold;
     frmReport_Income frmIncome;
+    frmReport_Customer frmCustomer;
     
     public frmReport() {
         initComponents();
@@ -160,24 +161,24 @@ public class frmReport extends javax.swing.JFrame {
             frmChild.dispose();
         }
         
-        if(frmDishSold == null || frmDishSold.isClosed())
+        if(frmCustomer == null || frmCustomer.isClosed())
         {
             try {
-                frmDishSold = new frmReport_DishSold();
+                frmCustomer = new frmReport_Customer();
             } catch (SQLException ex) {
                 Logger.getLogger(frmReport.class.getName()).log(Level.SEVERE, null, ex);
             }
-            jDesktopPane1.add(frmDishSold);
-            frmDishSold.setSize(this.getWidth(),this.getHeight());
-            frmDishSold.setLocation(0,0);
-            frmDishSold.setVisible(true);
+            jDesktopPane1.add(frmCustomer);
+            frmCustomer.setSize(this.getWidth(),this.getHeight());
+            frmCustomer.setLocation(0,0);
+            frmCustomer.setVisible(true);
             }
             else
             {
             
-                frmDishSold.setSize(this.getWidth(),this.getHeight());
-                frmDishSold.setLocation(0,0);
-                frmDishSold.setVisible(true);
+                frmCustomer.setSize(this.getWidth(),this.getHeight());
+                frmCustomer.setLocation(0,0);
+                frmCustomer.setVisible(true);
         }
     }//GEN-LAST:event_btnCustomerActionPerformed
 

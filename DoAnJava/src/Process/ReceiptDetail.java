@@ -45,7 +45,10 @@ public class ReceiptDetail {
     //Truy van cac detail duoc chon
     public ResultSet ShowDetail(String r_id) throws SQLException{
         cn.connectSQL();
-        String sql = "SELECT * FROM ReceiptDetail WHERE ReceiptID = '"+r_id+ "'";
+        String sql = "SELECT Dish.DishID, Quantity, ReceiptDetail.Total_ReceiptDetail, DishName " +
+            "FROM ReceiptDetail " +
+            "inner join Dish on Dish.DishID = ReceiptDetail.DishID " +
+            "WHERE ReceiptID = '"+r_id+"'";
         return cn.LoadData(sql);
     }
    

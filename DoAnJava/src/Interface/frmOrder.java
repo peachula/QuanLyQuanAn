@@ -75,6 +75,9 @@ public class frmOrder extends javax.swing.JFrame {
         // đặt tiêu đề cột cho tableModel
         tableModelCate.setColumnIdentifiers(colsName_Cate);
         tbCate.setModel(tableModelCate);
+        tbCate.getColumnModel().getColumn(0).setWidth(0);
+        tbCate.getColumnModel().getColumn(0).setMinWidth(0);
+        tbCate.getColumnModel().getColumn(0).setMaxWidth(0);
         ShowCateList();
         
         ///setting for tbDish
@@ -82,10 +85,13 @@ public class frmOrder extends javax.swing.JFrame {
         // đặt tiêu đề cột cho tableModel
         tableModelDish.setColumnIdentifiers(colsName_Dish);
         tbDish.setModel(tableModelDish);
+        tbDish.getColumnModel().getColumn(0).setWidth(0);
+        tbDish.getColumnModel().getColumn(0).setMinWidth(0);
+        tbDish.getColumnModel().getColumn(0).setMaxWidth(0);
         ShowDishList();
         
         ///setting for tbDetail
-        String []colsName_Detail = {"Dish Name","Quantity", "Total"};
+        String []colsName_Detail = {"Dish ID","Dish Name","Quantity", "Total"};
         // đặt tiêu đề cột cho tableModel
         tableModelDetail.setColumnIdentifiers(colsName_Detail);
         tbOrderDetail.setModel(tableModelDetail);
@@ -147,20 +153,27 @@ public class frmOrder extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(794, 612));
         setSize(new java.awt.Dimension(794, 612));
 
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setMinimumSize(new java.awt.Dimension(612, 320));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanel1.setPreferredSize(new java.awt.Dimension(150, 100));
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
 
+        jPanel10.setBackground(new java.awt.Color(255, 255, 255));
         jPanel10.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanel10.setMaximumSize(new java.awt.Dimension(300, 50));
         jPanel10.setMinimumSize(new java.awt.Dimension(300, 50));
         jPanel10.setPreferredSize(new java.awt.Dimension(300, 50));
         jPanel10.setLayout(new java.awt.BorderLayout());
 
+        btnBack.setBackground(new java.awt.Color(237, 163, 35));
+        btnBack.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnBack.setForeground(new java.awt.Color(255, 255, 255));
         btnBack.setText("BACK");
+        btnBack.setBorderPainted(false);
         btnBack.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBackActionPerformed(evt);
@@ -201,10 +214,18 @@ public class frmOrder extends javax.swing.JFrame {
 
         jPanel1.add(jScrollPane1);
 
+        jPanel13.setBackground(new java.awt.Color(255, 255, 255));
         jPanel13.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        jPanel13.setMaximumSize(new java.awt.Dimension(300, 50));
+        jPanel13.setMinimumSize(new java.awt.Dimension(300, 50));
+        jPanel13.setPreferredSize(new java.awt.Dimension(300, 50));
         jPanel13.setLayout(new java.awt.BorderLayout());
 
+        btnNewOrder.setBackground(new java.awt.Color(237, 163, 35));
+        btnNewOrder.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnNewOrder.setForeground(new java.awt.Color(255, 255, 255));
         btnNewOrder.setText("NEW");
+        btnNewOrder.setBorderPainted(false);
         btnNewOrder.setMaximumSize(new java.awt.Dimension(59, 23));
         btnNewOrder.setMinimumSize(new java.awt.Dimension(59, 23));
         btnNewOrder.setPreferredSize(new java.awt.Dimension(59, 23));
@@ -219,15 +240,18 @@ public class frmOrder extends javax.swing.JFrame {
 
         jPanel2.add(jPanel1, java.awt.BorderLayout.LINE_START);
 
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setMinimumSize(new java.awt.Dimension(612, 320));
         jPanel3.setPreferredSize(new java.awt.Dimension(612, 612));
         jPanel3.setLayout(new java.awt.BorderLayout());
 
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setMaximumSize(new java.awt.Dimension(569, 300));
         jPanel4.setMinimumSize(new java.awt.Dimension(569, 300));
         jPanel4.setPreferredSize(new java.awt.Dimension(569, 300));
         jPanel4.setLayout(new java.awt.BorderLayout());
 
+        jPanel7.setBackground(new java.awt.Color(255, 255, 255));
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder("ORDER DETAILS"));
         jPanel7.setMinimumSize(new java.awt.Dimension(35, 300));
         jPanel7.setPreferredSize(new java.awt.Dimension(612, 300));
@@ -238,15 +262,22 @@ public class frmOrder extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Dish Name", "Quantity", "Total"
+                "Dish ID", "Dish Name", "Quantity", "Total"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.Long.class
+                java.lang.Object.class, java.lang.String.class, java.lang.Integer.class, java.lang.Long.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         tbOrderDetail.setMinimumSize(new java.awt.Dimension(60, 280));
@@ -259,13 +290,18 @@ public class frmOrder extends javax.swing.JFrame {
 
         jPanel7.add(jScrollPane3, java.awt.BorderLayout.CENTER);
 
+        jPanel11.setBackground(new java.awt.Color(255, 255, 255));
         jPanel11.setPreferredSize(new java.awt.Dimension(0, 70));
 
         jLabel1.setText("Date Time");
 
         jLabel2.setText("Customer");
 
+        btnDeleteOrder.setBackground(new java.awt.Color(237, 163, 35));
+        btnDeleteOrder.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnDeleteOrder.setForeground(new java.awt.Color(255, 255, 255));
         btnDeleteOrder.setText("DELETE");
+        btnDeleteOrder.setBorderPainted(false);
         btnDeleteOrder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteOrderActionPerformed(evt);
@@ -276,7 +312,11 @@ public class frmOrder extends javax.swing.JFrame {
 
         jLabel5.setText("Total");
 
+        btnComplete.setBackground(new java.awt.Color(237, 163, 35));
+        btnComplete.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnComplete.setForeground(new java.awt.Color(255, 255, 255));
         btnComplete.setText("COMPLETE");
+        btnComplete.setBorderPainted(false);
         btnComplete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCompleteActionPerformed(evt);
@@ -340,10 +380,12 @@ public class frmOrder extends javax.swing.JFrame {
 
         jPanel3.add(jPanel4, java.awt.BorderLayout.PAGE_START);
 
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setMinimumSize(new java.awt.Dimension(35, 100));
         jPanel6.setPreferredSize(new java.awt.Dimension(612, 100));
         jPanel6.setLayout(new java.awt.BorderLayout());
 
+        jPanel9.setBackground(new java.awt.Color(255, 255, 255));
         jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder("CATEGORY"));
         jPanel9.setMinimumSize(new java.awt.Dimension(35, 150));
         jPanel9.setPreferredSize(new java.awt.Dimension(464, 150));
@@ -392,22 +434,30 @@ public class frmOrder extends javax.swing.JFrame {
 
         jPanel3.add(jPanel6, java.awt.BorderLayout.CENTER);
 
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setMinimumSize(new java.awt.Dimension(612, 162));
         jPanel5.setPreferredSize(new java.awt.Dimension(612, 162));
         jPanel5.setLayout(new java.awt.BorderLayout());
 
+        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder("ADD DISH "));
         jPanel8.setMaximumSize(new java.awt.Dimension(2147483647, 150));
         jPanel8.setMinimumSize(new java.awt.Dimension(135, 150));
         jPanel8.setPreferredSize(new java.awt.Dimension(612, 150));
         jPanel8.setLayout(new java.awt.BorderLayout());
 
+        jPanel12.setBackground(new java.awt.Color(255, 255, 255));
+
         spQuantity.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
         spQuantity.setEnabled(false);
         spQuantity.setMinimumSize(new java.awt.Dimension(32, 20));
         spQuantity.setPreferredSize(new java.awt.Dimension(32, 20));
 
+        btnAdd.setBackground(new java.awt.Color(237, 163, 35));
+        btnAdd.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnAdd.setForeground(new java.awt.Color(255, 255, 255));
         btnAdd.setText("ADD");
+        btnAdd.setBorderPainted(false);
         btnAdd.setEnabled(false);
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -415,7 +465,11 @@ public class frmOrder extends javax.swing.JFrame {
             }
         });
 
+        btnDelete.setBackground(new java.awt.Color(237, 163, 35));
+        btnDelete.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setText("DELETE");
+        btnDelete.setBorderPainted(false);
         btnDelete.setEnabled(false);
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -507,11 +561,10 @@ public class frmOrder extends javax.swing.JFrame {
         tableModel.getDataVector().removeAllElements();
         ResultSet result= main_order.UncompleteReceipt();
         try {
-            while(result.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
+            while(result.next()){ 
             String rows[] = new String[5];
-            rows[0] = result.getString(1); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
-            tableModel.addRow(rows); // đưa dòng dữ liệu vào tableModel
-            //mỗi lần có sự thay đổi dữ liệu ở tableModel thì Jtable sẽ tự động update
+            rows[0] = result.getString(1); // oreceiptID
+            tableModel.addRow(rows); 
             }
         }
         catch (SQLException e) {
@@ -527,11 +580,12 @@ public class frmOrder extends javax.swing.JFrame {
         try {
             while(result.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
             String rows[] = new String[5];
-            rows[0] = result.getString(2);
-            rows[1] = result.getString(3);
-            rows[2] = result.getString(4);
-            tableModelDetail.addRow(rows); // đưa dòng dữ liệu vào tableModel
-            //mỗi lần có sự thay đổi dữ liệu ở tableModel thì Jtable sẽ tự động update
+            rows[0] = result.getString(1); //dishID
+            rows[2] = result.getString(2); //quantity
+            rows[3] = result.getString(3); //total
+            rows[1] = result.getString(4); //dish name
+            ///dish name
+            tableModelDetail.addRow(rows); 
             }
             
         }
@@ -555,7 +609,7 @@ public class frmOrder extends javax.swing.JFrame {
                 this.txtOrderID.setText(order_id);
             }
     }
-    
+        
     ///show dish of the selected cate tbDish 
     public void ShowDishFromCate() throws SQLException
     {
@@ -563,12 +617,11 @@ public class frmOrder extends javax.swing.JFrame {
         ResultSet rs= main_dish.DishFromCate(cateID);
         try {
             while(rs.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
-            String rows[] = new String[4];
-            rows[0] = rs.getString(1); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
-            rows[1] = rs.getString(2); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
-            rows[2] = rs.getString(3); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
-            tableModelDish.addRow(rows); // đưa dòng dữ liệu vào tableModelDish
-            //mỗi lần có sự thay đổi dữ liệu ở tableModelDish thì Jtable sẽ tự động update
+            String rows[] = new String[3];
+            rows[0] = rs.getString(1); // dishID
+            rows[1] = rs.getString(2); // Dish name
+            rows[2] = rs.getString(3); // Dish price
+            tableModelDish.addRow(rows);
             }
         }
         catch (SQLException e) {
@@ -583,11 +636,10 @@ public class frmOrder extends javax.swing.JFrame {
         try {
             while(rs.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
             String rows[] = new String[4];
-            rows[0] = rs.getString(1); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
-            rows[1] = rs.getString(2); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
-            rows[2] = rs.getString(3); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
-            tableModelDish.addRow(rows); // đưa dòng dữ liệu vào tableModelDish
-            //mỗi lần có sự thay đổi dữ liệu ở tableModelDish thì Jtable sẽ tự động update
+            rows[0] = rs.getString(1); // dishID
+            rows[1] = rs.getString(2); // dishName
+            rows[2] = rs.getString(3); // Dishprice
+            tableModelDish.addRow(rows); 
             }
         }
         catch (SQLException e) {
@@ -601,10 +653,9 @@ public class frmOrder extends javax.swing.JFrame {
         try {
             while(rs.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
             String rows[] = new String[2];
-            rows[0] = rs.getString(1); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
-            rows[1] = rs.getString(2); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
-            tableModelCate.addRow(rows); // đưa dòng dữ liệu vào tableModelDish
-            //mỗi lần có sự thay đổi dữ liệu ở tableModelDish thì Jtable sẽ tự động update
+            rows[0] = rs.getString(1); // cateID
+            rows[1] = rs.getString(2); // Catename
+            tableModelCate.addRow(rows); 
             }
         }
         catch (SQLException e) {
@@ -624,9 +675,9 @@ public class frmOrder extends javax.swing.JFrame {
         {
             ///kiểm tra xem đã tồn tại chưa, nếu đã tồn tại thì cộng dồn
             for (int i = 0; i < tbOrderDetail.getRowCount(); i++) {
-                if (Integer.parseInt(tbOrderDetail.getModel().getValueAt(i, 0).toString()) == d_id)
+                if (Integer.parseInt(tbOrderDetail.getModel().getValueAt(i, 0).toString()) == d_id) ///lấy id trong column
                 {
-                    int pre_quan = Integer.parseInt(tbOrderDetail.getModel().getValueAt(i, 1).toString());
+                    int pre_quan = Integer.parseInt(tbOrderDetail.getModel().getValueAt(i, 2).toString());
                     int new_quan = pre_quan + qua;
                     main_detail.EditReceiptDetail(order_id,d_id,new_quan ,new_quan*pri );
                     return;
@@ -643,7 +694,7 @@ public class frmOrder extends javax.swing.JFrame {
         long sum = 0;
         for (int i = 0; i < tbOrderDetail.getRowCount(); i++) 
         {
-            sum = sum + Long.parseLong(tbOrderDetail.getModel().getValueAt(i, 2).toString());
+            sum = sum + Long.parseLong(tbOrderDetail.getModel().getValueAt(i, 3).toString());
         }
         txtTotal.setText(String.valueOf(sum));
     }
@@ -768,8 +819,15 @@ public class frmOrder extends javax.swing.JFrame {
         
         ///luu order xuông và hiện thông báo
         try {
+            ///lưu order
             main_order.CompleteReceipt(order_id, total);
+
             JOptionPane.showMessageDialog(this, "Order completed");
+            
+            ///clear detail table
+            ShowDetailList();
+            
+            ShowUncompleteOrderData();
         } catch (SQLException ex) {
             Logger.getLogger(frmOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
