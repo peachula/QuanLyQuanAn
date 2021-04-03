@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 /**
  *
@@ -104,6 +105,7 @@ public class frmOrder extends javax.swing.JFrame {
         tbOrderDetail.getColumnModel().getColumn(0).setMaxWidth(0);
         tbOrderDetail.setDefaultEditor(Object.class, null);
         
+        AutoCompleteDecorator.decorate(cbCustomer);
         GetCustomerID();
         
     }
@@ -743,7 +745,7 @@ public class frmOrder extends javax.swing.JFrame {
         catch (SQLException e) {
         }
     }
-    
+        
     private void btnDeleteOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteOrderActionPerformed
         // TODO add your handling code here:
         ///xóa order xuông và hiện thông báo
@@ -862,20 +864,29 @@ public class frmOrder extends javax.swing.JFrame {
         order_id = txtOrderID.getText();
         customerID = Integer.parseInt(cbCustomer.getSelectedItem().toString());
         
-        ///luu order xuông và hiện thông báo
-        try {
-            ///lưu order
-            main_order.CompleteReceipt(order_id, total, customerID);
-
-            JOptionPane.showMessageDialog(this, "Order completed");
-            
-            ///clear detail table
-            ShowDetailList();
-            
-            ShowUncompleteOrderData();
-        } catch (SQLException ex) {
-            Logger.getLogger(frmOrder.class.getName()).log(Level.SEVERE, null, ex);
+        if (tbOrderDetail.getRowCount() == 0)
+        {
+            JOptionPane.showMessageDialog(this, "Sell something girl\n Your customer's stomach is empty");
         }
+        else 
+        {
+            ///luu order xuông và hiện thông báo
+            try {
+                ///lưu order
+                main_order.CompleteReceipt(order_id, total, customerID);
+
+                JOptionPane.showMessageDialog(this, "Order completed");
+
+                ///clear detail table
+                ShowDetailList();
+
+                ShowUncompleteOrderData();
+            } catch (SQLException ex) {
+                Logger.getLogger(frmOrder.class.getName()).log(Level.SEVERE, null, ex);
+            }   
+        }
+        
+        
     }//GEN-LAST:event_btnCompleteActionPerformed
 
     private void tbOrderDetailMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbOrderDetailMouseClicked
@@ -891,6 +902,12 @@ public class frmOrder extends javax.swing.JFrame {
 
     private void cbCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCustomerActionPerformed
         
+        customerID = Integer.parseInt(cbCustomer.getSelectedItem().toString());
+        try {
+            main_order.UpdateCustomer(customerID, order_id);
+        } catch (SQLException ex) {
+            Logger.getLogger(frmOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_cbCustomerActionPerformed
 
     /**

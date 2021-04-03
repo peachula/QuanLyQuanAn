@@ -79,4 +79,10 @@ public class Receipt {
         return cn.LoadData(sql);
     }
     
+    ///update customer id
+    public void UpdateCustomer(int c_id, String r_id) throws SQLException{
+        String sql = "Update Receipt set CustomerID = "+ c_id +" where ReceiptID ='" + r_id +"'";
+        cn.UpdateData(sql);
+    }
+    
 }
