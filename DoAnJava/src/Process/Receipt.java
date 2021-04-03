@@ -54,9 +54,9 @@ public class Receipt {
     }
     
     ///complete order
-    public void CompleteReceipt(String r_id, long total) throws SQLException{
+    public void CompleteReceipt(String r_id, long total, int cus_id) throws SQLException{
         String sql = "Update Receipt set Total = '"+
-                total + "', State = '1' where ReceiptID ='" + r_id +"'";
+                total + "', State = '1', CustomerID = '"+cus_id+"' where ReceiptID ='" + r_id +"'";
         cn.UpdateData(sql);
     }
     

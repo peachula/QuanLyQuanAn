@@ -32,6 +32,7 @@ public class frmOrder extends javax.swing.JFrame {
     private final ReceiptDetail main_detail = new ReceiptDetail();
     private final Category main_cate = new Category();
     private final Dish main_dish = new Dish();
+    private final Customer cus = new Customer();
     
     
     private long total;
@@ -67,6 +68,7 @@ public class frmOrder extends javax.swing.JFrame {
         // đặt tiêu đề cột cho tableModel
         tableModel.setColumnIdentifiers(colsName_OrderID);
         tbOrderID.setModel(tableModel);
+        tbOrderID.setDefaultEditor(Object.class, null);
         //gọi hàm ShowData để đưa dữ liệu vào tableModel
         ShowUncompleteOrderData();
         
@@ -78,6 +80,7 @@ public class frmOrder extends javax.swing.JFrame {
         tbCate.getColumnModel().getColumn(0).setWidth(0);
         tbCate.getColumnModel().getColumn(0).setMinWidth(0);
         tbCate.getColumnModel().getColumn(0).setMaxWidth(0);
+        tbCate.setDefaultEditor(Object.class, null);
         ShowCateList();
         
         ///setting for tbDish
@@ -88,6 +91,7 @@ public class frmOrder extends javax.swing.JFrame {
         tbDish.getColumnModel().getColumn(0).setWidth(0);
         tbDish.getColumnModel().getColumn(0).setMinWidth(0);
         tbDish.getColumnModel().getColumn(0).setMaxWidth(0);
+        tbDish.setDefaultEditor(Object.class, null);
         ShowDishList();
         
         ///setting for tbDetail
@@ -95,8 +99,12 @@ public class frmOrder extends javax.swing.JFrame {
         // đặt tiêu đề cột cho tableModel
         tableModelDetail.setColumnIdentifiers(colsName_Detail);
         tbOrderDetail.setModel(tableModelDetail);
+        tbOrderDetail.getColumnModel().getColumn(0).setWidth(0);
+        tbOrderDetail.getColumnModel().getColumn(0).setMinWidth(0);
+        tbOrderDetail.getColumnModel().getColumn(0).setMaxWidth(0);
+        tbOrderDetail.setDefaultEditor(Object.class, null);
         
-        
+        GetCustomerID();
         
     }
 
@@ -126,13 +134,13 @@ public class frmOrder extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         txtDateTime = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        txtCustomerID = new javax.swing.JTextField();
         btnDeleteOrder = new javax.swing.JButton();
         txtOrderID = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         txtTotal = new javax.swing.JTextField();
         btnComplete = new javax.swing.JButton();
+        cbCustomer = new javax.swing.JComboBox<>();
         jPanel6 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -147,6 +155,7 @@ public class frmOrder extends javax.swing.JFrame {
         tbDish = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("FOOD COURT - ORDERS");
         setLocation(new java.awt.Point(794, 612));
         setMaximumSize(new java.awt.Dimension(794, 612));
         setMinimumSize(new java.awt.Dimension(794, 612));
@@ -287,6 +296,12 @@ public class frmOrder extends javax.swing.JFrame {
             }
         });
         jScrollPane3.setViewportView(tbOrderDetail);
+        if (tbOrderDetail.getColumnModel().getColumnCount() > 0) {
+            tbOrderDetail.getColumnModel().getColumn(0).setResizable(false);
+            tbOrderDetail.getColumnModel().getColumn(1).setResizable(false);
+            tbOrderDetail.getColumnModel().getColumn(2).setResizable(false);
+            tbOrderDetail.getColumnModel().getColumn(3).setResizable(false);
+        }
 
         jPanel7.add(jScrollPane3, java.awt.BorderLayout.CENTER);
 
@@ -294,6 +309,8 @@ public class frmOrder extends javax.swing.JFrame {
         jPanel11.setPreferredSize(new java.awt.Dimension(0, 70));
 
         jLabel1.setText("Date Time");
+
+        txtDateTime.setEnabled(false);
 
         jLabel2.setText("Customer");
 
@@ -308,9 +325,13 @@ public class frmOrder extends javax.swing.JFrame {
             }
         });
 
+        txtOrderID.setEnabled(false);
+
         jLabel4.setText("Order ID");
 
         jLabel5.setText("Total");
+
+        txtTotal.setEnabled(false);
 
         btnComplete.setBackground(new java.awt.Color(237, 163, 35));
         btnComplete.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -320,6 +341,12 @@ public class frmOrder extends javax.swing.JFrame {
         btnComplete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCompleteActionPerformed(evt);
+            }
+        });
+
+        cbCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbCustomerActionPerformed(evt);
             }
         });
 
@@ -333,7 +360,7 @@ public class frmOrder extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel11Layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(cbCustomer, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel11Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -367,10 +394,10 @@ public class frmOrder extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel2)
-                    .addComponent(txtCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
                     .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDeleteOrder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnDeleteOrder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cbCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -471,6 +498,9 @@ public class frmOrder extends javax.swing.JFrame {
         btnDelete.setText("DELETE");
         btnDelete.setBorderPainted(false);
         btnDelete.setEnabled(false);
+        btnDelete.setMaximumSize(new java.awt.Dimension(57, 23));
+        btnDelete.setMinimumSize(new java.awt.Dimension(57, 23));
+        btnDelete.setPreferredSize(new java.awt.Dimension(57, 23));
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
@@ -493,9 +523,9 @@ public class frmOrder extends javax.swing.JFrame {
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel12Layout.createSequentialGroup()
                 .addComponent(spQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
                 .addGap(7, 7, 7))
         );
@@ -603,7 +633,8 @@ public class frmOrder extends javax.swing.JFrame {
                 total = rs.getLong("Total");
                 customerID = rs.getInt("CustomerID");
                 
-                this.txtCustomerID.setText(String.valueOf(customerID));
+                //this.txtCustomerID.setText(String.valueOf(customerID));
+                cbCustomer.setSelectedItem(String.valueOf(customerID));
                 this.txtDateTime.setText(rs.getString("Date"));
                 this.txtTotal.setText(String.valueOf(total));
                 this.txtOrderID.setText(order_id);
@@ -697,6 +728,20 @@ public class frmOrder extends javax.swing.JFrame {
             sum = sum + Long.parseLong(tbOrderDetail.getModel().getValueAt(i, 3).toString());
         }
         txtTotal.setText(String.valueOf(sum));
+    }
+    
+    public void GetCustomerID()
+    {
+        try {
+            
+            ResultSet result= cus.Customer();
+            while(result.next()){ 
+                String id = result.getString(1); 
+                cbCustomer.addItem(id);
+            }
+        }
+        catch (SQLException e) {
+        }
     }
     
     private void btnDeleteOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteOrderActionPerformed
@@ -815,12 +860,12 @@ public class frmOrder extends javax.swing.JFrame {
         // TODO add your handling code here:
         total = Long.parseLong(txtTotal.getText());
         order_id = txtOrderID.getText();
-        customerID = Integer.parseInt(txtCustomerID.getText());
+        customerID = Integer.parseInt(cbCustomer.getSelectedItem().toString());
         
         ///luu order xuông và hiện thông báo
         try {
             ///lưu order
-            main_order.CompleteReceipt(order_id, total);
+            main_order.CompleteReceipt(order_id, total, customerID);
 
             JOptionPane.showMessageDialog(this, "Order completed");
             
@@ -843,6 +888,10 @@ public class frmOrder extends javax.swing.JFrame {
         this.dispose();
         new frmMenu().setVisible(true);
     }//GEN-LAST:event_btnBackActionPerformed
+
+    private void cbCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCustomerActionPerformed
+        
+    }//GEN-LAST:event_cbCustomerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -890,6 +939,7 @@ public class frmOrder extends javax.swing.JFrame {
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnDeleteOrder;
     private javax.swing.JButton btnNewOrder;
+    private javax.swing.JComboBox<String> cbCustomer;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
@@ -916,7 +966,6 @@ public class frmOrder extends javax.swing.JFrame {
     private javax.swing.JTable tbDish;
     private javax.swing.JTable tbOrderDetail;
     private javax.swing.JTable tbOrderID;
-    private javax.swing.JTextField txtCustomerID;
     private javax.swing.JTextField txtDateTime;
     private javax.swing.JTextField txtOrderID;
     private javax.swing.JTextField txtTotal;
