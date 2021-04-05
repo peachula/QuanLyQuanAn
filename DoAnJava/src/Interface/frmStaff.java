@@ -5,8 +5,14 @@
  */
 package Interface;
 
+import Process.Staff;
 import java.awt.event.MouseListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -17,10 +23,29 @@ public class frmStaff extends javax.swing.JInternalFrame {
     /**
      * Creates new form frmStaff
      */
-    public frmStaff() {
+    private final Staff staff = new Staff();
+    private final int staffID = 0;
+    private final String staffName ="";
+    private final int staffRole =0;
+    private final String staffPass = "";
+   
+    private final DefaultTableModel tableModelStaff = new DefaultTableModel();
+    
+    public frmStaff() throws SQLException{
         initComponents();
         setTitle("STAFF PAGE");
         
+        ///setting for tbDetail
+        String []colsName_Detail = {"ID","Tên Nhân Viên","Vai Trò"};
+        // đặt tiêu đề cột cho tableModel
+        tableModelStaff.setColumnIdentifiers(colsName_Detail);
+        jTable1.setModel(tableModelStaff);
+        ResultSet result = ShowStaff("all");
+        ShowData(result);
+        
+        btnDelete.setEnabled(false);
+        btnSave.setEnabled(false);
+        btnEdit.setEnabled(false);
         BasicInternalFrameUI bs = ((javax.swing.plaf.basic.BasicInternalFrameUI) this.getUI());
         for (MouseListener l: bs.getNorthPane().getMouseListeners()){
             bs.getNorthPane().removeMouseListener(l);
@@ -192,6 +217,11 @@ public class frmStaff extends javax.swing.JInternalFrame {
         btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setText("DELETE");
         btnDelete.setBorderPainted(false);
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnDelete);
 
         btnClear.setBackground(new java.awt.Color(32, 80, 114));
@@ -199,6 +229,11 @@ public class frmStaff extends javax.swing.JInternalFrame {
         btnClear.setForeground(new java.awt.Color(255, 255, 255));
         btnClear.setText("CLEAR");
         btnClear.setBorderPainted(false);
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnClear);
 
         jPanel8.add(jPanel2, java.awt.BorderLayout.LINE_END);
@@ -212,9 +247,19 @@ public class frmStaff extends javax.swing.JInternalFrame {
         btnSearch.setForeground(new java.awt.Color(255, 255, 255));
         btnSearch.setText("SEARCH");
         btnSearch.setBorderPainted(false);
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
         jPanel3.add(btnSearch, java.awt.BorderLayout.LINE_END);
 
         jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
         jPanel3.add(jTextField1, java.awt.BorderLayout.CENTER);
 
         jPanel8.add(jPanel3, java.awt.BorderLayout.CENTER);
@@ -225,9 +270,127 @@ public class frmStaff extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            txtID.setEditable(false);
+            String Name = txtName.getText();
+            String Pass = txtPassword.getText();
+            String Role = txtRole.getText();
+            
+            int role = Integer.parseInt(Role);
+                        
+            staff.InsertStaff(Name, role, Pass);
+            ResultSet result = ShowStaff("all");
+            ShowData(result);
+        } catch (SQLException ex) {
+            Logger.getLogger(frmStaff.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
     }//GEN-LAST:event_btnAddActionPerformed
 
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        try {
+            // TODO add your handling code here:           
+            ResultSet result = ShowStaff("name");                
+            ShowData(result);
+        } catch (SQLException ex) {
+            Logger.getLogger(frmStaff.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+         try {
+            // TODO add your handling code here:
+            int row =this.jTable1.getSelectedRow();
+            String staff_id= (this.jTable1.getModel().getValueAt(row,0)).toString(); //lấy id từ cột số 0 trong tabe
+             System.out.println(staff_id);
+          
+            txtID.setEditable(false);          
+            
+            staff.DeleteStaff(staff_id);
+            ResultSet result = ShowStaff("all");
+            ShowData(result);
+        } catch (SQLException ex) {
+            Logger.getLogger(frmStaff.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        // TODO add your handling code here:
+        txtID.setText("");
+        txtName.setText("");
+        txtPassword.setText("");
+        txtRole.setText("");
+      
+    }//GEN-LAST:event_btnClearActionPerformed
+
+    private ResultSet ShowStaff(String statment) throws SQLException
+    {
+       
+            tableModelStaff.getDataVector().removeAllElements();
+            ResultSet result = null;
+            switch(statment)
+            {
+                case "name":
+                    String staff_name = jTextField1.getText();
+                    result = staff.Staff_Name(staff_name); 
+                    break;
+                
+                case "all":
+                    result = staff.Staff();
+                    break;
+                default:
+                    result= null;
+                    break;
+            }
+        return result;
+
+    }
+    private void ShowData(ResultSet result)
+    {
+        try {            
+            while(result.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
+                String rows[] = new String[3];
+                rows[0] = result.getString(1);
+                rows[1] = result.getString(2);
+                String temp_r = result.getString(3);
+                switch(temp_r){
+                    case "0":
+                        rows[2] = "Quản lý";
+                        break;
+                    case "1":
+                        rows[2] = "Chi nhánh trưởng";
+                        break;
+                    case "2":
+                        rows[2] = "Ca trưởng";
+                        break;  
+                    case "3":
+                        rows[2] = "Nhân viên full-time";
+                        break;  
+                    case "4":
+                        rows[2] = "Nhân viên part-time";
+                        break;  
+                      
+                }
+                        
+                tableModelStaff.addRow(rows); // đưa dòng dữ liệu vào tableModel
+            //mỗi lần có sự thay đổi dữ liệu ở tableModel thì Jtable sẽ tự động update
+            }
+            System.out.println("Đọc xong data");
+        }
+           catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
