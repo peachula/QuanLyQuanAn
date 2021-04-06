@@ -54,7 +54,5 @@ public class Category {
     public void DeleteCategory(int cate_id ) throws SQLException{
         String sql = "Delete from Category where CateID='" + cate_id +"'";
         cn.UpdateData(sql);
-    }
-    
-    
+    }    
 }

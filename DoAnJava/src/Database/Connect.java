@@ -11,13 +11,17 @@ import javax.swing.*;
  * @author kieef
  */
 public class Connect {
+//    SSLParameters sslParameters = new SSLParameters();
+//    sslParameters.setProtocols(new String[]{"TLSv1", "TLSv1.1", "TLSv1.2", "TLSv1.3"});
     public Connection conn = null;
     
     public void connectSQL() throws SQLException{
     try {
         String userName ="sa";
-        String password = "123";
-        String url = "jdbc:sqlserver://DESKTOP-BH0CK03;databaseName=QuanLyQuanAn;";
+        String password = "123456";
+        
+        
+        String url = "jdbc:sqlserver://LAPTOP-7Q53KE18\\SQLEXPRESS:1433;databaseName=QuanLyQuanAn;";
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         conn = java.sql.DriverManager.getConnection(url,userName,password);
         }
@@ -50,4 +54,8 @@ public class Connect {
             e.printStackTrace();
         }
     }
+    
+    //Truy van cac dong du lieu trong Table LoaiSP theo Maloai
+
+
 }
