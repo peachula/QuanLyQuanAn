@@ -5,9 +5,16 @@
  * and open the template in the editor.
  */
 package Interface;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import Process.Category;//Lớp LoaiSP trong Proccess đã thực hiện
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 import java.awt.event.MouseListener;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -15,10 +22,8 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  */
 public class frmCate extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form frmStaff
-     */
-    public frmCate() {
+    
+    public frmCate() throws SQLException {
         initComponents();
         setTitle("STAFF PAGE");
         
@@ -26,6 +31,20 @@ public class frmCate extends javax.swing.JInternalFrame {
         for (MouseListener l: bs.getNorthPane().getMouseListeners()){
             bs.getNorthPane().removeMouseListener(l);
         }
+        
+        String []colsName = {"ID", "Name"};
+        // đặt tiêu đề cột cho tableModel
+        tableModel.setColumnIdentifiers(colsName);
+        // kết nối jtable với tableModel
+        tableData.setModel(tableModel);
+        //gọi hàm ShowData để đưa dữ liệu vào tableModel
+        ShowData();
+        //goi Ham xoa trang cac TextField
+        setNull();
+        //Goi ham Khoa cac TextField
+        setKhoa(true);
+        //Goi vo hieu 2 button Luu, K.Luu. Mo khoa 4 button con lao
+        setButton(true);
     }
 
     /**
@@ -41,15 +60,11 @@ public class frmCate extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         txtID = new javax.swing.JTextField();
         txtName = new javax.swing.JTextField();
-        txtRole = new javax.swing.JTextField();
-        txtPassword = new javax.swing.JPasswordField();
         jPanel10 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableData = new javax.swing.JTable();
         jPanel8 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         btnAdd = new javax.swing.JButton();
@@ -79,12 +94,6 @@ public class frmCate extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Name");
 
-        jLabel3.setText("Role");
-
-        jLabel4.setText("Pasword");
-
-        txtPassword.setText("jPasswordField1");
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -98,15 +107,7 @@ public class frmCate extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtID)
                     .addComponent(txtName, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE))
-                .addGap(130, 130, 130)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel3))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtRole)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE))
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(439, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -114,15 +115,11 @@ public class frmCate extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel3)
-                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel4)
-                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -134,18 +131,23 @@ public class frmCate extends javax.swing.JInternalFrame {
         jPanel10.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanel10.setLayout(new java.awt.BorderLayout());
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableData.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
             },
             new String [] {
-                "ID", "Name", "Role"
+                "ID", "Name"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tableData.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableDataMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tableData);
 
         jPanel10.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
@@ -165,6 +167,11 @@ public class frmCate extends javax.swing.JInternalFrame {
         btnAdd.setForeground(new java.awt.Color(255, 255, 255));
         btnAdd.setText("ADD");
         btnAdd.setBorderPainted(false);
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnAdd);
 
         btnEdit.setBackground(new java.awt.Color(32, 80, 114));
@@ -218,6 +225,86 @@ public class frmCate extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private final Category lsp = new Category();
+    private final boolean cothem=true;
+    private final DefaultTableModel tableModel = new DefaultTableModel();
+    
+    //Ham do du lieu vao tableModel
+    public void ShowData() throws SQLException{
+        ResultSet result = lsp.Category();
+        try {
+            while(result.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
+            String rows[] = new String[2];
+            rows[0] = result.getString(1); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
+            rows[1] = result.getString(2); // lấy dữ liệu tai cột số 2 ứng với tên hàng
+            tableModel.addRow(rows); // đưa dòng dữ liệu vào tableModel
+            //mỗi lần có sự thay đổi dữ liệu ở tableModel thì Jtable sẽ tự động update
+        }
+        }
+        catch (SQLException e) {
+        } 
+    }
+    //Ham xoa du lieu trong tableModel
+    public void ClearData() throws SQLException{
+        //Lay chi so dong cuoi cung
+        int n=tableModel.getRowCount()-1;
+        for(int i=n;i>=0;i--)
+        tableModel.removeRow(i);//Remove tung dong
+    } 
+    //Ham xoa cac TextField
+    private void setNull()
+    {
+        //Xoa trang cac JtextField
+        this.txtID.setText(null);
+        this.txtName.setText(null);
+        this.txtID.requestFocus();
+    }
+    //Ham khoa cac TextField
+    private void setKhoa(boolean a)
+    {
+    //Khoa hoac mo khoa cho Cac JTextField
+        this.txtID. setEnabled (!a);
+        this.txtName. setEnabled (!a);
+    }
+    //Ham khoa cac Button
+    private void setButton(boolean a)
+    {
+    //Vo hieu hoac co hieu luc cho cac JButton
+        this.btnAdd. setEnabled (a);
+        this.btnDelete. setEnabled (a);
+        this.btnEdit. setEnabled (a);
+        this.btnSave. setEnabled (!a);
+        this.btnClear. setEnabled (!a);
+        this.btnSearch. setEnabled (a);
+    }
+    
+
+
+ 
+    
+    
+    
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void tableDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableDataMouseClicked
+        //Hien thi du lieu len cac JTextField khi Click chuot vao JTable
+        try{
+        //Lay chi so dong dang chon
+            int row =this.tableData.getSelectedRow();
+            String ml=(this.tableData.getModel().getValueAt(row,0)).toString();
+            ResultSet rs= lsp.Category(ml);//Goi ham lay du lieu theo ma loai
+            if(rs.next())//Neu co du lieu
+            {
+            this.txtMaloai.setText(rs.getString("Maloai"));
+            this.txtTenloai.setText(rs.getString("Tenloai"));
+            }
+            }
+        catch (SQLException e) {
+        }
+    }//GEN-LAST:event_tableDataMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
@@ -228,8 +315,6 @@ public class frmCate extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnSearch;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
@@ -237,11 +322,11 @@ public class frmCate extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable tableData;
     private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtName;
-    private javax.swing.JPasswordField txtPassword;
-    private javax.swing.JTextField txtRole;
     // End of variables declaration//GEN-END:variables
+
+   
 }
