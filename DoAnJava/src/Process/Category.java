@@ -37,7 +37,7 @@ public class Category {
         return cn.LoadData(sql);
     }
     
-    //Theo moi 1 dong du lieu vao table
+    //Theo moi 1 dong du lieu vao table -- note
     public void InsertCategory(String cate_name) throws SQLException{
         String sql = "INSERT INTO Category values(N'" + cate_name +"')";
         cn.UpdateData(sql);
