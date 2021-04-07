@@ -8,6 +8,8 @@ package Interface;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 
 /**
  *
@@ -22,10 +24,24 @@ public class frmMenu extends javax.swing.JFrame {
     int role; 
     String name;
     
+    //static boolean full_screen = frmLogIn.full_screen;
+        
     public frmMenu() {
         initComponents();
-        setSize(794,612);
+        
+        if (frmLogIn.full_screen == true)
+        {  
+            setExtendedState(JFrame.MAXIMIZED_BOTH);
+        }
+        else
+        {
+            setSize(794,612);
+        }
+        
         setLocationRelativeTo(null);
+        
+        ImageIcon img = new ImageIcon(frmLogIn.iconPath);
+        setIconImage(img.getImage());
              
         role = frmLogIn.get_role();
         name = frmLogIn.get_name();
@@ -35,7 +51,7 @@ public class frmMenu extends javax.swing.JFrame {
             btnAdmin.setVisible(false);
         }
         
-        txtName.setText(name);
+        txtName.setText("Hello, " + name);
         
     }
 
@@ -56,9 +72,16 @@ public class frmMenu extends javax.swing.JFrame {
         txtName = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("MENU");
+        setIconImages(null);
         setMaximumSize(new java.awt.Dimension(794, 612));
         setMinimumSize(new java.awt.Dimension(794, 612));
         setPreferredSize(new java.awt.Dimension(794, 612));
+        addWindowStateListener(new java.awt.event.WindowStateListener() {
+            public void windowStateChanged(java.awt.event.WindowEvent evt) {
+                formWindowStateChanged(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -180,6 +203,19 @@ public class frmMenu extends javax.swing.JFrame {
         this.dispose();
         new frmLogIn().setVisible(true);
     }//GEN-LAST:event_btnLogOutActionPerformed
+
+    private void formWindowStateChanged(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowStateChanged
+        // TODO add your handling code here:
+        if (frmLogIn.full_screen == true)
+        {
+            frmLogIn.full_screen = false;
+        }
+        else
+        {
+            frmLogIn.full_screen = true;
+        }
+        
+    }//GEN-LAST:event_formWindowStateChanged
 
     /**
      * @param args the command line arguments

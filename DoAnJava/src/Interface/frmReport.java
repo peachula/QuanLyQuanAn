@@ -9,6 +9,8 @@ import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JRootPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
@@ -26,10 +28,25 @@ public class frmReport extends javax.swing.JFrame {
     frmReport_DishSold frmDishSold;
     frmReport_Income frmIncome;
     frmReport_Customer frmCustomer;
+    frmReport_Order frmOrder ;
+    
+    //boolean full_screen = frmLogIn.full_screen;
     
     public frmReport() {
         initComponents();
-        setSize(794,612);
+        
+        ImageIcon img = new ImageIcon(frmLogIn.iconPath);
+        setIconImage(img.getImage());
+        
+        if (frmLogIn.full_screen == true)
+        {  
+            setExtendedState(JFrame.MAXIMIZED_BOTH);
+        }
+        else
+        {
+            setSize(794,612);
+        }
+        
         setLocationRelativeTo(null);
 
     }
@@ -47,6 +64,7 @@ public class frmReport extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         btnMenu = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
+        btnOrder = new javax.swing.JButton();
         btnCustomer = new javax.swing.JButton();
         btnImcome = new javax.swing.JButton();
         btnDishSold = new javax.swing.JButton();
@@ -56,6 +74,11 @@ public class frmReport extends javax.swing.JFrame {
         setTitle("FOOD COURT - REPORTS");
         setLocationByPlatform(true);
         setSize(new java.awt.Dimension(100, 100));
+        addWindowStateListener(new java.awt.event.WindowStateListener() {
+            public void windowStateChanged(java.awt.event.WindowEvent evt) {
+                formWindowStateChanged(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(809, 612));
@@ -82,6 +105,21 @@ public class frmReport extends javax.swing.JFrame {
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+
+        btnOrder.setBackground(new java.awt.Color(237, 163, 35));
+        btnOrder.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnOrder.setForeground(new java.awt.Color(255, 255, 255));
+        btnOrder.setText("ORDER");
+        btnOrder.setBorderPainted(false);
+        btnOrder.setMaximumSize(new java.awt.Dimension(75, 60));
+        btnOrder.setMinimumSize(new java.awt.Dimension(75, 60));
+        btnOrder.setPreferredSize(new java.awt.Dimension(100, 60));
+        btnOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOrderActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btnOrder);
 
         btnCustomer.setBackground(new java.awt.Color(237, 163, 35));
         btnCustomer.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -238,6 +276,46 @@ public class frmReport extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnDishSoldActionPerformed
 
+    private void formWindowStateChanged(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowStateChanged
+        // TODO add your handling code here:
+        if (frmLogIn.full_screen == true)
+        {
+            frmLogIn.full_screen = false;
+        }
+        else
+        {
+            frmLogIn.full_screen = true;
+        }
+       
+    }//GEN-LAST:event_formWindowStateChanged
+
+    private void btnOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrderActionPerformed
+        // TODO add your handling code here:
+        for (JInternalFrame frmChild : jDesktopPane1.getAllFrames()) {
+            frmChild.dispose();
+        }
+        
+        if(frmOrder == null || frmOrder.isClosed())
+        {
+            try {
+                frmOrder = new frmReport_Order();
+            } catch (SQLException ex) {
+                Logger.getLogger(frmReport.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            jDesktopPane1.add(frmOrder);
+            frmOrder.setSize(this.getWidth(),this.getHeight());
+            frmOrder.setLocation(0,0);
+            frmOrder.setVisible(true);
+            }
+            else
+            {
+            
+                frmOrder.setSize(this.getWidth(),this.getHeight());
+                frmOrder.setLocation(0,0);
+                frmOrder.setVisible(true);
+        }
+    }//GEN-LAST:event_btnOrderActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -285,6 +363,7 @@ public class frmReport extends javax.swing.JFrame {
     private javax.swing.JButton btnDishSold;
     private javax.swing.JButton btnImcome;
     private javax.swing.JButton btnMenu;
+    private javax.swing.JButton btnOrder;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

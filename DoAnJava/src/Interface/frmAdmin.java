@@ -9,6 +9,8 @@ import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JRootPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
@@ -26,9 +28,23 @@ public class frmAdmin extends javax.swing.JFrame {
     frmStaff frmStaff;
     frmCate frmCate;
     
+    //boolean full_screen = frmLogIn.full_screen;
+    
     public frmAdmin() {
         initComponents();
-        setSize(794,612);
+        
+        ImageIcon img = new ImageIcon(frmLogIn.iconPath);
+        setIconImage(img.getImage());
+        
+        if (frmLogIn.full_screen == true)
+        {  
+            setExtendedState(JFrame.MAXIMIZED_BOTH);
+        }
+        else
+        {
+            setSize(794,612);
+        }
+        
         setLocationRelativeTo(null);
         
     }
@@ -54,16 +70,22 @@ public class frmAdmin extends javax.swing.JFrame {
         jDesktopPane1 = new javax.swing.JDesktopPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("FOOD COURT - ADMIN");
         setLocationByPlatform(true);
         setSize(new java.awt.Dimension(100, 100));
+        addWindowStateListener(new java.awt.event.WindowStateListener() {
+            public void windowStateChanged(java.awt.event.WindowEvent evt) {
+                formWindowStateChanged(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(207, 244, 210));
         jPanel1.setPreferredSize(new java.awt.Dimension(809, 612));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jPanel2.setBackground(new java.awt.Color(207, 244, 210));
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        btnMenu.setBackground(new java.awt.Color(32, 80, 114));
+        btnMenu.setBackground(new java.awt.Color(237, 163, 35));
         btnMenu.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnMenu.setForeground(new java.awt.Color(255, 255, 255));
         btnMenu.setText("MENU");
@@ -80,10 +102,10 @@ public class frmAdmin extends javax.swing.JFrame {
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.LINE_START);
 
-        jPanel3.setBackground(new java.awt.Color(207, 244, 210));
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
-        btnStaff.setBackground(new java.awt.Color(32, 80, 114));
+        btnStaff.setBackground(new java.awt.Color(237, 163, 35));
         btnStaff.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnStaff.setForeground(new java.awt.Color(255, 255, 255));
         btnStaff.setText("STAFF");
@@ -98,7 +120,7 @@ public class frmAdmin extends javax.swing.JFrame {
         });
         jPanel3.add(btnStaff);
 
-        btnCate.setBackground(new java.awt.Color(32, 80, 114));
+        btnCate.setBackground(new java.awt.Color(237, 163, 35));
         btnCate.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnCate.setForeground(new java.awt.Color(255, 255, 255));
         btnCate.setText("CATE");
@@ -113,7 +135,7 @@ public class frmAdmin extends javax.swing.JFrame {
         });
         jPanel3.add(btnCate);
 
-        btnDish.setBackground(new java.awt.Color(32, 80, 114));
+        btnDish.setBackground(new java.awt.Color(237, 163, 35));
         btnDish.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnDish.setForeground(new java.awt.Color(255, 255, 255));
         btnDish.setText("DISH");
@@ -123,7 +145,7 @@ public class frmAdmin extends javax.swing.JFrame {
         btnDish.setPreferredSize(new java.awt.Dimension(75, 60));
         jPanel3.add(btnDish);
 
-        btnCombo.setBackground(new java.awt.Color(32, 80, 114));
+        btnCombo.setBackground(new java.awt.Color(237, 163, 35));
         btnCombo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnCombo.setForeground(new java.awt.Color(255, 255, 255));
         btnCombo.setText("COMBO");
@@ -133,7 +155,7 @@ public class frmAdmin extends javax.swing.JFrame {
         btnCombo.setPreferredSize(new java.awt.Dimension(75, 60));
         jPanel3.add(btnCombo);
 
-        btnCustomer.setBackground(new java.awt.Color(32, 80, 114));
+        btnCustomer.setBackground(new java.awt.Color(237, 163, 35));
         btnCustomer.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnCustomer.setForeground(new java.awt.Color(255, 255, 255));
         btnCustomer.setText("CUSTOMER");
@@ -217,6 +239,19 @@ public class frmAdmin extends javax.swing.JFrame {
         this.dispose();
         new frmMenu().setVisible(true);
     }//GEN-LAST:event_btnMenuActionPerformed
+
+    private void formWindowStateChanged(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowStateChanged
+        // TODO add your handling code here:
+        if (frmLogIn.full_screen == true)
+        {
+            frmLogIn.full_screen = false;
+        }
+        else
+        {
+            frmLogIn.full_screen = true;
+        }
+        
+    }//GEN-LAST:event_formWindowStateChanged
 
     /**
      * @param args the command line arguments

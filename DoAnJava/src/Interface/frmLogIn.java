@@ -8,10 +8,12 @@ package Interface;
 import Process.Staff;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -25,6 +27,10 @@ public class frmLogIn extends javax.swing.JFrame {
     static int role;
     static String s_name;
     
+    static boolean full_screen = false;
+    
+    static File f = new File("");
+    static String iconPath = f.getAbsolutePath()  +  "\\src\\Interface\\IMG\\chinese-food.png";
     /**
      * Creates new form frmLogIn
      */
@@ -36,6 +42,9 @@ public class frmLogIn extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         
+        ImageIcon img = new ImageIcon(frmLogIn.iconPath);
+        setIconImage(img.getImage());
+        
     }
 
     public static int get_role(){ ///get role
@@ -45,6 +54,12 @@ public class frmLogIn extends javax.swing.JFrame {
     public static String get_name(){ ///get name
         return s_name;
     }
+    
+    
+    public boolean get_full(){
+        return full_screen;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

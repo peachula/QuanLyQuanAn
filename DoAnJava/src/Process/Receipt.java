@@ -69,13 +69,13 @@ public class Receipt {
     
     
     ///select for report
-    public ResultSet ReceiptReport() throws SQLException{
+    public ResultSet ReceiptChart() throws SQLException{
         LocalDateTime now = LocalDateTime.now().minus(Period.ofDays( 30 ));  
         DateTimeFormatter date_f = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
         String date = date_f.format(now);
         
         cn.connectSQL();
-        String sql = "select CONVERT(VARCHAR(10), Receipt.Date, 111), sum(total) from Receipt where date > '"+date+"' group by CONVERT(VARCHAR(10), Receipt.Date, 111)";
+        String sql = "select CONVERT(VARCHAR(10), Receipt.Date, 111), sum(total), ReceiptID from Receipt where date > '"+date+"' group by CONVERT(VARCHAR(10), Receipt.Date, 111)";
         return cn.LoadData(sql);
     }
     
@@ -84,5 +84,26 @@ public class Receipt {
         String sql = "Update Receipt set CustomerID = "+ c_id +" where ReceiptID ='" + r_id +"'";
         cn.UpdateData(sql);
     }
+
+    ///select for report
+    public ResultSet ReceiptReport() throws SQLException{
+        LocalDateTime now = LocalDateTime.now().minus(Period.ofDays( 30 ));  
+        DateTimeFormatter date_f = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
+        String date = date_f.format(now);
+        
+        cn.connectSQL();
+        String sql = "select ReceiptID, Date, Total from Receipt where date > '"+date+"'";
+        return cn.LoadData(sql);
+    }
     
+    ///select for report
+    public ResultSet ReceiptSearch(String id) throws SQLException{
+        LocalDateTime now = LocalDateTime.now().minus(Period.ofDays( 30 ));  
+        DateTimeFormatter date_f = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
+        String date = date_f.format(now);
+        
+        cn.connectSQL();
+        String sql = "select ReceiptID, Date, Total from Receipt where date > '"+date+"' and ReceiptID like '%"+id+"%'";
+        return cn.LoadData(sql);
+    }
 }

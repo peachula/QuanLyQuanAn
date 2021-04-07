@@ -51,7 +51,8 @@ public class frmReport_DishSold extends javax.swing.JInternalFrame {
         tbDish.setModel(tableDish);
         tbDish.getColumnModel().getColumn(0).setWidth(0);
         tbDish.getColumnModel().getColumn(0).setMinWidth(0);
-        tbDish.getColumnModel().getColumn(0).setMaxWidth(0);
+        tbDish.getColumnModel().getColumn(0).setMaxWidth(0);        
+        tbDish.setDefaultEditor(Object.class, null);
         
         ///giá trị sort: 1 là tăng, 0 là giảm
         LocalDateTime now = LocalDateTime.now().minus(Period.ofDays( 30 ));  

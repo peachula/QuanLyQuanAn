@@ -56,7 +56,7 @@ public class frmReport_Income extends javax.swing.JInternalFrame {
     private DefaultCategoryDataset createDataset( ) throws SQLException {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
       
-        ResultSet rs= order.ReceiptReport();
+        ResultSet rs= order.ReceiptChart();
         try {
             while(rs.next())
             { 
