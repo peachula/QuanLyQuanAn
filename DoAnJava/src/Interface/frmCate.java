@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author kieef
  */
-    public class frmCate extends javax.swing.JInternalFrame {
+public class frmCate extends javax.swing.JInternalFrame {
     
      // Xử lý hiện thị dữ liệu khi Form được mở
    
@@ -43,27 +43,27 @@ import javax.swing.table.DefaultTableModel;
     } 
 
         //Ham xoa du lieu trong tableModel
-    public void ClearData() throws SQLException{
+    public void XoaDuLieu() throws SQLException{
         //Lay chi so dong cuoi cung
         int n=tabelCate.getRowCount()-1;
         for(int i=n;i>=0;i--)
         tabelCate.remove(i);//Remove tung dong
     } 
-        //Ham xoa cac TextField
+    //Ham xoa cac TextField
     private void setNull(){ 
         //Xoa trang cac JtextField
         this.txtID.setText(null);
         this.txtName.setText(null);
         this.txtID.requestFocus();
     }
-        //Ham khoa cac TextField
+    //Ham khoa cac TextField
     private void setKhoa(boolean a)
     {
         //Khoa hoac mo khoa cho Cac JTextField
         this.txtID. setEnabled (!a);
         this.txtName. setEnabled (!a);
     } 
-        //Ham khoa cac Button
+    //Ham khoa cac Button
     private void setButton(boolean a){
         //Vo hieu hoac co hieu luc cho cac JButton
         this.btnAdd. setEnabled (a);
@@ -73,6 +73,32 @@ import javax.swing.table.DefaultTableModel;
         this.btnClear. setEnabled (!a);
         this.btnSearch. setEnabled (a);
     }
+//    public frmCate() throws SQLException, SQLException, SQLException{
+//        initComponents(); // Khởi tạo các components trên JFrame
+//        
+//        String []colsName = {"ID", "Name"};
+////         đặt tiêu đề cột cho tableModel
+//        tableModel.setColumnIdentifiers(colsName);
+//        
+//        
+//        // kết nối jtable với tableModel
+//        tabelCate.setModel(tableModel);
+//        //gọi hàm ShowData để đưa dữ liệu vào tableModel
+//        ShowData();
+//        //goi Ham xoa trang cac TextField
+//        setNull();
+//        //Goi ham Khoa cac TextField
+//        setKhoa(true);
+//        //Goi vo hieu 2 button Luu, K.Luu. Mo khoa 4 button con lao
+//        setButton(true);
+//        }
+    
+    
+   
+
+    /**
+     * Creates new form frmStaff
+     */
     public frmCate() throws SQLException {
         initComponents();
         setTitle("STAFF PAGE");
@@ -246,11 +272,6 @@ import javax.swing.table.DefaultTableModel;
         btnEdit.setForeground(new java.awt.Color(255, 255, 255));
         btnEdit.setText("EDIT");
         btnEdit.setBorderPainted(false);
-        btnEdit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditActionPerformed(evt);
-            }
-        });
         jPanel2.add(btnEdit);
 
         btnSave.setBackground(new java.awt.Color(32, 80, 114));
@@ -258,11 +279,6 @@ import javax.swing.table.DefaultTableModel;
         btnSave.setForeground(new java.awt.Color(255, 255, 255));
         btnSave.setText("SAVE");
         btnSave.setBorderPainted(false);
-        btnSave.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSaveActionPerformed(evt);
-            }
-        });
         jPanel2.add(btnSave);
 
         btnDelete.setBackground(new java.awt.Color(32, 80, 114));
@@ -270,11 +286,6 @@ import javax.swing.table.DefaultTableModel;
         btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setText("DELETE");
         btnDelete.setBorderPainted(false);
-        btnDelete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteActionPerformed(evt);
-            }
-        });
         jPanel2.add(btnDelete);
 
         btnClear.setBackground(new java.awt.Color(32, 80, 114));
@@ -282,11 +293,6 @@ import javax.swing.table.DefaultTableModel;
         btnClear.setForeground(new java.awt.Color(255, 255, 255));
         btnClear.setText("CLEAR");
         btnClear.setBorderPainted(false);
-        btnClear.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnClearActionPerformed(evt);
-            }
-        });
         jPanel2.add(btnClear);
 
         jPanel8.add(jPanel2, java.awt.BorderLayout.LINE_END);
@@ -328,7 +334,7 @@ import javax.swing.table.DefaultTableModel;
         {
             this.txtID.setText(rs.getString("ID"));
             this.txtName.setText(rs.getString("Name"));
-            }
+        }
         }
         catch (SQLException e) {
         } 
@@ -344,81 +350,8 @@ import javax.swing.table.DefaultTableModel;
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
-        setNull();//Xoa trang TextField
-        setKhoa(false);//Mo khoa TextField
-        setButton(false);//Goi ham khoa cac Button
-        cothem=true;//Gan cothem = true de ghi nhan trang thai them moi
-    }//GEN-LAST:event_btnAddActionPerformed
-
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         
-        //String ml= txtID.getText();
-        int ml= Integer.parseInt(txtID.getText());
-       
-        try {
-            if(ml==0) //ml.length()==0
-                JOptionPane.showMessageDialog(null,"Chon 1 loai SP de xoa","Thong bao",1);
-            else
-            {
-                if(JOptionPane.showConfirmDialog(null, "Ban muon xoa loai " + ml + "nay hay khong?","Thong bao",2)==0)
-                {
-                    
-                    lsp.DeleteCategory(ml);//goi ham xoa du lieu theo ma loai
-                    ClearData();//Xoa du lieu trong tableModel
-                    ShowData();//Do du lieu vao table Model
-                    setNull();//Xoa trang Textfield
-                }
-            }
-        }
-        catch (SQLException ex) {
-        JOptionPane.showMessageDialog(null,"Xóa thất bại","Thong bao",1);
-        }
-    }//GEN-LAST:event_btnDeleteActionPerformed
-
-    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        String ml=txtID.getText();
-        if(ml.length()==0) //Chua chon Ma loai
-            JOptionPane.showMessageDialog(null,"Vui long chon loi can sua","Thong bao",1);
-        else
-        {
-            setKhoa(false);//Mo khoa cac TextField
-            this.txtID.enable(false);
-            setButton(false); //Khoa cac Button
-            cothem=false; //Gan cothem=false de ghi nhan trang thai la sua
-        }
-    }//GEN-LAST:event_btnEditActionPerformed
-
-    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        int ml= Integer.parseInt(txtID.getText());
-        String tl=txtName.getText();
-        if(ml==0 || tl.length()==0)
-            JOptionPane.showMessageDialog(null,"Vui long nhap Ma loai va ten loai","Thong bao",1);
-        else
-            if(ml>2 || tl.length()>30)
-                JOptionPane.showMessageDialog(null,"Ma loai chi 2 ky tu, ten loai la 20","Thong bao",1);
-            else
-                {
-                try {
-                    if(cothem==true) //Luu cho tthem moi
-                        lsp.InsertCategory(tl);
-                    else //Luu cho sua
-                        lsp.EditCategory(ml, tl);
-                    ClearData(); //goi ham xoa du lieu tron tableModel
-                    ShowData(); //Do lai du lieu vao Table Model
-                    }
-                    catch (SQLException ex) {
-                       JOptionPane.showMessageDialog(null,"Cap nhap that bai","Thong bao",1);
-                    }
-                setKhoa(false);
-                setButton(true);
-                }   
-    }//GEN-LAST:event_btnSaveActionPerformed
-
-    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
-        // TODO add your handling code here:
-        txtID.setText("");
-        txtName.setText("");
-    }//GEN-LAST:event_btnClearActionPerformed
+    }//GEN-LAST:event_btnAddActionPerformed
     
    
      
