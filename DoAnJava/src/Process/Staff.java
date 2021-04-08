@@ -35,6 +35,13 @@ public class Staff {
         return cn.LoadData(sql);
     }
     
+    //Truy van du lieu trong Table theo ID
+    public ResultSet Staff_Role(int role) throws SQLException{
+        cn.connectSQL();
+        String sql = "SELECT * FROM Staff where Role LIKE N'%"+ role +"%'";
+        return cn.LoadData(sql);
+    }
+    
     //Truy van du lieu trong Table theo Name
     public ResultSet Staff_Name(String s_name) throws SQLException{
         cn.connectSQL();
@@ -56,7 +63,7 @@ public class Staff {
     }
     
     //Xoa 1 dong du lieu vao table 
-    public void DeleteStaff(int s_id ) throws SQLException{
+    public void DeleteStaff(String s_id ) throws SQLException{
         String sql = "Delete from Staff where StaffID='" + s_id +"'";
         cn.UpdateData(sql);
     }
