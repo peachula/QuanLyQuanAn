@@ -784,7 +784,7 @@ public class frmOrder extends javax.swing.JFrame {
         DateTimeFormatter id_new = DateTimeFormatter.ofPattern("yyMMddHHmmss");  
         DateTimeFormatter date = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");         
         String o_date = date.format(now);
-        String o_id = id_new.format(now);
+        String o_id = "O" + id_new.format(now);
         
         try {
             ///thêm order vào csdl

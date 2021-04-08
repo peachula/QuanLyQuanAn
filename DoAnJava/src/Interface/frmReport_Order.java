@@ -39,6 +39,7 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
     
     
     private final DefaultTableModel tableOrder = new DefaultTableModel();
+    private final DefaultTableModel tableDetail = new DefaultTableModel();
     
     Receipt r = new Receipt(); 
     ReceiptDetail d = new ReceiptDetail();
@@ -53,11 +54,17 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
         }
         
         ///setting for tbCate
-        String []colsName_Cate = {"Dish","Date","Total"};
+        String []colsName_Order = {"ID","Date","Total"};
         // đặt tiêu đề cột cho tableModel
-        tableOrder.setColumnIdentifiers(colsName_Cate);
+        tableOrder.setColumnIdentifiers(colsName_Order);
         tbOrder.setModel(tableOrder);
-         
+        ShowOrderList();
+        
+        
+        String []colsName_Detail = {"Dish ID","Dish Name","Quantity","Total"};
+        // đặt tiêu đề cột cho tableModel
+        tableDetail.setColumnIdentifiers(colsName_Detail);
+        tbDetail.setModel(tableDetail);
     }
 
     /**
@@ -83,7 +90,7 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
         tbOrder = new javax.swing.JTable();
         jPanel8 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbDetail = new javax.swing.JTable();
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -223,9 +230,14 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
+        tbOrder.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        tbOrder.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbOrderMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tbOrder);
         if (tbOrder.getColumnModel().getColumnCount() > 0) {
-            tbOrder.getColumnModel().getColumn(0).setResizable(false);
             tbOrder.getColumnModel().getColumn(1).setResizable(false);
             tbOrder.getColumnModel().getColumn(2).setResizable(false);
         }
@@ -238,22 +250,22 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder("ORDER DETAILS"));
         jPanel8.setLayout(new java.awt.BorderLayout());
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbDetail.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "ID", "Dish ID", "Dish Name", "Price", "Quantity"
+                "Dish ID", "Dish Name", "Quantity", "Total"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Long.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Long.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -264,13 +276,12 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
-            jTable1.getColumnModel().getColumn(4).setResizable(false);
+        jScrollPane2.setViewportView(tbDetail);
+        if (tbDetail.getColumnModel().getColumnCount() > 0) {
+            tbDetail.getColumnModel().getColumn(0).setResizable(false);
+            tbDetail.getColumnModel().getColumn(1).setResizable(false);
+            tbDetail.getColumnModel().getColumn(2).setResizable(false);
+            tbDetail.getColumnModel().getColumn(3).setResizable(false);
         }
 
         jPanel8.add(jScrollPane2, java.awt.BorderLayout.CENTER);
@@ -294,8 +305,8 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
                 while(rs.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
                 String rows[] = new String[3];
                 rows[0] = rs.getString(1); // ID
-                rows[2] = rs.getString(2); // Date
-                rows[1] = rs.getString(3); // Total
+                rows[1] = rs.getString(2); // Date
+                rows[2] = rs.getString(3); // Total
                 tableOrder.addRow(rows); // đưa dòng dữ liệu vào tableModelDish
                 //mỗi lần có sự thay đổi dữ liệu ở tableModelDish thì Jtable sẽ tự động update
 
@@ -312,25 +323,41 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
             try {
                 ResultSet rs= r.ReceiptReport();
                 while(rs.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
-                String rows[] = new String[3];
-                rows[0] = rs.getString(1); // ID
-                rows[2] = rs.getString(2); // Date
-                rows[1] = rs.getString(3); // Total
-                tableOrder.addRow(rows); // đưa dòng dữ liệu vào tableModelDish
-                //mỗi lần có sự thay đổi dữ liệu ở tableModelDish thì Jtable sẽ tự động update
-
+                    String rows[] = new String[3];
+                    rows[0] = rs.getString(1); // ID
+                    rows[1] = rs.getString(2); // Date
+                    rows[2] = rs.getString(3); // Total
+                    tableOrder.addRow(rows); // 
                 }
             }
             catch (SQLException e) {
             }
     }
+        
+    private void ShowDetail(String ml) {
+        tableDetail.getDataVector().removeAllElements();
+        try {
+            ResultSet rs = d.ShowDetail(ml);
+            while(rs.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
+                String rows[] = new String[4];
+                rows[0] = rs.getString(1); // ID
+                rows[1] = rs.getString(4); // Nme
+                rows[2] = rs.getString(2); // Quantity
+                rows[3] = rs.getString(3); ///total
+                tableDetail.addRow(rows); 
+            }
+        }
+            catch (SQLException e) {
+            }
+    }
     
-    public void saveExcel(File file, JTable table)
+    public void SaveExcel(File file, JTable table, DefaultTableModel model)
     {
         try {
-            FileWriter out = new FileWriter(file + ".xlsx");
+            FileWriter out = new FileWriter(file + ".xls");
             BufferedWriter bwrite = new BufferedWriter(out);
-            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            //DefaultTableModel model = (DefaultTableModel) table.getModel();
+            
             // ten Cot
             for (int j = 0; j < table.getColumnCount(); j++) {
                 bwrite.write(model.getColumnName(j) + "\t");
@@ -350,7 +377,7 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
         }
     }
     
-    public void getFileLocation()
+    public void GetFileLocation()
     {
         JFileChooser fs = new JFileChooser(new File("c:\\"));
         fs.setDialogTitle("Save report");
@@ -359,10 +386,10 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
         if (result == JFileChooser.APPROVE_OPTION)
         {
             File file = fs.getSelectedFile();
-            saveExcel(file,tbOrder);
-        }
-        
+            SaveExcel(file,tbOrder,tableOrder);
+        } 
     }
+    
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
         DishSearch();
@@ -375,8 +402,15 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
 
     private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
         // TODO add your handling code here:
-        getFileLocation();
+        GetFileLocation();
     }//GEN-LAST:event_btnExportActionPerformed
+
+    private void tbOrderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbOrderMouseClicked
+        // TODO add your handling code here:
+        int row =this.tbOrder.getSelectedRow();
+        String ml=(this.tbOrder.getModel().getValueAt(row,0)).toString();
+        ShowDetail(ml);
+    }//GEN-LAST:event_tbOrderMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -392,8 +426,9 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tbDetail;
     private javax.swing.JTable tbOrder;
     private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
+
 }

@@ -7,6 +7,7 @@ package Interface;
 
 import java.awt.event.MouseListener;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -233,6 +234,8 @@ public class frmReport extends javax.swing.JFrame {
             try {
                 frmIncome = new frmReport_Income();
             } catch (SQLException ex) {
+                Logger.getLogger(frmReport.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ParseException ex) {
                 Logger.getLogger(frmReport.class.getName()).log(Level.SEVERE, null, ex);
             }
             jDesktopPane1.add(frmIncome);

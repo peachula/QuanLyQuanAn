@@ -6,6 +6,12 @@ import java.awt.Color;
 import java.awt.event.MouseListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Period;
+import java.util.Calendar;
+import java.util.Date;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -30,7 +36,7 @@ public class frmReport_Income extends javax.swing.JInternalFrame {
      */
     Receipt order = new Receipt();
     
-    public frmReport_Income() throws SQLException {
+    public frmReport_Income() throws SQLException, ParseException{
         initComponents();
         setTitle("INCOME REPORT PAGE");
         
@@ -42,7 +48,7 @@ public class frmReport_Income extends javax.swing.JInternalFrame {
         DrawChart();
     }
 
-    public void DrawChart() throws SQLException
+    public void DrawChart() throws SQLException, ParseException
     {
         JFreeChart lineChart = ChartFactory.createLineChart("", "DATE","INCOMES",createDataset(),PlotOrientation.VERTICAL,true,true,false);
          
@@ -52,15 +58,30 @@ public class frmReport_Income extends javax.swing.JInternalFrame {
         setContentPane(chartPanel);
     }
 
+    public String Redate(String oldDate) throws ParseException
+    {
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	Calendar c = Calendar.getInstance();
+	try{
+            c.setTime(sdf.parse(oldDate));
+	}catch(ParseException e){
+            e.printStackTrace();
+	 }
+	//Incrementing the date by 1 day
+	c.add(Calendar.DAY_OF_MONTH, 2);  
+	String newDate = sdf.format(c.getTime());  
+        return newDate;
+    }
     
-    private DefaultCategoryDataset createDataset( ) throws SQLException {
+    private DefaultCategoryDataset createDataset( ) throws SQLException, ParseException {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
       
         ResultSet rs= order.ReceiptChart();
         try {
             while(rs.next())
             { 
-                dataset.addValue( Integer.parseInt(rs.getString(2)) , "Total Income a day" , rs.getString(1) );
+                String f_date = Redate(rs.getString(1));
+                dataset.addValue( Integer.parseInt(rs.getString(2)) , "Total Income a day" , f_date);
             }
         }
         catch (SQLException e) {

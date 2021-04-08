@@ -75,7 +75,9 @@ public class Receipt {
         String date = date_f.format(now);
         
         cn.connectSQL();
-        String sql = "select CONVERT(VARCHAR(10), Receipt.Date, 111), sum(total), ReceiptID from Receipt where date > '"+date+"' group by CONVERT(VARCHAR(10), Receipt.Date, 111)";
+        String sql = "select CONVERT(date, Receipt.Date, 105), sum(total) "
+                + "from Receipt where Receipt.date > '"+date+"' "
+                + "group by CONVERT(date, Receipt.Date, 105)";
         return cn.LoadData(sql);
     }
     
@@ -103,7 +105,7 @@ public class Receipt {
         String date = date_f.format(now);
         
         cn.connectSQL();
-        String sql = "select ReceiptID, Date, Total from Receipt where date > '"+date+"' and ReceiptID like '%"+id+"%'";
+        String sql = "select ReceiptID, Date, Total from Receipt where date > '"+date+"' and ReceiptID like '%"+id+"%' and State = 1";
         return cn.LoadData(sql);
     }
 }
