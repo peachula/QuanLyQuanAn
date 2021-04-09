@@ -39,7 +39,7 @@ public class Customer {
     
     //Theo moi 1 dong du lieu vao table
     public void InsertCustomer(String c_name, int phone) throws SQLException{
-        String sql = "INSERT INTO Customer values(N'" + c_name +"'," + phone +"')";
+        String sql = "INSERT INTO Customer values(N'" + c_name +"'," + phone +")";
         cn.UpdateData(sql);
     }
     

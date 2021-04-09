@@ -84,5 +84,9 @@ public class Receipt {
         String sql = "Update Receipt set CustomerID = "+ c_id +" where ReceiptID ='" + r_id +"'";
         cn.UpdateData(sql);
     }
+
+    public ResultSet ReceiptSearch(String search) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

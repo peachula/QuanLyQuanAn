@@ -190,6 +190,9 @@
                   <Dimension value="[75, 60]"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDishActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnCombo">
               <Properties>
@@ -238,6 +241,9 @@
                   <Dimension value="[100, 60]"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCustomerActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

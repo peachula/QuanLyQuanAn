@@ -9,8 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import Process.Category;//Lớp Category trong Proccess đã thực hiện
 import java.awt.event.MouseListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
@@ -22,32 +20,35 @@ import javax.swing.table.DefaultTableModel;
 public class frmCate extends javax.swing.JInternalFrame {
     
      // Xử lý hiện thị dữ liệu khi Form được mở
-   
     private final Category lsp = new Category();
     private boolean cothem=true;
     private final DefaultTableModel tableModel = new DefaultTableModel();
-         //Ham do du lieu vao tableModel
+         
+//Ham do du lieu vao tableModel
     public void ShowData() throws SQLException{
-    ResultSet result= lsp.Category();
-    try {
-            while(result.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
-            String rows[] = new String[2];
-            rows[0] = result.getString(1); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
-            rows[1] = result.getString(2); // lấy dữ liệu tai cột số 2 ứng với tên hàng
-            tableModel.addRow(rows); // đưa dòng dữ liệu vào tableModel
-            //mỗi lần có sự thay đổi dữ liệu ở tableModel thì Jtable sẽ tự động update
+        
+        tableModel.getDataVector().removeAllElements(); ///refresh lại model
+        
+        ResultSet result= lsp.Category();
+        try {
+                while(result.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
+                String rows[] = new String[3];
+                rows[0] = result.getString(1); // id
+                rows[1] = result.getString(2); // lộn form :)))
+                tableModel.addRow(rows); // đưa dòng dữ liệu vào tableModel
+                //mỗi lần có sự thay đổi dữ liệu ở tableModel thì Jtable sẽ tự động update
+                }
             }
-        }
-    catch (SQLException e) {
-        }
+        catch (SQLException e) {
+            }
     } 
 
         //Ham xoa du lieu trong tableModel
-    public void XoaDuLieu() throws SQLException{
+    public void ClearData() throws SQLException{
         //Lay chi so dong cuoi cung
-        int n=tabelCate.getRowCount()-1;
+        int n=tableCate.getRowCount()-1;
         for(int i=n;i>=0;i--)
-        tabelCate.remove(i);//Remove tung dong
+        tableCate.remove(i);//Remove tung dong
     } 
     //Ham xoa cac TextField
     private void setNull(){ 
@@ -73,32 +74,7 @@ public class frmCate extends javax.swing.JInternalFrame {
         this.btnClear. setEnabled (!a);
         this.btnSearch. setEnabled (a);
     }
-//    public frmCate() throws SQLException, SQLException, SQLException{
-//        initComponents(); // Khởi tạo các components trên JFrame
-//        
-//        String []colsName = {"ID", "Name"};
-////         đặt tiêu đề cột cho tableModel
-//        tableModel.setColumnIdentifiers(colsName);
-//        
-//        
-//        // kết nối jtable với tableModel
-//        tabelCate.setModel(tableModel);
-//        //gọi hàm ShowData để đưa dữ liệu vào tableModel
-//        ShowData();
-//        //goi Ham xoa trang cac TextField
-//        setNull();
-//        //Goi ham Khoa cac TextField
-//        setKhoa(true);
-//        //Goi vo hieu 2 button Luu, K.Luu. Mo khoa 4 button con lao
-//        setButton(true);
-//        }
-    
-    
-   
 
-    /**
-     * Creates new form frmStaff
-     */
     public frmCate() throws SQLException {
         initComponents();
         setTitle("STAFF PAGE");
@@ -109,7 +85,7 @@ public class frmCate extends javax.swing.JInternalFrame {
         
         
         // kết nối jtable với tableModel
-        tabelCate.setModel(tableModel);
+        tableCate.setModel(tableModel);
         //gọi hàm ShowData để đưa dữ liệu vào tableModel
         ShowData();
         //goi Ham xoa trang cac TextField
@@ -147,7 +123,7 @@ public class frmCate extends javax.swing.JInternalFrame {
         txtName = new javax.swing.JTextField();
         jPanel10 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tabelCate = new javax.swing.JTable();
+        tableCate = new javax.swing.JTable();
         jPanel8 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         btnAdd = new javax.swing.JButton();
@@ -214,7 +190,7 @@ public class frmCate extends javax.swing.JInternalFrame {
         jPanel10.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanel10.setLayout(new java.awt.BorderLayout());
 
-        tabelCate.setModel(new javax.swing.table.DefaultTableModel(
+        tableCate.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
                 {null, null},
@@ -225,17 +201,12 @@ public class frmCate extends javax.swing.JInternalFrame {
                 "ID", "Name"
             }
         ));
-        tabelCate.addMouseListener(new java.awt.event.MouseAdapter() {
+        tableCate.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tabelCateMouseClicked(evt);
+                tableCateMouseClicked(evt);
             }
         });
-        tabelCate.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                tabelCateKeyReleased(evt);
-            }
-        });
-        jScrollPane2.setViewportView(tabelCate);
+        jScrollPane2.setViewportView(tableCate);
 
         jPanel10.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
@@ -255,11 +226,6 @@ public class frmCate extends javax.swing.JInternalFrame {
         btnAdd.setForeground(new java.awt.Color(255, 255, 255));
         btnAdd.setText("ADD");
         btnAdd.setBorderPainted(false);
-        btnAdd.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnAddMouseClicked(evt);
-            }
-        });
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddActionPerformed(evt);
@@ -272,6 +238,11 @@ public class frmCate extends javax.swing.JInternalFrame {
         btnEdit.setForeground(new java.awt.Color(255, 255, 255));
         btnEdit.setText("EDIT");
         btnEdit.setBorderPainted(false);
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnEdit);
 
         btnSave.setBackground(new java.awt.Color(32, 80, 114));
@@ -279,6 +250,11 @@ public class frmCate extends javax.swing.JInternalFrame {
         btnSave.setForeground(new java.awt.Color(255, 255, 255));
         btnSave.setText("SAVE");
         btnSave.setBorderPainted(false);
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnSave);
 
         btnDelete.setBackground(new java.awt.Color(32, 80, 114));
@@ -286,6 +262,11 @@ public class frmCate extends javax.swing.JInternalFrame {
         btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setText("DELETE");
         btnDelete.setBorderPainted(false);
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnDelete);
 
         btnClear.setBackground(new java.awt.Color(32, 80, 114));
@@ -293,6 +274,11 @@ public class frmCate extends javax.swing.JInternalFrame {
         btnClear.setForeground(new java.awt.Color(255, 255, 255));
         btnClear.setText("CLEAR");
         btnClear.setBorderPainted(false);
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnClear);
 
         jPanel8.add(jPanel2, java.awt.BorderLayout.LINE_END);
@@ -318,58 +304,108 @@ public class frmCate extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tabelCateKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tabelCateKeyReleased
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_tabelCateKeyReleased
-
-    private void tabelCateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelCateMouseClicked
+    private void tableCateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableCateMouseClicked
         // TODO add your handling code here:
        try{
         //Lay chi so dong dang chon
-        int row =this.tabelCate.getSelectedRow();
-        int ml=Integer.parseInt((this.tabelCate.getModel().getValueAt(row,0)).toString());
+        int row =this.tableCate.getSelectedRow();
+        int ml=Integer.parseInt((this.tableCate.getModel().getValueAt(row,0)).toString());
+        
         ResultSet rs= lsp.Category_ID(ml);//Goi ham lay du lieu theo ma loai
         if(rs.next())//Neu co du lieu
         {
-            this.txtID.setText(rs.getString("ID"));
-            this.txtName.setText(rs.getString("Name"));
+            txtID.setText(rs.getString(1));
+            this.txtName.setText(rs.getString(2)); ///name nằm ở vị trí 2 trong kết quả trả về của sqlok
         }
         }
         catch (SQLException e) {
         } 
-    }//GEN-LAST:event_tabelCateMouseClicked
+    }//GEN-LAST:event_tableCateMouseClicked
 
-    private void btnAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseClicked
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
         setNull();//Xoa trang TextField
         setKhoa(false);//Mo khoa TextField
         setButton(false);//Goi ham khoa cac Button
         cothem=true;//Gan cothem = true de ghi nhan trang thai them moi
-    }//GEN-LAST:event_btnAddMouseClicked
-
-    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        // TODO add your handling code here:
-        
     }//GEN-LAST:event_btnAddActionPerformed
-    
-   
-     
 
-        
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        String ml=txtID.getText();
+        if(ml.length()==0) //Chua chon Ma loai
+        JOptionPane.showMessageDialog(null,"Vui long chon loi can sua","Thong bao",1);
+        else
+        {
+        setKhoa(false);//Mo khoa cac TextField
+        this.txtID.enable(false);
+        setButton(false); //Khoa cac Button
+        cothem=false; //Gan cothem=false de ghi nhan trang thai la sua
+        }
 
-    
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        int ml= Integer.parseInt(txtID.getText());
+        String tl=txtName.getText();
+        if(ml==0 || tl.length()==0)
+        JOptionPane.showMessageDialog(null,
+       "Vui long nhap Ma loai va ten loai","Thong bao",1);
+        else
+        { 
+//            if(ml>2 || tl.length()>30)
+//            JOptionPane.showMessageDialog(null,"Ma loai chi 2 ky tu, ten loai la 20","Thong bao",1);
+//            else
+//            {
+            try {
+            if(cothem==true) //Luu cho tthem moi
+            lsp.InsertCategory(tl);
+            else //Luu cho sua
+            lsp.EditCategory(ml, tl);
+            ClearData(); //goi ham xoa du lieu tron tableModel
+            ShowData(); //Do lai du lieu vao Table Model
+            }
+            catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null,"Cap nhat that bai","Thong bao",1);
+            }
+            setKhoa(false);
+            setButton(true);
+//            
+        }
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        String ml=txtID.getText();
+//        int ml= Integer.parseInt(txtID.getText());
+        try {
+        if(ml.length()==0)
+            JOptionPane.showMessageDialog(null,"Chon 1 loai SP de xoa","Thong bao",1);
+        else
+        {
+            if(JOptionPane.showConfirmDialog(null, "Ban muon xoa ma " + ml + " nay hay khong?","Thong bao",2)==0)
+            {
+                int bien = Integer.parseInt(ml);
+                lsp.DeleteCategory(bien);//goi ham xoa du lieu theo ma loai
+                //ClearData();//Xoa du lieu trong tableModel
+                ShowData();//Do du lieu vao table Model ủa nó nè :))))
+                setNull();//Xoa trang Textfield
+            }
+            
+        }
+        }
+        catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null,"Xóa thất bại","Thong bao",1);
+ }
+
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        // TODO add your handling code here:
+        txtID.setText("");
+        txtName.setText("");
+    }//GEN-LAST:event_btnClearActionPerformed
+
        //Code tu sinh khi thiet ke giao dien va cac code khac ở đây…….
-      
-   
-       
-
-   
-    
-   
-     
-
- 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
@@ -388,7 +424,7 @@ public class frmCate extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTable tabelCate;
+    private javax.swing.JTable tableCate;
     private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtName;
     // End of variables declaration//GEN-END:variables
