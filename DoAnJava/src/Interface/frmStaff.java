@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
@@ -43,11 +44,15 @@ public class frmStaff extends javax.swing.JInternalFrame {
         ResultSet result = ShowStaff("all");
         ShowData(result);
         
+        jComboBoxRole.addItem("Quản lý");
+        jComboBoxRole.addItem("Chi nhánh trưởng");
+        jComboBoxRole.addItem("Ca trưởng");
+        jComboBoxRole.addItem("Nhân viên full-time");
+        jComboBoxRole.addItem("Nhân viên part-time");
+        jComboBoxRole.setSelectedIndex(3);
         
-
         btnDelete.setEnabled(false);
         btnSave.setEnabled(false);
-        btnEdit.setEnabled(false);
         BasicInternalFrameUI bs = ((javax.swing.plaf.basic.BasicInternalFrameUI) this.getUI());
         for (MouseListener l: bs.getNorthPane().getMouseListeners()){
             bs.getNorthPane().removeMouseListener(l);
@@ -71,15 +76,14 @@ public class frmStaff extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         txtID = new javax.swing.JTextField();
         txtName = new javax.swing.JTextField();
-        txtRole = new javax.swing.JTextField();
         txtPassword = new javax.swing.JPasswordField();
+        jComboBoxRole = new javax.swing.JComboBox<>();
         jPanel10 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbStaff = new javax.swing.JTable();
         jPanel8 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         btnAdd = new javax.swing.JButton();
-        btnEdit = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
         btnClear = new javax.swing.JButton();
@@ -113,6 +117,12 @@ public class frmStaff extends javax.swing.JInternalFrame {
 
         txtPassword.setText("jPasswordField1");
 
+        jComboBoxRole.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxRoleActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -132,9 +142,9 @@ public class frmStaff extends javax.swing.JInternalFrame {
                     .addComponent(jLabel3))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtRole)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE))
-                .addContainerGap(52, Short.MAX_VALUE))
+                    .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
+                    .addComponent(jComboBoxRole, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -144,7 +154,7 @@ public class frmStaff extends javax.swing.JInternalFrame {
                     .addComponent(jLabel1)
                     .addComponent(jLabel3)
                     .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBoxRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -204,18 +214,6 @@ public class frmStaff extends javax.swing.JInternalFrame {
             }
         });
         jPanel2.add(btnAdd);
-
-        btnEdit.setBackground(new java.awt.Color(32, 80, 114));
-        btnEdit.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnEdit.setForeground(new java.awt.Color(255, 255, 255));
-        btnEdit.setText("EDIT");
-        btnEdit.setBorderPainted(false);
-        btnEdit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btnEdit);
 
         btnSave.setBackground(new java.awt.Color(32, 80, 114));
         btnSave.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -288,11 +286,11 @@ public class frmStaff extends javax.swing.JInternalFrame {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         try {
-            // TODO add your handling code here:
-            txtID.setEditable(false);
+            // TODO add your handling code here: 
             String Name = txtName.getText();
             String Pass = txtPassword.getText();
-            String staff_role = txtRole.getText();
+            String staff_role = jComboBoxRole.getItemAt(jComboBoxRole.getSelectedIndex());
+            staff_role = staff_role.toLowerCase();
             int role =4;
             switch(staff_role)
             {
@@ -321,6 +319,13 @@ public class frmStaff extends javax.swing.JInternalFrame {
             }
             ResultSet result = ShowStaff("all");
             ShowData(result);
+            
+            txtID.setText("");
+            txtName.setText("");
+            txtPassword.setText("");
+            btnDelete.setEnabled(false);
+            btnSave.setEnabled(false);
+            txtID.setEditable(false);
         } catch (SQLException ex) {
             Logger.getLogger(frmStaff.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -348,13 +353,32 @@ public class frmStaff extends javax.swing.JInternalFrame {
             // TODO add your handling code here:
             int row =this.tbStaff.getSelectedRow();
             String staff_id= (this.tbStaff.getModel().getValueAt(row,0)).toString(); //lấy id từ cột số 0 trong tabe
-             System.out.println(staff_id);
-          
-            txtID.setEditable(false);          
+            String staff_role = (this.tbStaff.getModel().getValueAt(row,2)).toString();
+            staff_role = staff_role.toLowerCase();
             
-            staff.DeleteStaff(staff_id);
-            ResultSet result = ShowStaff("all");
-            ShowData(result);
+            if(staff_role.equalsIgnoreCase("quản lý"))
+            {
+                JOptionPane.showMessageDialog(this,"Không thể xóa quản lý");
+            }
+            else{
+                int ret= JOptionPane.showConfirmDialog(this, "Chắc chắn xóa", "Xóa nhân viên", JOptionPane.YES_NO_OPTION);
+                if(ret == JOptionPane.YES_OPTION)
+                {
+                    staff.DeleteStaff(staff_id);
+                    ResultSet result = ShowStaff("all");
+                    ShowData(result);
+                }
+                
+            }
+            
+            txtID.setEditable(false);          
+            btnAdd.setEnabled(true);
+            btnDelete.setEnabled(false);
+            btnSave.setEnabled(false);
+            txtID.setText("");
+            txtName.setText("");
+            txtPassword.setText("");
+            jComboBoxRole.setSelectedIndex(3);
         } catch (SQLException ex) {
             Logger.getLogger(frmStaff.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -366,8 +390,10 @@ public class frmStaff extends javax.swing.JInternalFrame {
         txtID.setText("");
         txtName.setText("");
         txtPassword.setText("");
-        txtRole.setText("");
-      
+        btnAdd.setEnabled(true);
+        btnDelete.setEnabled(false);
+        btnSave.setEnabled(false);
+        jComboBoxRole.setSelectedIndex(3);
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void tbStaffMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbStaffMouseClicked
@@ -377,32 +403,44 @@ public class frmStaff extends javax.swing.JInternalFrame {
         String staff_name= (this.tbStaff.getModel().getValueAt(row,1)).toString();
         String staff_role= (this.tbStaff.getModel().getValueAt(row,2)).toString();
         String staff_pass= (this.tbStaff.getModel().getValueAt(row,3)).toString();
-             
+        staff_role = staff_role.toLowerCase();
+        int role =4;
+            switch(staff_role)
+            {
+                case "quản lý":    
+                    role =0;
+                    break;
+                case "chi nhánh trưởng":    
+                    role =1;
+                    break;
+                case "ca trưởng":    
+                    role =2;
+                    break;
+                case "nhân viên full-time":    
+                    role =3;
+                    break;
+                default:
+                    role = 4;
+            }
+        
+        jComboBoxRole.setSelectedIndex(role);
         txtID.setText(staff_id);
         txtName.setText(staff_name);     
-        txtRole.setText(staff_role);
+        
         txtPassword.setText(staff_pass);
         
-        btnEdit.setEnabled(true);
+        btnAdd.setEnabled(false);
         btnDelete.setEnabled(true);
-    }//GEN-LAST:event_tbStaffMouseClicked
-
-    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        // TODO add your handling code here:
-        
-        txtName.setEditable(true);
-        txtName.setEditable(true);
-        txtPassword.setEditable(true);
-        txtRole.setEditable(true);       
         btnSave.setEnabled(true);
-    }//GEN-LAST:event_btnEditActionPerformed
+    }//GEN-LAST:event_tbStaffMouseClicked
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
         try {
             String staff_id= txtID.getText();
             String staff_name= txtName.getText();
-            String staff_role= txtRole.getText();
+            String staff_role = jComboBoxRole.getItemAt(jComboBoxRole.getSelectedIndex());
+            staff_role = staff_role.toLowerCase();
             staff_role = staff_role.toLowerCase();
             String staff_pass = new String(txtPassword.getPassword()); 
             int role =4;
@@ -428,12 +466,17 @@ public class frmStaff extends javax.swing.JInternalFrame {
             ShowData(result);
             
            btnSave.setEnabled(false);
-            
+           btnDelete.setEnabled(false);
+           btnAdd.setEnabled(true);
         } catch (SQLException ex) {
             Logger.getLogger(frmStaff.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void jComboBoxRoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxRoleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxRoleActionPerformed
 
     private ResultSet ShowStaff(String statment) throws SQLException
     {
@@ -495,23 +538,12 @@ public class frmStaff extends javax.swing.JInternalFrame {
     }
     private boolean CheckInput()
     {
-        String staff_id= txtID.getText();
-        String staff_name= txtName.getText();
-        String staff_role= txtRole.getText();
-        String staff_pass = new String(txtPassword.getPassword());
- 
+        String staff_name= txtName.getText();  
+        
         if(staff_name != null && !staff_name.trim().isEmpty())
         {
-            if(staff_role != null && !staff_role.trim().isEmpty())
-            {
-                if(staff_pass != null && !staff_pass.trim().isEmpty())
-                {
-                    return true;
-                }
-            }
-
+             return true;        
         }
-        
         return false;
     }
     
@@ -520,9 +552,9 @@ public class frmStaff extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnClear;
     private javax.swing.JButton btnDelete;
-    private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnSave;
     private javax.swing.JButton btnSearch;
+    private javax.swing.JComboBox<String> jComboBoxRole;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -539,6 +571,5 @@ public class frmStaff extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtName;
     private javax.swing.JPasswordField txtPassword;
-    private javax.swing.JTextField txtRole;
     // End of variables declaration//GEN-END:variables
 }
