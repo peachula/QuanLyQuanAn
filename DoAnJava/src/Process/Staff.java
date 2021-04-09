@@ -64,7 +64,7 @@ public class Staff {
     
     //Xoa 1 dong du lieu vao table 
     public void DeleteStaff(String s_id ) throws SQLException{
-        String sql = "Delete from Staff where StaffID='" + s_id +"'";
+        String sql = "Delete from Staff where StaffID = '" + s_id +"'";
         cn.UpdateData(sql);
     }
 }

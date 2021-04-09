@@ -7,4 +7,5 @@ every function or para have to be written in English
 #d28d0d	(210,141,13)
 
 State in Receipt table: 1= done; 0 = undone
-Role in Staff table: 1 = Staff; 0 = Admin
+Role in Staff table:  0 = quản lý, 1 = chi nhánh trưởng,
+2 = ca trưởng, 4 = nhân viên full-time 

@@ -195,7 +195,11 @@ public class frmAdmin extends javax.swing.JFrame {
         
         if(frmStaff == null || frmStaff.isClosed())
         {
-            frmStaff = new frmStaff();
+            try {
+                frmStaff = new frmStaff();
+            } catch (SQLException ex) {
+                Logger.getLogger(frmAdmin.class.getName()).log(Level.SEVERE, null, ex);
+            }
             jDesktopPane1.add(frmStaff);
             frmStaff.setSize(this.getWidth(),this.getHeight());
             frmStaff.setLocation(0,0);

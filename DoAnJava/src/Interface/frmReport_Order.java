@@ -3,15 +3,22 @@ package Interface;
 import Filter.FileTypeFilter;
 import Process.Receipt;
 import Process.ReceiptDetail;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.security.Timestamp;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
@@ -20,6 +27,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -65,6 +79,7 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
         // đặt tiêu đề cột cho tableModel
         tableDetail.setColumnIdentifiers(colsName_Detail);
         tbDetail.setModel(tableDetail);
+        
     }
 
     /**
@@ -366,7 +381,7 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
             // Lay du lieu dong
             for (int j = 0; j < table.getRowCount(); j++) {
                 for (int k = 0; k < table.getColumnCount(); k++) {
-                    bwrite.write(model.getValueAt(j, k) + "\t");
+                    bwrite.write(model.getValueAt(j, k).toString() + "\t");
                 }
                 bwrite.write("\n");
             }
@@ -377,7 +392,7 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
         }
     }
     
-    public void GetFileLocation()
+    public void GetFileLocation() throws IOException, SQLException
     {
         JFileChooser fs = new JFileChooser(new File("c:\\"));
         fs.setDialogTitle("Save report");
@@ -386,8 +401,79 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
         if (result == JFileChooser.APPROVE_OPTION)
         {
             File file = fs.getSelectedFile();
-            SaveExcel(file,tbOrder,tableOrder);
+            ExportExcel(file);
         } 
+    }
+    
+    public void ExportExcel(File file) throws SQLException
+    {
+        
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            XSSFSheet sheet = workbook.createSheet("Reviews");
+ 
+            writeHeaderLine(sheet);
+ 
+            ResultSet rs= r.ReceiptReport();
+            writeDataLines(rs, workbook, sheet);
+ 
+            FileOutputStream outputStream;
+            outputStream = new FileOutputStream(file + ".xlsx");
+            
+            workbook.write(outputStream);
+            workbook.close();   
+            
+            JOptionPane.showMessageDialog(null, "Lưu file thành công!");
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(frmReport_Order.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Lỗi khi lưu file!");
+        } catch (IOException ex) {
+            Logger.getLogger(frmReport_Order.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Lỗi khi lưu file!");
+        }
+    }
+    
+    public void writeHeaderLine(XSSFSheet sheet) {
+ 
+        Row headerRow = sheet.createRow(0);
+ 
+        Cell headerCell = headerRow.createCell(0);
+        headerCell.setCellValue("Order ID");
+ 
+        headerCell = headerRow.createCell(1);
+        headerCell.setCellValue("Date");
+ 
+        headerCell = headerRow.createCell(2);
+        headerCell.setCellValue("Total");
+ 
+    }
+ 
+    private void writeDataLines(ResultSet result, XSSFWorkbook workbook, XSSFSheet sheet) throws SQLException {
+        int rowCount = 1;
+ 
+        while (result.next()) {
+            String id = result.getString(1);
+            long total = result.getLong(3);
+            java.sql.Timestamp timestamp = result.getTimestamp(2);
+ 
+            Row row = sheet.createRow(rowCount++);
+ 
+            int columnCount = 0;
+            Cell cell = row.createCell(columnCount++);
+            cell.setCellValue(id); //id
+  
+            cell = row.createCell(columnCount++);
+            CellStyle cellStyle = workbook.createCellStyle();
+            CreationHelper creationHelper = workbook.getCreationHelper();
+            cellStyle.setDataFormat(creationHelper.createDataFormat().getFormat("yyyy-MM-dd HH:mm:ss"));
+            cell.setCellStyle(cellStyle);
+            cell.setCellValue(timestamp);
+ 
+            cell = row.createCell(columnCount++);
+            cell.setCellValue(total);
+ 
+ 
+        }
     }
     
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
@@ -401,8 +487,14 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtSearchKeyPressed
 
     private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
-        // TODO add your handling code here:
-        GetFileLocation();
+        try {
+            // TODO add your handling code here:
+            GetFileLocation();
+        } catch (IOException ex) {
+            Logger.getLogger(frmReport_Order.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(frmReport_Order.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnExportActionPerformed
 
     private void tbOrderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbOrderMouseClicked
