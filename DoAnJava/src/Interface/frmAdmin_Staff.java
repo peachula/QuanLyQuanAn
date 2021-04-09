@@ -22,7 +22,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author kieef
  */
-public class frmStaff extends javax.swing.JInternalFrame {
+public class frmAdmin_Staff extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form frmStaff
@@ -32,7 +32,7 @@ public class frmStaff extends javax.swing.JInternalFrame {
    
     private final DefaultTableModel tableModelStaff = new DefaultTableModel();
     
-    public frmStaff() throws SQLException{
+    public frmAdmin_Staff() throws SQLException{
         initComponents();
         setTitle("STAFF PAGE");
         
@@ -98,11 +98,11 @@ public class frmStaff extends javax.swing.JInternalFrame {
         setPreferredSize(new java.awt.Dimension(809, 536));
         getContentPane().setLayout(new java.awt.BorderLayout(5, 0));
 
-        jPanel9.setBackground(new java.awt.Color(207, 244, 210));
+        jPanel9.setBackground(new java.awt.Color(255, 255, 255));
         jPanel9.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanel9.setLayout(new java.awt.BorderLayout());
 
-        jPanel1.setBackground(new java.awt.Color(207, 244, 210));
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("INFORMATION"));
 
         jLabel1.setText("ID");
@@ -168,7 +168,7 @@ public class frmStaff extends javax.swing.JInternalFrame {
 
         getContentPane().add(jPanel9, java.awt.BorderLayout.PAGE_START);
 
-        jPanel10.setBackground(new java.awt.Color(207, 244, 210));
+        jPanel10.setBackground(new java.awt.Color(255, 255, 255));
         jPanel10.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanel10.setLayout(new java.awt.BorderLayout());
 
@@ -194,16 +194,16 @@ public class frmStaff extends javax.swing.JInternalFrame {
 
         getContentPane().add(jPanel10, java.awt.BorderLayout.CENTER);
 
-        jPanel8.setBackground(new java.awt.Color(207, 244, 210));
+        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
         jPanel8.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanel8.setPreferredSize(new java.awt.Dimension(807, 90));
         jPanel8.setLayout(new java.awt.BorderLayout());
 
-        jPanel2.setBackground(new java.awt.Color(207, 244, 210));
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setPreferredSize(new java.awt.Dimension(400, 70));
         jPanel2.setLayout(new java.awt.GridLayout(1, 0));
 
-        btnAdd.setBackground(new java.awt.Color(32, 80, 114));
+        btnAdd.setBackground(new java.awt.Color(237, 163, 35));
         btnAdd.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnAdd.setForeground(new java.awt.Color(255, 255, 255));
         btnAdd.setText("ADD");
@@ -215,7 +215,7 @@ public class frmStaff extends javax.swing.JInternalFrame {
         });
         jPanel2.add(btnAdd);
 
-        btnSave.setBackground(new java.awt.Color(32, 80, 114));
+        btnSave.setBackground(new java.awt.Color(237, 163, 35));
         btnSave.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnSave.setForeground(new java.awt.Color(255, 255, 255));
         btnSave.setText("SAVE");
@@ -227,7 +227,7 @@ public class frmStaff extends javax.swing.JInternalFrame {
         });
         jPanel2.add(btnSave);
 
-        btnDelete.setBackground(new java.awt.Color(32, 80, 114));
+        btnDelete.setBackground(new java.awt.Color(237, 163, 35));
         btnDelete.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setText("DELETE");
@@ -239,7 +239,7 @@ public class frmStaff extends javax.swing.JInternalFrame {
         });
         jPanel2.add(btnDelete);
 
-        btnClear.setBackground(new java.awt.Color(32, 80, 114));
+        btnClear.setBackground(new java.awt.Color(237, 163, 35));
         btnClear.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnClear.setForeground(new java.awt.Color(255, 255, 255));
         btnClear.setText("CLEAR");
@@ -253,11 +253,11 @@ public class frmStaff extends javax.swing.JInternalFrame {
 
         jPanel8.add(jPanel2, java.awt.BorderLayout.LINE_END);
 
-        jPanel3.setBackground(new java.awt.Color(207, 244, 210));
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("SEARCH"));
         jPanel3.setLayout(new java.awt.BorderLayout());
 
-        btnSearch.setBackground(new java.awt.Color(32, 80, 114));
+        btnSearch.setBackground(new java.awt.Color(237, 163, 35));
         btnSearch.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnSearch.setForeground(new java.awt.Color(255, 255, 255));
         btnSearch.setText("SEARCH");
@@ -327,7 +327,7 @@ public class frmStaff extends javax.swing.JInternalFrame {
             btnSave.setEnabled(false);
             txtID.setEditable(false);
         } catch (SQLException ex) {
-            Logger.getLogger(frmStaff.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmAdmin_Staff.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         
@@ -339,7 +339,7 @@ public class frmStaff extends javax.swing.JInternalFrame {
             ResultSet result = ShowStaff("name");                
             ShowData(result);
         } catch (SQLException ex) {
-            Logger.getLogger(frmStaff.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmAdmin_Staff.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnSearchActionPerformed
 
@@ -380,7 +380,7 @@ public class frmStaff extends javax.swing.JInternalFrame {
             txtPassword.setText("");
             jComboBoxRole.setSelectedIndex(3);
         } catch (SQLException ex) {
-            Logger.getLogger(frmStaff.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmAdmin_Staff.class.getName()).log(Level.SEVERE, null, ex);
         }
        
     }//GEN-LAST:event_btnDeleteActionPerformed
@@ -469,7 +469,7 @@ public class frmStaff extends javax.swing.JInternalFrame {
            btnDelete.setEnabled(false);
            btnAdd.setEnabled(true);
         } catch (SQLException ex) {
-            Logger.getLogger(frmStaff.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(frmAdmin_Staff.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }//GEN-LAST:event_btnSaveActionPerformed

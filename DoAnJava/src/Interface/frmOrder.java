@@ -604,6 +604,8 @@ public class frmOrder extends javax.swing.JFrame {
     ///show order uncomplte
     public void ShowUncompleteOrderData() throws SQLException{
         tableModel.getDataVector().removeAllElements();
+        tableModel.fireTableDataChanged();
+        
         ResultSet result= main_order.UncompleteReceipt();
         try {
             while(result.next()){ 
@@ -616,11 +618,22 @@ public class frmOrder extends javax.swing.JFrame {
         }
     }
     
+    public void ClearTxt()
+    {
+        txtOrderID.setText("");
+        txtDateTime.setText("");
+        txtTotal.setText("");
+        
+        tableModelDetail.getDataVector().removeAllElements();
+        tableModelDetail.fireTableDataChanged();
+    }
+    
     ///đưa ra cái list các order detail được chọn cho bảng tbDetail
     public void ShowDetailList() throws SQLException
     {
-        tableModelDetail.setRowCount(0);
         tableModelDetail.getDataVector().removeAllElements();
+        tableModelDetail.fireTableDataChanged();
+        
         ResultSet result= main_detail.ShowDetail(order_id);
         try {
             while(result.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
@@ -660,6 +673,8 @@ public class frmOrder extends javax.swing.JFrame {
     public void ShowDishFromCate() throws SQLException
     {
         tableModelDish.getDataVector().removeAllElements();
+        tableModelDish.fireTableDataChanged();
+        
         ResultSet rs= main_dish.DishFromCate(cateID);
         try {
             while(rs.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
@@ -678,6 +693,8 @@ public class frmOrder extends javax.swing.JFrame {
     public void ShowDishList() throws SQLException
     {
         tableModelDish.getDataVector().removeAllElements();
+        tableModelDish.fireTableDataChanged();
+        
         ResultSet rs= main_dish.Dish();
         try {
             while(rs.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
@@ -762,17 +779,22 @@ public class frmOrder extends javax.swing.JFrame {
     private void btnDeleteOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteOrderActionPerformed
         // TODO add your handling code here:
         ///xóa order xuông và hiện thông báo
-        int opt = JOptionPane.showConfirmDialog(null, "Are you sure to delete ? ", "Delete", JOptionPane.YES_NO_OPTION);
-        if (opt==0)
+        if (!txtOrderID.getText().trim().isEmpty())
         {
-            try {
-                main_order.DeleteReceipt(order_id);
-                JOptionPane.showMessageDialog(this, "Delete completed");
-                ShowUncompleteOrderData();
-            } catch (SQLException ex) {
-                Logger.getLogger(frmOrder.class.getName()).log(Level.SEVERE, null, ex);
+            int opt = JOptionPane.showConfirmDialog(null, "Are you sure to delete ? ", "Delete", JOptionPane.YES_NO_OPTION);
+            if (opt==0)
+            {
+                try {
+                    main_order.DeleteReceipt(order_id);
+                    JOptionPane.showMessageDialog(this, "Delete completed");
+                    ShowUncompleteOrderData();
+                    ClearTxt();
+                } catch (SQLException ex) {
+                    Logger.getLogger(frmOrder.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
+        
         
         
     }//GEN-LAST:event_btnDeleteOrderActionPerformed
@@ -784,7 +806,7 @@ public class frmOrder extends javax.swing.JFrame {
         DateTimeFormatter id_new = DateTimeFormatter.ofPattern("yyMMddHHmmss");  
         DateTimeFormatter date = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");         
         String o_date = date.format(now);
-        String o_id = "O" + id_new.format(now);
+        String o_id = id_new.format(now);
         
         try {
             ///thêm order vào csdl
@@ -896,9 +918,9 @@ public class frmOrder extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Order completed");
 
                 ///clear detail table
-                ShowDetailList();
 
                 ShowUncompleteOrderData();
+                ClearTxt();
             } catch (SQLException ex) {
                 Logger.getLogger(frmOrder.class.getName()).log(Level.SEVERE, null, ex);
             }   

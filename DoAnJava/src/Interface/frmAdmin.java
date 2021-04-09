@@ -25,7 +25,7 @@ public class frmAdmin extends javax.swing.JFrame {
      * Creates new form frmCategory
      */
     
-    frmStaff frmStaff;
+    frmAdmin_Staff frmStaff;
     frmCate frmCate;
     
     //boolean full_screen = frmLogIn.full_screen;
@@ -196,7 +196,7 @@ public class frmAdmin extends javax.swing.JFrame {
         if(frmStaff == null || frmStaff.isClosed())
         {
             try {
-                frmStaff = new frmStaff();
+                frmStaff = new frmAdmin_Staff();
             } catch (SQLException ex) {
                 Logger.getLogger(frmAdmin.class.getName()).log(Level.SEVERE, null, ex);
             }

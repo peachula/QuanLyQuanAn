@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.logging.Level;
@@ -59,7 +60,10 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
     Receipt r = new Receipt(); 
     ReceiptDetail d = new ReceiptDetail();
     
-    String sheet_name = "";
+    LocalDate today = LocalDate.now();
+    int month = today.getMonthValue();
+    int year = today.getYear();
+    
     
     public frmReport_Order() throws SQLException {
         initComponents();
@@ -70,22 +74,25 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
             bs.getNorthPane().removeMouseListener(l);
         }
         
+        Gbtn.add(rdAll);
+        Gbtn.add(rdMonth);
+        
+        rdMonth.setSelected(true);
+                
         ///setting for tbCate
         String []colsName_Order = {"ID","Date","Total"};
         // đặt tiêu đề cột cho tableModel
         tableOrder.setColumnIdentifiers(colsName_Order);
         tbOrder.setModel(tableOrder);
+        tbOrder.setDefaultEditor(Object.class, null);
         ShowOrderList();
-        
         
         String []colsName_Detail = {"Dish ID","Dish Name","Quantity","Total"};
         // đặt tiêu đề cột cho tableModel
         tableDetail.setColumnIdentifiers(colsName_Detail);
         tbDetail.setModel(tableDetail);
-        
-        LocalDate today = LocalDate.now();
-        int month = today.getMonthValue();
-        sheet_name = "Reports_" + String.valueOf(month);
+        tbDetail.setDefaultEditor(Object.class, null);
+                
     }
 
     /**
@@ -97,14 +104,21 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        Gbtn = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
-        txtSearch = new javax.swing.JTextField();
-        btnSearch = new javax.swing.JButton();
+        jPanel10 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
         btnExport = new javax.swing.JButton();
+        jPanel11 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        rdAll = new javax.swing.JRadioButton();
+        rdMonth = new javax.swing.JRadioButton();
+        jPanel12 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        btnClear = new javax.swing.JButton();
+        btnSearch = new javax.swing.JButton();
+        jPanel13 = new javax.swing.JPanel();
+        txtSearch = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -119,19 +133,107 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(693, 120));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
+        jPanel10.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder("EXCEL"));
+        jPanel10.setLayout(new java.awt.BorderLayout());
+
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+
+        btnExport.setBackground(new java.awt.Color(237, 163, 35));
+        btnExport.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnExport.setForeground(new java.awt.Color(255, 255, 255));
+        btnExport.setText("EXPORT");
+        btnExport.setBorderPainted(false);
+        btnExport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(btnExport, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnExport, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(28, Short.MAX_VALUE))
+        );
+
+        jPanel10.add(jPanel4, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(jPanel10, java.awt.BorderLayout.LINE_END);
+
+        jPanel11.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder("SHOW OPTIONS"));
+        jPanel11.setMinimumSize(new java.awt.Dimension(200, 100));
+        jPanel11.setPreferredSize(new java.awt.Dimension(200, 100));
+        jPanel11.setLayout(new java.awt.BorderLayout());
+
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel3.setMaximumSize(new java.awt.Dimension(373, 100));
-        jPanel3.setMinimumSize(new java.awt.Dimension(373, 100));
-        jPanel3.setPreferredSize(new java.awt.Dimension(373, 100));
-        jPanel3.setLayout(new java.awt.BorderLayout());
+
+        rdAll.setBackground(new java.awt.Color(255, 255, 255));
+        rdAll.setText("All");
+        rdAll.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rdAllMouseClicked(evt);
+            }
+        });
+
+        rdMonth.setBackground(new java.awt.Color(255, 255, 255));
+        rdMonth.setText("This month");
+        rdMonth.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rdMonthMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap(54, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(rdMonth)
+                    .addComponent(rdAll))
+                .addContainerGap(53, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(rdAll)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(rdMonth)
+                .addContainerGap(22, Short.MAX_VALUE))
+        );
+
+        jPanel11.add(jPanel3, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(jPanel11, java.awt.BorderLayout.LINE_START);
+
+        jPanel12.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel12.setBorder(javax.swing.BorderFactory.createTitledBorder("SEARCH"));
+        jPanel12.setPreferredSize(new java.awt.Dimension(473, 100));
+        jPanel12.setLayout(new java.awt.BorderLayout());
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("SEARH"));
-        jPanel6.setPreferredSize(new java.awt.Dimension(373, 100));
 
-        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtSearchKeyPressed(evt);
+        btnClear.setBackground(new java.awt.Color(237, 163, 35));
+        btnClear.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnClear.setForeground(new java.awt.Color(255, 255, 255));
+        btnClear.setText("CLEAR");
+        btnClear.setBorderPainted(false);
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearActionPerformed(evt);
             }
         });
 
@@ -151,68 +253,52 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
-                .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addGap(4, 4, 4)
+                .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(6, 6, 6))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(35, Short.MAX_VALUE))
+                    .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
-        jPanel3.add(jPanel6, java.awt.BorderLayout.CENTER);
+        jPanel12.add(jPanel6, java.awt.BorderLayout.LINE_END);
 
-        jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);
+        jPanel13.setBackground(new java.awt.Color(255, 255, 255));
 
-        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel4.setPreferredSize(new java.awt.Dimension(300, 100));
-        jPanel4.setLayout(new java.awt.BorderLayout());
-
-        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("EXCEL"));
-        jPanel5.setPreferredSize(new java.awt.Dimension(300, 82));
-
-        btnExport.setBackground(new java.awt.Color(237, 163, 35));
-        btnExport.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnExport.setForeground(new java.awt.Color(255, 255, 255));
-        btnExport.setText("EXPORT");
-        btnExport.setBorderPainted(false);
-        btnExport.setMaximumSize(new java.awt.Dimension(77, 23));
-        btnExport.setMinimumSize(new java.awt.Dimension(77, 23));
-        btnExport.setPreferredSize(new java.awt.Dimension(77, 23));
-        btnExport.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExportActionPerformed(evt);
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtSearchKeyPressed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(89, Short.MAX_VALUE)
-                .addComponent(btnExport, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(75, 75, 75))
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
+        jPanel13.setLayout(jPanel13Layout);
+        jPanel13Layout.setHorizontalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel13Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnExport, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel13Layout.setVerticalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel13Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
-        jPanel4.add(jPanel5, java.awt.BorderLayout.CENTER);
+        jPanel12.add(jPanel13, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(jPanel4, java.awt.BorderLayout.LINE_END);
+        jPanel1.add(jPanel12, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
@@ -314,35 +400,62 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-    public void DishSearch ()
+    public void ReceiptSearch ()
     {
         String search = txtSearch.getText(); 
         
         if (search.trim() != null)
         {
             tableOrder.getDataVector().removeAllElements();
-            try {
-                ResultSet rs= r.ReceiptSearch(search);
-                while(rs.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
-                String rows[] = new String[3];
-                rows[0] = rs.getString(1); // ID
-                rows[1] = rs.getString(2); // Date
-                rows[2] = rs.getString(3); // Total
-                tableOrder.addRow(rows); // đưa dòng dữ liệu vào tableModelDish
-                //mỗi lần có sự thay đổi dữ liệu ở tableModelDish thì Jtable sẽ tự động update
+            tableOrder.fireTableDataChanged();
+            if (rdAll.isSelected())
+            {
+                try {
+                    ResultSet rs= r.ReceiptSearch(search, 0, 0);
+                    while(rs.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
+                    String rows[] = new String[3];
+                    rows[0] = rs.getString(1); // ID
+                    rows[1] = rs.getString(2); // Date
+                    rows[2] = rs.getString(3); // Total
+                    tableOrder.addRow(rows); // đưa dòng dữ liệu vào tableModelDish
+                    //mỗi lần có sự thay đổi dữ liệu ở tableModelDish thì Jtable sẽ tự động update
 
+                    }
+                }
+                catch (SQLException e) {
                 }
             }
-            catch (SQLException e) {
+            else
+            {
+                try {
+                    ResultSet rs= r.ReceiptSearch(search, month, year);
+                    while(rs.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
+                    String rows[] = new String[3];
+                    rows[0] = rs.getString(1); // ID
+                    rows[1] = rs.getString(2); // Date
+                    rows[2] = rs.getString(3); // Total
+                    tableOrder.addRow(rows); // đưa dòng dữ liệu vào tableModelDish
+                    //mỗi lần có sự thay đổi dữ liệu ở tableModelDish thì Jtable sẽ tự động update
+
+                    }
+                }
+                catch (SQLException e) {
+                }
             }
+            
         }
     }
     
     public void ShowOrderList()
     {
         tableOrder.getDataVector().removeAllElements();
+        tableOrder.fireTableDataChanged();
+        
+        if (rdMonth.isSelected())
+        {
             try {
-                ResultSet rs= r.ReceiptReport();
+                        
+                ResultSet rs= r.ReceiptReport(month,year);
                 while(rs.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
                     String rows[] = new String[3];
                     rows[0] = rs.getString(1); // ID
@@ -352,11 +465,32 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
                 }
             }
             catch (SQLException e) {
+                
             }
+        }
+        else 
+        {
+            try {
+                ResultSet rs= r.ReceiptReportAll();
+                while(rs.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
+                    String rows[] = new String[3];
+                    rows[0] = rs.getString(1); // ID
+                    rows[1] = rs.getString(2); // Date
+                    rows[2] = rs.getString(3); // Total
+                    tableOrder.addRow(rows); // 
+                }
+            }
+            catch (SQLException e) {
+                
+            }
+        }
+            
     }
         
     private void ShowDetail(String ml) {
         tableDetail.getDataVector().removeAllElements();
+        tableDetail.fireTableDataChanged();
+        
         try {
             ResultSet rs = d.ShowDetail(ml);
             while(rs.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
@@ -369,35 +503,9 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
             }
         }
             catch (SQLException e) {
-            }
-    }
-    
-    public void SaveExcel(File file, JTable table, DefaultTableModel model)
-    {
-        try {
-            FileWriter out = new FileWriter(file + ".xls");
-            BufferedWriter bwrite = new BufferedWriter(out);
-            //DefaultTableModel model = (DefaultTableModel) table.getModel();
-            
-            // ten Cot
-            for (int j = 0; j < table.getColumnCount(); j++) {
-                bwrite.write(model.getColumnName(j) + "\t");
-            }
-            bwrite.write("\n");
-            // Lay du lieu dong
-            for (int j = 0; j < table.getRowCount(); j++) {
-                for (int k = 0; k < table.getColumnCount(); k++) {
-                    bwrite.write(model.getValueAt(j, k).toString() + "\t");
-                }
-                bwrite.write("\n");
-            }
-            bwrite.close();
-                JOptionPane.showMessageDialog(null, "Lưu file thành công!");
-           } catch (Exception e2) {
-                JOptionPane.showMessageDialog(null, "Lỗi khi lưu file!");
         }
     }
-    
+        
     public void GetFileLocation() throws IOException, SQLException
     {
         JFileChooser fs = new JFileChooser(new File("c:\\"));
@@ -413,6 +521,7 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
     
     public void ExportExcel(File file) throws SQLException
     {
+        String sheet_name = "Reports_" + String.valueOf(month);
         
         try {
             XSSFWorkbook workbook = new XSSFWorkbook();
@@ -420,7 +529,7 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
  
             writeHeaderLine(sheet);
  
-            ResultSet rs= r.ReceiptReport();
+            ResultSet rs= r.ReceiptReport(month, year);
             writeDataLines(rs, workbook, sheet);
  
             FileOutputStream outputStream;
@@ -482,17 +591,15 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
         }
     }
     
-    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+    private void tbOrderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbOrderMouseClicked
         // TODO add your handling code here:
-        DishSearch();
-    }//GEN-LAST:event_btnSearchActionPerformed
-
-    private void txtSearchKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyPressed
-        // TODO add your handling code here:
-        DishSearch();
-    }//GEN-LAST:event_txtSearchKeyPressed
+        int row =this.tbOrder.getSelectedRow();
+        String ml=(this.tbOrder.getModel().getValueAt(row,0)).toString();
+        ShowDetail(ml);
+    }//GEN-LAST:event_tbOrderMouseClicked
 
     private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
+        // TODO add your handling code here:
         try {
             // TODO add your handling code here:
             GetFileLocation();
@@ -503,27 +610,53 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnExportActionPerformed
 
-    private void tbOrderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbOrderMouseClicked
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         // TODO add your handling code here:
-        int row =this.tbOrder.getSelectedRow();
-        String ml=(this.tbOrder.getModel().getValueAt(row,0)).toString();
-        ShowDetail(ml);
-    }//GEN-LAST:event_tbOrderMouseClicked
+        txtSearch.setText("");
+        ShowOrderList();
+    }//GEN-LAST:event_btnClearActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        // TODO add your handling code here:
+        ReceiptSearch();
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void txtSearchKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyPressed
+        // TODO add your handling code here:
+        ReceiptSearch();
+    }//GEN-LAST:event_txtSearchKeyPressed
+
+    private void rdAllMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rdAllMouseClicked
+        // TODO add your handling code here:
+        ShowOrderList();
+    }//GEN-LAST:event_rdAllMouseClicked
+
+    private void rdMonthMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rdMonthMouseClicked
+        // TODO add your handling code here:
+        ShowOrderList();
+    }//GEN-LAST:event_rdMonthMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup Gbtn;
+    private javax.swing.JButton btnClear;
     private javax.swing.JButton btnExport;
     private javax.swing.JButton btnSearch;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JRadioButton rdAll;
+    private javax.swing.JRadioButton rdMonth;
     private javax.swing.JTable tbDetail;
     private javax.swing.JTable tbOrder;
     private javax.swing.JTextField txtSearch;

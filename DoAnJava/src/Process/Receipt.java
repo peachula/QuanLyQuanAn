@@ -7,8 +7,10 @@ package Process;
 
 import Database.Connect;
 import java.sql.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
@@ -87,25 +89,34 @@ public class Receipt {
         cn.UpdateData(sql);
     }
 
-    ///select for report
-    public ResultSet ReceiptReport() throws SQLException{
-        LocalDateTime now = LocalDateTime.now().minus(Period.ofDays( 30 ));  
-        DateTimeFormatter date_f = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
-        String date = date_f.format(now);
+    ///select for report month
+    public ResultSet ReceiptReport(int month, int year) throws SQLException{
         
         cn.connectSQL();
-        String sql = "select ReceiptID, Date, Total from Receipt where date > '"+date+"'";
+        String sql = "select ReceiptID, Date, Total from Receipt where MONTH(Date) = '"+month+"' and YEAR(Date) = '"+year+"' and State = 1";
         return cn.LoadData(sql);
     }
     
-    ///select for report
-    public ResultSet ReceiptSearch(String id) throws SQLException{
-        LocalDateTime now = LocalDateTime.now().minus(Period.ofDays( 30 ));  
-        DateTimeFormatter date_f = DateTimeFormatter.ofPattern("yyyy-MM-dd");  
-        String date = date_f.format(now);
+    ///select for report all
+    public ResultSet ReceiptReportAll() throws SQLException{
+        cn.connectSQL();
+        String sql = "select ReceiptID, Date, Total from Receipt where State = 1";
+        return cn.LoadData(sql);
+    }
+    
+    ///select for report search
+    public ResultSet ReceiptSearch(String id, int month, int year) throws SQLException{
+        String sql = "";
+        if (year == 0 || month == 0)
+        {
+            sql = "select ReceiptID, Date, Total from Receipt where ReceiptID like '%"+id+"%' and State = 1";
+        }
+        else
+        {
+            sql = "select ReceiptID, Date, Total from Receipt where MONTH(Date) = '"+month+"' and YEAR(Date) = '"+year+"' and ReceiptID like '%"+id+"%' and State = 1";
+        }
         
         cn.connectSQL();
-        String sql = "select ReceiptID, Date, Total from Receipt where date > '"+date+"' and ReceiptID like '%"+id+"%' and State = 1";
         return cn.LoadData(sql);
     }
 }

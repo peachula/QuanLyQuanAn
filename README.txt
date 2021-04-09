@@ -9,3 +9,4 @@ every function or para have to be written in English
 State in Receipt table: 1= done; 0 = undone
 Role in Staff table:  0 = quản lý, 1 = chi nhánh trưởng,
 2 = ca trưởng, 4 = nhân viên full-time 
+
