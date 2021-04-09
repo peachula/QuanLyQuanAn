@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.security.Timestamp;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
@@ -58,6 +59,8 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
     Receipt r = new Receipt(); 
     ReceiptDetail d = new ReceiptDetail();
     
+    String sheet_name = "";
+    
     public frmReport_Order() throws SQLException {
         initComponents();
         setTitle("ORDERS REPORTS PAGE");
@@ -80,6 +83,9 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
         tableDetail.setColumnIdentifiers(colsName_Detail);
         tbDetail.setModel(tableDetail);
         
+        LocalDate today = LocalDate.now();
+        int month = today.getMonthValue();
+        sheet_name = "Reports_" + String.valueOf(month);
     }
 
     /**
@@ -410,7 +416,7 @@ public class frmReport_Order extends javax.swing.JInternalFrame {
         
         try {
             XSSFWorkbook workbook = new XSSFWorkbook();
-            XSSFSheet sheet = workbook.createSheet("Reviews");
+            XSSFSheet sheet = workbook.createSheet(sheet_name);
  
             writeHeaderLine(sheet);
  
