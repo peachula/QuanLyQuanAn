@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import Process.Category;//Lớp Category trong Proccess đã thực hiện
 import java.awt.event.MouseListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
@@ -133,7 +135,7 @@ public class frmCate extends javax.swing.JInternalFrame {
         btnClear = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         btnSearch = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        txtSearch = new javax.swing.JTextField();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         setMaximumSize(new java.awt.Dimension(100, 563));
@@ -292,10 +294,15 @@ public class frmCate extends javax.swing.JInternalFrame {
         btnSearch.setForeground(new java.awt.Color(255, 255, 255));
         btnSearch.setText("SEARCH");
         btnSearch.setBorderPainted(false);
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
         jPanel3.add(btnSearch, java.awt.BorderLayout.LINE_END);
 
-        jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jPanel3.add(jTextField1, java.awt.BorderLayout.CENTER);
+        txtSearch.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jPanel3.add(txtSearch, java.awt.BorderLayout.CENTER);
 
         jPanel8.add(jPanel3, java.awt.BorderLayout.CENTER);
 
@@ -358,9 +365,9 @@ public class frmCate extends javax.swing.JInternalFrame {
 //            {
             try {
             if(cothem==true) //Luu cho tthem moi
-            lsp.InsertCategory(tl);
+                lsp.InsertCategory(tl);
             else //Luu cho sua
-            lsp.EditCategory(ml, tl);
+                lsp.EditCategory(ml, tl);
             ClearData(); //goi ham xoa du lieu tron tableModel
             ShowData(); //Do lai du lieu vao Table Model
             }
@@ -405,6 +412,26 @@ public class frmCate extends javax.swing.JInternalFrame {
         txtName.setText("");
     }//GEN-LAST:event_btnClearActionPerformed
 
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        // TODO add your handling code here:
+        String i = txtSearch.getText();
+        int bien = Integer.parseInt(i);
+        try {
+           
+            lsp.Category_ID(bien);
+            tableModel.setRowCount(0);
+//            while(tableModel.getRowCount() > 0)
+//                {
+//                    tableModel.removeRow(0);
+//                }
+//            tableDish.revalidate();
+            ShowData();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(frmDish.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnSearchActionPerformed
+
        //Code tu sinh khi thiet ke giao dien va cac code khac ở đây…….
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -423,10 +450,10 @@ public class frmCate extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTable tableCate;
     private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtName;
+    private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 
 }

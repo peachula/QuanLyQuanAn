@@ -13,6 +13,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import Process.Dish;//Lớp Dish trong Proccess đã thực hiện
 import java.awt.event.MouseListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
@@ -88,7 +90,7 @@ public class frmDish extends javax.swing.JInternalFrame {
         btnClear = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         btnSearch = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        txtSearch = new javax.swing.JTextField();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         setMaximumSize(new java.awt.Dimension(100, 563));
@@ -269,10 +271,15 @@ public class frmDish extends javax.swing.JInternalFrame {
         btnSearch.setForeground(new java.awt.Color(255, 255, 255));
         btnSearch.setText("SEARCH");
         btnSearch.setBorderPainted(false);
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
         jPanel3.add(btnSearch, java.awt.BorderLayout.LINE_END);
 
-        jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jPanel3.add(jTextField1, java.awt.BorderLayout.CENTER);
+        txtSearch.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jPanel3.add(txtSearch, java.awt.BorderLayout.CENTER);
 
         jPanel8.add(jPanel3, java.awt.BorderLayout.CENTER);
 
@@ -287,6 +294,13 @@ public class frmDish extends javax.swing.JInternalFrame {
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         // TODO add your handling code here:
+        txtName.setText("");
+        txtPrice.setText("");
+        txtCate.setText("");
+        
+
+
+
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void tableDishMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableDishMouseClicked
@@ -395,12 +409,37 @@ public class frmDish extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        // TODO add your handling code here:
+//        ResultSet result= lsp.Dish_ID(WIDTH)
+//        if(result.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
+//        txtTenloai.setText(result.getString("Tenloai"));
+        String i = txtSearch.getText();
+        int bien = Integer.parseInt(i);
+        try {
+           
+            lsp.Dish_ID(bien);
+            tableModel.setRowCount(0);
+//            while(tableModel.getRowCount() > 0)
+//                {
+//                    tableModel.removeRow(0);
+//                }
+
+//            tableDish.revalidate();
+            ShowData();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(frmDish.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnSearchActionPerformed
+
     
      // Xử lý hiện thị dữ liệu khi Form được mở
 //    String id= frmCustomer.txtID.getText();
     private final Dish lsp = new Dish();
     private boolean cothem=true;
     private final DefaultTableModel tableModel = new DefaultTableModel();
+    
     //Ham do du lieu vao tableModel
     public void ShowData() throws SQLException{
         tableModel.getDataVector().removeAllElements(); ///refresh lại model
@@ -437,7 +476,7 @@ public class frmDish extends javax.swing.JInternalFrame {
     private void setKhoa(boolean a)
     {
         //Khoa hoac mo khoa cho Cac JTextField
-        //this.txtID. setEnabled (!a);
+        this.txtDID. setEnabled (a);
         this.txtName. setEnabled (!a);
         this.txtPrice. setEnabled (!a);
 
@@ -476,12 +515,12 @@ public class frmDish extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTable tableDish;
     private javax.swing.JTextField txtCate;
     private javax.swing.JTextField txtDID;
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtPrice;
+    private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 
 }
