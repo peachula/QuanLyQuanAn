@@ -300,7 +300,6 @@ public class frmAdmin_Customer extends javax.swing.JInternalFrame {
         else
         {
         setKhoa(false);//Mo khoa cac TextField
-        this.txtName.enable(false);
         setButton(false); //Khoa cac Button
         cothem=false; //Gan cothem=false de ghi nhan trang thai la sua
         }
@@ -313,30 +312,25 @@ public class frmAdmin_Customer extends javax.swing.JInternalFrame {
         
         String tl=txtName.getText();
         String p1=txtPhone.getText();
-        int phone_number = Integer.parseInt(p1);
-        if(tl.length()==0 || p1.length()==0)
-        JOptionPane.showMessageDialog(null,"Vui long nhap Ma loai va ten loai","Thong bao",1);
+        if(tl.trim().isEmpty() || p1.trim().isEmpty())
+            JOptionPane.showMessageDialog(null,"Fields are blank","Warning",1);
         else
-        { 
-//            if(ml>2 || tl.length()>30)
-//            JOptionPane.showMessageDialog(null,"Ma loai chi 2 ky tu, ten loai la 20","Thong bao",1);
-//            else
-//            {
+        {             
+            int phone_number = Integer.parseInt(p1);
             try {
             if(cothem==true) //Luu cho tthem moi
                 lsp.InsertCustomer(tl,phone_number);
             else //Luu cho sua
             {
-                int ml= Integer.parseInt(txtID.getText()); /// truyền cái id vô làm gì ?
+                int ml= Integer.parseInt(txtID.getText()); 
                 lsp.EditCustomer(ml, tl , phone_number);
             }
-            //ClearData(); //goi ham xoa du lieu tron tableModel
             ShowData(); //Do lai du lieu vao Table Model
             }
             catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null,"Cap nhat that bai","Thong bao",1);
             }
-            setKhoa(false);
+            setKhoa(true);
             setButton(true);           
         }
     }//GEN-LAST:event_btnSaveActionPerformed
@@ -347,7 +341,7 @@ public class frmAdmin_Customer extends javax.swing.JInternalFrame {
 //        int ml= Integer.parseInt(txtID.getText());
         try {
         if(ml.length()==0)
-            JOptionPane.showMessageDialog(null,"Chon 1 user de xoa","Thong bao",1);
+            JOptionPane.showMessageDialog(null,"Please pick a customer","Thong bao",1);
         else
         {
             if(JOptionPane.showConfirmDialog(null, "Ban muon xoa user " + ml + " nay hay khong?","Thong bao",2)==0)
@@ -383,6 +377,8 @@ public class frmAdmin_Customer extends javax.swing.JInternalFrame {
     //Ham do du lieu vao tableModel
     public void ShowData() throws SQLException{
         tableModel.getDataVector().removeAllElements(); ///refresh lại model
+        tableModel.fireTableDataChanged();
+        
         ResultSet result= lsp.Customer();
         try {
                 while(result.next()){ // nếu còn đọc tiếp được một dòng dữ liệu

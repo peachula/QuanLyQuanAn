@@ -46,7 +46,7 @@ public class Customer {
     //Dieu chinh 1 dong du lieu vao table
     public void EditCustomer(int c_id, String c_name, int phone) throws SQLException{
         String sql = "Update Customer set CustomerName = N'"+ c_name +"', Phone = "+ phone+
-                        "' where CustomerID ='" + c_id +"'";
+                        " where CustomerID ='" + c_id +"'";
         cn.UpdateData(sql);
     }
     
