@@ -48,7 +48,7 @@ public class Dish {
     
     //Dieu chinh 1 dong du lieu vao table
     public void EditDish(int d_id, String d_name, long d_price, int cate_id) throws SQLException{
-        String sql = "Update Staff set DishName = N'"+ d_name +"', DishPrice = "+ d_price +", CateID = '"+
+        String sql = "Update Dish set DishName = N'"+ d_name +"', DishPrice = "+ d_price +", CateID = '"+
                 cate_id + "' where DishID ='" + d_id +"'";
         cn.UpdateData(sql);
     }
