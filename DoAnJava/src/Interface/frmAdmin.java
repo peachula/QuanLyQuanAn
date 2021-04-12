@@ -26,7 +26,9 @@ public class frmAdmin extends javax.swing.JFrame {
      */
     
     frmAdmin_Staff frmStaff;
-    frmCate frmCate;
+    frmAdmin_Cate frmCate;
+    frmAdmin_Dish frmDish;
+    frmAdmin_Customer frmCustomer;
     
     //boolean full_screen = frmLogIn.full_screen;
     
@@ -65,7 +67,6 @@ public class frmAdmin extends javax.swing.JFrame {
         btnStaff = new javax.swing.JButton();
         btnCate = new javax.swing.JButton();
         btnDish = new javax.swing.JButton();
-        btnCombo = new javax.swing.JButton();
         btnCustomer = new javax.swing.JButton();
         jDesktopPane1 = new javax.swing.JDesktopPane();
 
@@ -143,17 +144,12 @@ public class frmAdmin extends javax.swing.JFrame {
         btnDish.setMaximumSize(new java.awt.Dimension(75, 60));
         btnDish.setMinimumSize(new java.awt.Dimension(75, 60));
         btnDish.setPreferredSize(new java.awt.Dimension(75, 60));
+        btnDish.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDishActionPerformed(evt);
+            }
+        });
         jPanel3.add(btnDish);
-
-        btnCombo.setBackground(new java.awt.Color(237, 163, 35));
-        btnCombo.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnCombo.setForeground(new java.awt.Color(255, 255, 255));
-        btnCombo.setText("COMBO");
-        btnCombo.setBorderPainted(false);
-        btnCombo.setMaximumSize(new java.awt.Dimension(75, 60));
-        btnCombo.setMinimumSize(new java.awt.Dimension(75, 60));
-        btnCombo.setPreferredSize(new java.awt.Dimension(75, 60));
-        jPanel3.add(btnCombo);
 
         btnCustomer.setBackground(new java.awt.Color(237, 163, 35));
         btnCustomer.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -163,6 +159,11 @@ public class frmAdmin extends javax.swing.JFrame {
         btnCustomer.setMaximumSize(new java.awt.Dimension(75, 60));
         btnCustomer.setMinimumSize(new java.awt.Dimension(75, 60));
         btnCustomer.setPreferredSize(new java.awt.Dimension(100, 60));
+        btnCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCustomerActionPerformed(evt);
+            }
+        });
         jPanel3.add(btnCustomer);
 
         jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);
@@ -223,7 +224,11 @@ public class frmAdmin extends javax.swing.JFrame {
         
         if(frmCate == null || frmCate.isClosed())
         {
-            frmCate = new frmCate();
+            try {
+                frmCate = new frmAdmin_Cate();
+            } catch (SQLException ex) {
+                Logger.getLogger(frmAdmin.class.getName()).log(Level.SEVERE, null, ex);
+            }
             jDesktopPane1.add(frmCate);
             frmCate.setSize(this.getWidth(),this.getHeight());
             frmCate.setLocation(0,0);
@@ -256,6 +261,60 @@ public class frmAdmin extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_formWindowStateChanged
+
+    private void btnDishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDishActionPerformed
+        // TODO add your handling code here:
+        for (JInternalFrame frmChild : jDesktopPane1.getAllFrames()) {
+            frmChild.dispose();
+        }
+        
+        if(frmDish == null || frmDish .isClosed())
+        {
+            try {
+                frmDish  = new frmAdmin_Dish();
+            } catch (SQLException ex) {
+                Logger.getLogger(frmAdmin.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            jDesktopPane1.add(frmDish);
+            frmDish .setSize(this.getWidth(),this.getHeight());
+            frmDish .setLocation(0,0);
+            frmDish .setVisible(true);
+            }
+            else
+            {
+            
+                frmDish .setSize(this.getWidth(),this.getHeight());
+                frmDish .setLocation(0,0);
+                frmDish .setVisible(true);
+        }
+    }//GEN-LAST:event_btnDishActionPerformed
+
+    private void btnCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustomerActionPerformed
+        // TODO add your handling code here:
+        for (JInternalFrame frmChild : jDesktopPane1.getAllFrames()) {
+            frmChild.dispose();
+        }
+        
+        if(frmCustomer == null || frmCustomer.isClosed())
+        {
+            try {
+                frmCustomer = new frmAdmin_Customer();
+            } catch (SQLException ex) {
+                Logger.getLogger(frmAdmin.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            jDesktopPane1.add(frmCustomer);
+            frmCustomer.setSize(this.getWidth(),this.getHeight());
+            frmCustomer.setLocation(0,0);
+            frmCustomer.setVisible(true);
+            }
+            else
+            {
+            
+                frmCustomer.setSize(this.getWidth(),this.getHeight());
+                frmCustomer.setLocation(0,0);
+                frmCustomer.setVisible(true);
+        }
+    }//GEN-LAST:event_btnCustomerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -297,7 +356,6 @@ public class frmAdmin extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCate;
-    private javax.swing.JButton btnCombo;
     private javax.swing.JButton btnCustomer;
     private javax.swing.JButton btnDish;
     private javax.swing.JButton btnMenu;

@@ -49,6 +49,7 @@ public class frmReport_Customer extends javax.swing.JInternalFrame {
         // đặt tiêu đề cột cho tableModel
         tableCus.setColumnIdentifiers(colsName_Cate);
         tbCustomer.setModel(tableCus);
+        tbCustomer.setDefaultEditor(Object.class, null);
                 
         CustomerSort(0);
         

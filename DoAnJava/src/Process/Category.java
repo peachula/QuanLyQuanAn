@@ -31,9 +31,10 @@ public class Category {
         return cn.LoadData(sql);
     }
     //Truy van du lieu trong Table theo name
-    public ResultSet Category_NAME(String cate_name) throws SQLException{
+    public ResultSet Category_Search(String search) throws SQLException{
         cn.connectSQL();
-        String sql = "SELECT * FROM Category where CateName LIKE N'%"+ cate_name +"%'";
+        String sql = "SELECT * FROM Category where CateName LIKE N'%"+ search +"%' or CateID like '%"+search+"%'";
+        System.out.println(sql);
         return cn.LoadData(sql);
     }
     
@@ -55,4 +56,6 @@ public class Category {
         String sql = "Delete from Category where CateID='" + cate_id +"'";
         cn.UpdateData(sql);
     }    
+    
+    
 }

@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author kieef
  */
-public class frmCate extends javax.swing.JInternalFrame {
+public class frmAdmin_Cate extends javax.swing.JInternalFrame {
     
      // Xử lý hiện thị dữ liệu khi Form được mở
     private final Category lsp = new Category();
@@ -30,6 +30,7 @@ public class frmCate extends javax.swing.JInternalFrame {
     public void ShowData() throws SQLException{
         
         tableModel.getDataVector().removeAllElements(); ///refresh lại model
+        tableModel.fireTableDataChanged();
         
         ResultSet result= lsp.Category();
         try {
@@ -44,14 +45,28 @@ public class frmCate extends javax.swing.JInternalFrame {
         catch (SQLException e) {
             }
     } 
+    
+    ///showw search data 
+    public void ShowSearchData(String s) throws SQLException{
+        
+        tableModel.getDataVector().removeAllElements(); ///refresh lại model
+        tableModel.fireTableDataChanged();
+        System.out.println("delete table");
+        ResultSet result= lsp.Category_Search(s);
+        try {
+                while(result.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
+                String rows[] = new String[3];
+                rows[0] = result.getString(1); // id
+                rows[1] = result.getString(2); // lộn form :)))
+                    System.out.println(rows[0]);
+                tableModel.addRow(rows); // đưa dòng dữ liệu vào tableModel
+                //mỗi lần có sự thay đổi dữ liệu ở tableModel thì Jtable sẽ tự động update
+                }
+            }
+        catch (SQLException e) {
+            }
+    }
 
-        //Ham xoa du lieu trong tableModel
-    public void ClearData() throws SQLException{
-        //Lay chi so dong cuoi cung
-        int n=tableCate.getRowCount()-1;
-        for(int i=n;i>=0;i--)
-        tableCate.remove(i);//Remove tung dong
-    } 
     //Ham xoa cac TextField
     private void setNull(){ 
         //Xoa trang cac JtextField
@@ -63,8 +78,8 @@ public class frmCate extends javax.swing.JInternalFrame {
     private void setKhoa(boolean a)
     {
         //Khoa hoac mo khoa cho Cac JTextField
-        this.txtID. setEnabled (!a);
-        this.txtName. setEnabled (!a);
+        //this.txtID. setEnabled (!a);
+        this.txtName.setEnabled (!a);
     } 
     //Ham khoa cac Button
     private void setButton(boolean a){
@@ -74,12 +89,11 @@ public class frmCate extends javax.swing.JInternalFrame {
         this.btnEdit. setEnabled (a);
         this.btnSave. setEnabled (!a);
         this.btnClear. setEnabled (!a);
-        this.btnSearch. setEnabled (a);
     }
 
-    public frmCate() throws SQLException {
+    public frmAdmin_Cate() throws SQLException {
         initComponents();
-        setTitle("STAFF PAGE");
+        setTitle("CATEGORY PAGE");
         
         String []colsName = {"ID", "Name"};
 //         đặt tiêu đề cột cho tableModel
@@ -88,6 +102,8 @@ public class frmCate extends javax.swing.JInternalFrame {
         
         // kết nối jtable với tableModel
         tableCate.setModel(tableModel);
+        tableCate.setDefaultEditor(Object.class, null);
+        
         //gọi hàm ShowData để đưa dữ liệu vào tableModel
         ShowData();
         //goi Ham xoa trang cac TextField
@@ -104,7 +120,7 @@ public class frmCate extends javax.swing.JInternalFrame {
     }
     public static void main(String args[]) throws SQLException {
 
-        frmCate f = new frmCate();
+        frmAdmin_Cate f = new frmAdmin_Cate();
         f.setVisible(true);
  }
 
@@ -144,16 +160,20 @@ public class frmCate extends javax.swing.JInternalFrame {
         setPreferredSize(new java.awt.Dimension(809, 536));
         getContentPane().setLayout(new java.awt.BorderLayout(5, 0));
 
-        jPanel9.setBackground(new java.awt.Color(207, 244, 210));
+        jPanel9.setBackground(new java.awt.Color(255, 255, 255));
         jPanel9.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanel9.setLayout(new java.awt.BorderLayout());
 
-        jPanel1.setBackground(new java.awt.Color(207, 244, 210));
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("INFORMATION"));
 
         jLabel1.setText("ID");
 
         jLabel2.setText("Name");
+
+        txtID.setEnabled(false);
+
+        txtName.setEnabled(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -188,7 +208,7 @@ public class frmCate extends javax.swing.JInternalFrame {
 
         getContentPane().add(jPanel9, java.awt.BorderLayout.PAGE_START);
 
-        jPanel10.setBackground(new java.awt.Color(207, 244, 210));
+        jPanel10.setBackground(new java.awt.Color(255, 255, 255));
         jPanel10.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanel10.setLayout(new java.awt.BorderLayout());
 
@@ -214,16 +234,16 @@ public class frmCate extends javax.swing.JInternalFrame {
 
         getContentPane().add(jPanel10, java.awt.BorderLayout.CENTER);
 
-        jPanel8.setBackground(new java.awt.Color(207, 244, 210));
+        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
         jPanel8.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanel8.setPreferredSize(new java.awt.Dimension(807, 90));
         jPanel8.setLayout(new java.awt.BorderLayout());
 
-        jPanel2.setBackground(new java.awt.Color(207, 244, 210));
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setPreferredSize(new java.awt.Dimension(400, 70));
         jPanel2.setLayout(new java.awt.GridLayout(1, 0));
 
-        btnAdd.setBackground(new java.awt.Color(32, 80, 114));
+        btnAdd.setBackground(new java.awt.Color(237, 163, 35));
         btnAdd.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnAdd.setForeground(new java.awt.Color(255, 255, 255));
         btnAdd.setText("ADD");
@@ -235,7 +255,7 @@ public class frmCate extends javax.swing.JInternalFrame {
         });
         jPanel2.add(btnAdd);
 
-        btnEdit.setBackground(new java.awt.Color(32, 80, 114));
+        btnEdit.setBackground(new java.awt.Color(237, 163, 35));
         btnEdit.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnEdit.setForeground(new java.awt.Color(255, 255, 255));
         btnEdit.setText("EDIT");
@@ -247,7 +267,7 @@ public class frmCate extends javax.swing.JInternalFrame {
         });
         jPanel2.add(btnEdit);
 
-        btnSave.setBackground(new java.awt.Color(32, 80, 114));
+        btnSave.setBackground(new java.awt.Color(237, 163, 35));
         btnSave.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnSave.setForeground(new java.awt.Color(255, 255, 255));
         btnSave.setText("SAVE");
@@ -259,7 +279,7 @@ public class frmCate extends javax.swing.JInternalFrame {
         });
         jPanel2.add(btnSave);
 
-        btnDelete.setBackground(new java.awt.Color(32, 80, 114));
+        btnDelete.setBackground(new java.awt.Color(237, 163, 35));
         btnDelete.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setText("DELETE");
@@ -271,7 +291,7 @@ public class frmCate extends javax.swing.JInternalFrame {
         });
         jPanel2.add(btnDelete);
 
-        btnClear.setBackground(new java.awt.Color(32, 80, 114));
+        btnClear.setBackground(new java.awt.Color(237, 163, 35));
         btnClear.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnClear.setForeground(new java.awt.Color(255, 255, 255));
         btnClear.setText("CLEAR");
@@ -285,11 +305,11 @@ public class frmCate extends javax.swing.JInternalFrame {
 
         jPanel8.add(jPanel2, java.awt.BorderLayout.LINE_END);
 
-        jPanel3.setBackground(new java.awt.Color(207, 244, 210));
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("SEARCH"));
         jPanel3.setLayout(new java.awt.BorderLayout());
 
-        btnSearch.setBackground(new java.awt.Color(32, 80, 114));
+        btnSearch.setBackground(new java.awt.Color(237, 163, 35));
         btnSearch.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnSearch.setForeground(new java.awt.Color(255, 255, 255));
         btnSearch.setText("SEARCH");
@@ -302,6 +322,11 @@ public class frmCate extends javax.swing.JInternalFrame {
         jPanel3.add(btnSearch, java.awt.BorderLayout.LINE_END);
 
         txtSearch.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtSearchKeyPressed(evt);
+            }
+        });
         jPanel3.add(txtSearch, java.awt.BorderLayout.CENTER);
 
         jPanel8.add(jPanel3, java.awt.BorderLayout.CENTER);
@@ -340,7 +365,7 @@ public class frmCate extends javax.swing.JInternalFrame {
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         String ml=txtID.getText();
         if(ml.length()==0) //Chua chon Ma loai
-        JOptionPane.showMessageDialog(null,"Vui long chon loi can sua","Thong bao",1);
+        JOptionPane.showMessageDialog(null,"Please select a category to edit","Thong bao",1);
         else
         {
         setKhoa(false);//Mo khoa cac TextField
@@ -352,11 +377,10 @@ public class frmCate extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        int ml= Integer.parseInt(txtID.getText());
+        
         String tl=txtName.getText();
-        if(ml==0 || tl.length()==0)
-        JOptionPane.showMessageDialog(null,
-       "Vui long nhap Ma loai va ten loai","Thong bao",1);
+        if(tl.length()==0)
+        JOptionPane.showMessageDialog(null, "Please fill out the blank","Empty fields",1);
         else
         { 
 //            if(ml>2 || tl.length()>30)
@@ -367,14 +391,17 @@ public class frmCate extends javax.swing.JInternalFrame {
             if(cothem==true) //Luu cho tthem moi
                 lsp.InsertCategory(tl);
             else //Luu cho sua
+            {
+                int ml= Integer.parseInt(txtID.getText());
                 lsp.EditCategory(ml, tl);
-            ClearData(); //goi ham xoa du lieu tron tableModel
+            }
             ShowData(); //Do lai du lieu vao Table Model
             }
             catch (SQLException ex) {
             JOptionPane.showMessageDialog(null,"Cap nhat that bai","Thong bao",1);
             }
-            setKhoa(false);
+            setNull();
+            setKhoa(true);
             setButton(true);
 //            
         }
@@ -410,27 +437,42 @@ public class frmCate extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         txtID.setText("");
         txtName.setText("");
+        txtSearch.setText("");
+        
+        setNull();
+        setKhoa(true);
+        setButton(true);
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
         String i = txtSearch.getText();
-        int bien = Integer.parseInt(i);
-        try {
-           
-            lsp.Category_ID(bien);
-            tableModel.setRowCount(0);
-//            while(tableModel.getRowCount() > 0)
-//                {
-//                    tableModel.removeRow(0);
-//                }
-//            tableDish.revalidate();
-            ShowData();
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(frmDish.class.getName()).log(Level.SEVERE, null, ex);
+        if (i.trim().isEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "Nothing to be search");
         }
+        else
+        {
+            try {
+                ShowSearchData(i);
+
+            } catch (SQLException ex) {
+                Logger.getLogger(frmAdmin_Dish.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
     }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void txtSearchKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyPressed
+        // TODO add your handling code here:
+        String i = txtSearch.getText();
+        try {
+            ShowSearchData(i);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(frmAdmin_Dish.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_txtSearchKeyPressed
 
        //Code tu sinh khi thiet ke giao dien va cac code khac ở đây…….
     

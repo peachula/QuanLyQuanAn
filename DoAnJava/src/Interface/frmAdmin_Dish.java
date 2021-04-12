@@ -5,43 +5,46 @@
  */
 package Interface;
 
+import java.awt.event.MouseListener;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
+import Interface.frmAdmin_Customer;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import Process.Customer;//Lớp Category trong Proccess đã thực hiện
+import Process.Dish;//Lớp Dish trong Proccess đã thực hiện
 import java.awt.event.MouseListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author kieef
  */
-public class frmCustomer extends javax.swing.JInternalFrame {
-    
-    private String ID;
-    
-    public String getID() {
-        return ID;
-    }
-    public void setID(String ID)  {
-        this.ID = this.txtID.getText();
-    }
+public class frmAdmin_Dish extends javax.swing.JInternalFrame {
+
     /**
      * Creates new form frmStaff
      */
-    public frmCustomer() throws SQLException {
+    public frmAdmin_Dish() throws SQLException {
         initComponents();
-        setTitle("STAFF PAGE");
+        
+        
+        setTitle("DISH PAGE");
         
         BasicInternalFrameUI bs = ((javax.swing.plaf.basic.BasicInternalFrameUI) this.getUI());
         for (MouseListener l: bs.getNorthPane().getMouseListeners()){
             bs.getNorthPane().removeMouseListener(l);
         }
-        String []colsName = {"ID", "Name", "Phonenumber" };
+        
+        String []colsName = {"ID Dish", "Name", "Price", "Category" };
         // đặt tiêu đề cột cho tableModel
         tableModel.setColumnIdentifiers(colsName);
         // kết nối jtable với tableModel
-        tableCus.setModel(tableModel);
+        tableDish.setModel(tableModel);
+        tableDish.setDefaultEditor(Object.class, null);
         //gọi hàm ShowData để đưa dữ liệu vào tableModel
         ShowData();
         //goi Ham xoa trang cac TextField
@@ -51,6 +54,11 @@ public class frmCustomer extends javax.swing.JInternalFrame {
         //Goi vo hieu 2 button Luu, K.Luu. Mo khoa 4 button con lao
         setButton(true);
     }
+
+//    frmDish(String msg) {
+//      initComponents();
+//      id.setText();
+//    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -66,12 +74,14 @@ public class frmCustomer extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtID = new javax.swing.JTextField();
+        txtDID = new javax.swing.JTextField();
         txtName = new javax.swing.JTextField();
-        txtPhone = new javax.swing.JTextField();
+        txtPrice = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtCate = new javax.swing.JTextField();
         jPanel10 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tableCus = new javax.swing.JTable();
+        tableDish = new javax.swing.JTable();
         jPanel8 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         btnAdd = new javax.swing.JButton();
@@ -81,7 +91,7 @@ public class frmCustomer extends javax.swing.JInternalFrame {
         btnClear = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         btnSearch = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        txtSearch = new javax.swing.JTextField();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         setMaximumSize(new java.awt.Dimension(100, 563));
@@ -90,20 +100,27 @@ public class frmCustomer extends javax.swing.JInternalFrame {
         setPreferredSize(new java.awt.Dimension(809, 536));
         getContentPane().setLayout(new java.awt.BorderLayout(5, 0));
 
-        jPanel9.setBackground(new java.awt.Color(207, 244, 210));
+        jPanel9.setBackground(new java.awt.Color(255, 255, 255));
         jPanel9.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanel9.setLayout(new java.awt.BorderLayout());
 
-        jPanel1.setBackground(new java.awt.Color(207, 244, 210));
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("INFORMATION"));
 
-        jLabel1.setText("ID");
+        jLabel1.setText(" Dish ID ");
 
         jLabel2.setText("Name");
 
-        jLabel3.setText("Phone number");
+        jLabel3.setText("Dish Price");
 
-        txtID.setEnabled(false);
+        txtDID.setEnabled(false);
+        txtDID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDIDActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Category");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -116,13 +133,17 @@ public class frmCustomer extends javax.swing.JInternalFrame {
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtID)
+                    .addComponent(txtDID)
                     .addComponent(txtName, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE))
-                .addGap(81, 81, 81)
-                .addComponent(jLabel3)
+                .addGap(130, 130, 130)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
                 .addGap(18, 18, 18)
-                .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(68, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtPrice, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
+                    .addComponent(txtCate))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -131,12 +152,14 @@ public class frmCustomer extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel3)
-                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(txtCate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -144,43 +167,42 @@ public class frmCustomer extends javax.swing.JInternalFrame {
 
         getContentPane().add(jPanel9, java.awt.BorderLayout.PAGE_START);
 
-        jPanel10.setBackground(new java.awt.Color(207, 244, 210));
+        jPanel10.setBackground(new java.awt.Color(255, 255, 255));
         jPanel10.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanel10.setLayout(new java.awt.BorderLayout());
 
-        tableCus.setModel(new javax.swing.table.DefaultTableModel(
+        tableDish.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "ID", "Name", "Phonenumber"
+                "ID Dish", "Name", "Price", "Category"
             }
         ));
-        tableCus.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        tableCus.addMouseListener(new java.awt.event.MouseAdapter() {
+        tableDish.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tableCusMouseClicked(evt);
+                tableDishMouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(tableCus);
+        jScrollPane2.setViewportView(tableDish);
 
         jPanel10.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(jPanel10, java.awt.BorderLayout.CENTER);
 
-        jPanel8.setBackground(new java.awt.Color(207, 244, 210));
+        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
         jPanel8.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanel8.setPreferredSize(new java.awt.Dimension(807, 90));
         jPanel8.setLayout(new java.awt.BorderLayout());
 
-        jPanel2.setBackground(new java.awt.Color(207, 244, 210));
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setPreferredSize(new java.awt.Dimension(400, 70));
         jPanel2.setLayout(new java.awt.GridLayout(1, 0));
 
-        btnAdd.setBackground(new java.awt.Color(32, 80, 114));
+        btnAdd.setBackground(new java.awt.Color(237, 163, 35));
         btnAdd.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnAdd.setForeground(new java.awt.Color(255, 255, 255));
         btnAdd.setText("ADD");
@@ -192,7 +214,7 @@ public class frmCustomer extends javax.swing.JInternalFrame {
         });
         jPanel2.add(btnAdd);
 
-        btnEdit.setBackground(new java.awt.Color(32, 80, 114));
+        btnEdit.setBackground(new java.awt.Color(237, 163, 35));
         btnEdit.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnEdit.setForeground(new java.awt.Color(255, 255, 255));
         btnEdit.setText("EDIT");
@@ -204,7 +226,7 @@ public class frmCustomer extends javax.swing.JInternalFrame {
         });
         jPanel2.add(btnEdit);
 
-        btnSave.setBackground(new java.awt.Color(32, 80, 114));
+        btnSave.setBackground(new java.awt.Color(237, 163, 35));
         btnSave.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnSave.setForeground(new java.awt.Color(255, 255, 255));
         btnSave.setText("SAVE");
@@ -216,7 +238,7 @@ public class frmCustomer extends javax.swing.JInternalFrame {
         });
         jPanel2.add(btnSave);
 
-        btnDelete.setBackground(new java.awt.Color(32, 80, 114));
+        btnDelete.setBackground(new java.awt.Color(237, 163, 35));
         btnDelete.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setText("DELETE");
@@ -228,7 +250,7 @@ public class frmCustomer extends javax.swing.JInternalFrame {
         });
         jPanel2.add(btnDelete);
 
-        btnClear.setBackground(new java.awt.Color(32, 80, 114));
+        btnClear.setBackground(new java.awt.Color(237, 163, 35));
         btnClear.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnClear.setForeground(new java.awt.Color(255, 255, 255));
         btnClear.setText("CLEAR");
@@ -242,19 +264,24 @@ public class frmCustomer extends javax.swing.JInternalFrame {
 
         jPanel8.add(jPanel2, java.awt.BorderLayout.LINE_END);
 
-        jPanel3.setBackground(new java.awt.Color(207, 244, 210));
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("SEARCH"));
         jPanel3.setLayout(new java.awt.BorderLayout());
 
-        btnSearch.setBackground(new java.awt.Color(32, 80, 114));
+        btnSearch.setBackground(new java.awt.Color(237, 163, 35));
         btnSearch.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnSearch.setForeground(new java.awt.Color(255, 255, 255));
         btnSearch.setText("SEARCH");
         btnSearch.setBorderPainted(false);
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
         jPanel3.add(btnSearch, java.awt.BorderLayout.LINE_END);
 
-        jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jPanel3.add(jTextField1, java.awt.BorderLayout.CENTER);
+        txtSearch.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jPanel3.add(txtSearch, java.awt.BorderLayout.CENTER);
 
         jPanel8.add(jPanel3, java.awt.BorderLayout.CENTER);
 
@@ -263,26 +290,39 @@ public class frmCustomer extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tableCusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableCusMouseClicked
+    private void txtDIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDIDActionPerformed
+
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        // TODO add your handling code here:
+        txtName.setText("");
+        txtPrice.setText("");
+        txtCate.setText("");
+
+    }//GEN-LAST:event_btnClearActionPerformed
+
+    private void tableDishMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableDishMouseClicked
         // TODO add your handling code here:
         try{
         //Lay chi so dong dang chon
-        int row = this.tableCus.getSelectedRow(); //lỗi xàm ghê á :)))) laf seo
-        
-        int ml=Integer.parseInt((this.tableCus.getModel().getValueAt(row,0)).toString());
-        
-        ResultSet rs= lsp.Customer_ID(ml);//Goi ham lay du lieu theo ma loai
-        
-        if(rs.next())//Neu co du lieu
-        {
-            txtID.setText(rs.getString(1));
-            this.txtName.setText(rs.getString(2));
-            this.txtPhone.setText(rs.getString(3));///name nằm ở vị trí 2 trong kết quả trả về của sqlok
-        }
+            int row = this.tableDish.getSelectedRow(); //lỗi xàm ghê á :)))) laf seo
+
+            int ml=Integer.parseInt((this.tableDish.getModel().getValueAt(row,0)).toString());
+
+            ResultSet rs= lsp.Dish_ID(ml);//Goi ham lay du lieu theo ma loai
+
+            if(rs.next())//Neu co du lieu
+            {
+                txtDID.setText(rs.getString(1));
+                this.txtName.setText(rs.getString(2));
+                this.txtPrice.setText(rs.getString(3));///name nằm ở vị trí 2 trong kết quả trả về của sqlok
+            }
         }
         catch (SQLException e) {
+            
         } 
-    }//GEN-LAST:event_tableCusMouseClicked
+    }//GEN-LAST:event_tableDishMouseClicked
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
@@ -295,7 +335,7 @@ public class frmCustomer extends javax.swing.JInternalFrame {
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         // TODO add your handling code here:
         String tl=txtName.getText();
-        if(tl.length()==0) //Chua chon Ma loai
+        if(tl.length()==0) //Chua chon loai
             JOptionPane.showMessageDialog(null,"Vui long chon loi can sua","Thong bao",1);
         else
         {
@@ -308,12 +348,13 @@ public class frmCustomer extends javax.swing.JInternalFrame {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
-//        String msg= txtID.getText();
-//        new frmDish(msg).setVisible(true);
-        
+        // String Id= Id.setID(Id);
+
         String tl=txtName.getText();
-        String p1=txtPhone.getText();
-        int phone_number = Integer.parseInt(p1);
+        String p1=txtPrice.getText();
+        String c1=txtCate.getText();
+        int CategoryID = Integer.parseInt(c1);
+        long price = Long.parseLong(p1);
         if(tl.length()==0 || p1.length()==0)
         JOptionPane.showMessageDialog(null,"Vui long nhap Ma loai va ten loai","Thong bao",1);
         else
@@ -323,12 +364,14 @@ public class frmCustomer extends javax.swing.JInternalFrame {
 //            else
 //            {
             try {
-            if(cothem==true) //Luu cho tthem moi
-                lsp.InsertCustomer(tl,phone_number);
+            if(cothem==true){ //Luu cho tthem moi
+                
+                lsp.InsertDish(tl,price,CategoryID);
+            }
             else //Luu cho sua
             {
-                int ml= Integer.parseInt(txtID.getText()); /// truyền cái id vô làm gì ?
-                lsp.EditCustomer(ml, tl , phone_number);
+                int ml= Integer.parseInt(txtDID.getText()); /// truyền cái id vô làm gì ?
+                lsp.EditDish(ml,tl , price,CategoryID);
             }
             //ClearData(); //goi ham xoa du lieu tron tableModel
             ShowData(); //Do lai du lieu vao Table Model
@@ -343,7 +386,7 @@ public class frmCustomer extends javax.swing.JInternalFrame {
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
-         String ml=txtID.getText();
+        String ml=txtDID.getText();
 //        int ml= Integer.parseInt(txtID.getText());
         try {
         if(ml.length()==0)
@@ -353,7 +396,7 @@ public class frmCustomer extends javax.swing.JInternalFrame {
             if(JOptionPane.showConfirmDialog(null, "Ban muon xoa user " + ml + " nay hay khong?","Thong bao",2)==0)
             {
                 int bien = Integer.parseInt(ml);
-                lsp.DeleteCustomer(bien);//goi ham xoa du lieu theo ma loai
+                lsp.DeleteDish(bien);//goi ham xoa du lieu theo ma loai
                 //ClearData();//Xoa du lieu trong tableModel
                 ShowData();//Do du lieu vao table Model ủa nó nè :))))
                 setNull();//Xoa trang Textfield
@@ -366,24 +409,41 @@ public class frmCustomer extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
-    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         // TODO add your handling code here:
-        txtID.setText("");
-        txtName.setText("");
-        txtPhone.setText("");
-        
-    }//GEN-LAST:event_btnClearActionPerformed
+//        ResultSet result= lsp.Dish_ID(WIDTH)
+//        if(result.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
+//        txtTenloai.setText(result.getString("Tenloai"));
+        String i = txtSearch.getText();
+        int bien = Integer.parseInt(i);
+        try {
+           
+            lsp.Dish_ID(bien);
+            tableModel.setRowCount(0);
+//            while(tableModel.getRowCount() > 0)
+//                {
+//                    tableModel.removeRow(0);
+//                }
+
+//            tableDish.revalidate();
+            ShowData();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(frmAdmin_Dish.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnSearchActionPerformed
+
     
-    
-    // Xử lý hiện thị dữ liệu khi Form được mở
-    private final Customer lsp = new Customer();
+     // Xử lý hiện thị dữ liệu khi Form được mở
+//    String id= frmCustomer.txtID.getText();
+    private final Dish lsp = new Dish();
     private boolean cothem=true;
     private final DefaultTableModel tableModel = new DefaultTableModel();
     
     //Ham do du lieu vao tableModel
     public void ShowData() throws SQLException{
         tableModel.getDataVector().removeAllElements(); ///refresh lại model
-        ResultSet result= lsp.Customer();
+        ResultSet result= lsp.Dish();
         try {
                 while(result.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
                 String rows[] = new String[3];
@@ -400,25 +460,25 @@ public class frmCustomer extends javax.swing.JInternalFrame {
     //Ham xoa du lieu trong tableModel
     public void ClearData() throws SQLException{
         //Lay chi so dong cuoi cung
-        int n=tableCus.getRowCount()-1;
+        int n=tableDish.getRowCount()-1;
         for(int i=n;i>=0;i--)
-        tableCus.remove(i);//Remove tung dong
+        tableDish.remove(i);//Remove tung dong
     } 
     //Ham xoa cac TextField
     private void setNull(){ 
         //Xoa trang cac JtextField
-        this.txtID.setText(null);
+        this.txtDID.setText(null);
         this.txtName.setText(null);
-        this.txtPhone.setText(null);
-        this.txtID.requestFocus();
+        this.txtPrice.setText(null);
+        this.txtDID.requestFocus();
     }
     //Ham khoa cac TextField
     private void setKhoa(boolean a)
     {
         //Khoa hoac mo khoa cho Cac JTextField
-        //this.txtID. setEnabled (!a);
+        this.txtDID. setEnabled (a);
         this.txtName. setEnabled (!a);
-        this.txtPhone. setEnabled (!a);
+        this.txtPrice. setEnabled (!a);
 
     } 
      //Ham khoa cac Button
@@ -431,14 +491,12 @@ public class frmCustomer extends javax.swing.JInternalFrame {
         this.btnClear. setEnabled (!a);
         this.btnSearch. setEnabled (a);
     }
-    
     public static void main(String args[]) throws SQLException {
 
-        frmCustomer s = new frmCustomer();
+        frmAdmin_Dish s = new frmAdmin_Dish();
         s.setVisible(true);
  }
-    
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnClear;
@@ -449,6 +507,7 @@ public class frmCustomer extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
@@ -456,10 +515,12 @@ public class frmCustomer extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTable tableCus;
-    private javax.swing.JTextField txtID;
+    private javax.swing.JTable tableDish;
+    private javax.swing.JTextField txtCate;
+    private javax.swing.JTextField txtDID;
     private javax.swing.JTextField txtName;
-    private javax.swing.JTextField txtPhone;
+    private javax.swing.JTextField txtPrice;
+    private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
+
 }

@@ -41,6 +41,7 @@ public class frmAdmin_Staff extends javax.swing.JInternalFrame {
         // đặt tiêu đề cột cho tableModel
         tableModelStaff.setColumnIdentifiers(colsName_Detail);
         tbStaff.setModel(tableModelStaff);
+        tbStaff.setDefaultEditor(Object.class, null);
         ResultSet result = ShowStaff("all");
         ShowData(result);
         
@@ -89,7 +90,7 @@ public class frmAdmin_Staff extends javax.swing.JInternalFrame {
         btnClear = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         btnSearch = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        txtSearch = new javax.swing.JTextField();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         setMaximumSize(new java.awt.Dimension(100, 563));
@@ -269,13 +270,18 @@ public class frmAdmin_Staff extends javax.swing.JInternalFrame {
         });
         jPanel3.add(btnSearch, java.awt.BorderLayout.LINE_END);
 
-        jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txtSearch.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txtSearchActionPerformed(evt);
             }
         });
-        jPanel3.add(jTextField1, java.awt.BorderLayout.CENTER);
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtSearchKeyPressed(evt);
+            }
+        });
+        jPanel3.add(txtSearch, java.awt.BorderLayout.CENTER);
 
         jPanel8.add(jPanel3, java.awt.BorderLayout.CENTER);
 
@@ -333,7 +339,8 @@ public class frmAdmin_Staff extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_btnAddActionPerformed
 
-    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+    public void SearchFunction()
+    {
         try {
             // TODO add your handling code here:           
             ResultSet result = ShowStaff("name");                
@@ -341,11 +348,14 @@ public class frmAdmin_Staff extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             Logger.getLogger(frmAdmin_Staff.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        SearchFunction();
     }//GEN-LAST:event_btnSearchActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtSearchActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
@@ -390,10 +400,19 @@ public class frmAdmin_Staff extends javax.swing.JInternalFrame {
         txtID.setText("");
         txtName.setText("");
         txtPassword.setText("");
+        txtSearch.setText("");
         btnAdd.setEnabled(true);
         btnDelete.setEnabled(false);
         btnSave.setEnabled(false);
         jComboBoxRole.setSelectedIndex(3);
+        
+        ResultSet result = null;
+        try {
+            result = ShowStaff("all");
+        } catch (SQLException ex) {
+            Logger.getLogger(frmAdmin_Staff.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ShowData(result);
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void tbStaffMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbStaffMouseClicked
@@ -468,6 +487,9 @@ public class frmAdmin_Staff extends javax.swing.JInternalFrame {
            btnSave.setEnabled(false);
            btnDelete.setEnabled(false);
            btnAdd.setEnabled(true);
+           txtID.setText("");
+           txtName.setText("");
+           txtPassword.setText("");
         } catch (SQLException ex) {
             Logger.getLogger(frmAdmin_Staff.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -478,6 +500,11 @@ public class frmAdmin_Staff extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBoxRoleActionPerformed
 
+    private void txtSearchKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyPressed
+        // TODO add your handling code here:
+        SearchFunction();
+    }//GEN-LAST:event_txtSearchKeyPressed
+
     private ResultSet ShowStaff(String statment) throws SQLException
     {
        
@@ -486,7 +513,7 @@ public class frmAdmin_Staff extends javax.swing.JInternalFrame {
             switch(statment)
             {
                 case "name":
-                    String staff_name = jTextField1.getText();
+                    String staff_name = txtSearch.getText();
                     result = staff.Staff_Name(staff_name); 
                     break;
                 
@@ -530,7 +557,6 @@ public class frmAdmin_Staff extends javax.swing.JInternalFrame {
                 tableModelStaff.addRow(rows); // đưa dòng dữ liệu vào tableModel
             //mỗi lần có sự thay đổi dữ liệu ở tableModel thì Jtable sẽ tự động update
             }
-            System.out.println("Đọc xong data");
         }
            catch (SQLException e) {
             System.out.println(e);
@@ -566,10 +592,10 @@ public class frmAdmin_Staff extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTable tbStaff;
     private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtName;
     private javax.swing.JPasswordField txtPassword;
+    private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }
