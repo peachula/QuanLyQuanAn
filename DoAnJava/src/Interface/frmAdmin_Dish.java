@@ -393,7 +393,7 @@ public class frmAdmin_Dish extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null,"Chon 1 user de xoa","Thong bao",1);
         else
         {
-            if(JOptionPane.showConfirmDialog(null, "Ban muon xoa user " + ml + " nay hay khong?","Thong bao",2)==0)
+            if(JOptionPane.showConfirmDialog(null, "Delete this dish and all relevant information ?","Warning",2)==0)
             {
                 int bien = Integer.parseInt(ml);
                 lsp.DeleteDish(bien);//goi ham xoa du lieu theo ma loai

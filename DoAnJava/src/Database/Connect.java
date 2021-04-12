@@ -18,10 +18,10 @@ public class Connect {
     public void connectSQL() throws SQLException{
     try {
         String userName ="sa";
-        String password = "123456";
+        String password = "123";
         
         
-        String url = "jdbc:sqlserver://LAPTOP-7Q53KE18\\SQLEXPRESS:1433;databaseName=QuanLyQuanAn;";
+        String url = "jdbc:sqlserver://DESKTOP-BH0CK03;databaseName=QuanLyQuanAn;";
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         conn = java.sql.DriverManager.getConnection(url,userName,password);
         }

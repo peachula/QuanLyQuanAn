@@ -31,9 +31,9 @@ public class Customer {
     }
     
      //Truy van tat ca du lieu trong Table theo name
-    public ResultSet Customer_Name(String c_name) throws SQLException{
+    public ResultSet Customer_Search(String search) throws SQLException{
         cn.connectSQL();
-        String sql = "SELECT * FROM Customer where CustomerName LIKE N'%"+ c_name +"%'";
+        String sql = "SELECT * FROM Customer where CustomerName LIKE N'%"+ search +"%' or CustomerID like '%"+search+"%'";
         return cn.LoadData(sql);
     }
     
@@ -86,4 +86,5 @@ public class Customer {
         
         return cn.LoadData(sql);
     }
+    
 }

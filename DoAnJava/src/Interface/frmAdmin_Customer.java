@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import Process.Customer;//Lớp Category trong Proccess đã thực hiện
 import java.awt.event.MouseListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
@@ -42,6 +44,7 @@ public class frmAdmin_Customer extends javax.swing.JInternalFrame {
         tableModel.setColumnIdentifiers(colsName);
         // kết nối jtable với tableModel
         tableCus.setModel(tableModel);
+        tableCus.setDefaultEditor(Object.class, null);
         //gọi hàm ShowData để đưa dữ liệu vào tableModel
         ShowData();
         //goi Ham xoa trang cac TextField
@@ -81,7 +84,7 @@ public class frmAdmin_Customer extends javax.swing.JInternalFrame {
         btnClear = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         btnSearch = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        txtSearch = new javax.swing.JTextField();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         setMaximumSize(new java.awt.Dimension(100, 563));
@@ -251,10 +254,20 @@ public class frmAdmin_Customer extends javax.swing.JInternalFrame {
         btnSearch.setForeground(new java.awt.Color(255, 255, 255));
         btnSearch.setText("SEARCH");
         btnSearch.setBorderPainted(false);
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
         jPanel3.add(btnSearch, java.awt.BorderLayout.LINE_END);
 
-        jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jPanel3.add(jTextField1, java.awt.BorderLayout.CENTER);
+        txtSearch.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtSearchKeyPressed(evt);
+            }
+        });
+        jPanel3.add(txtSearch, java.awt.BorderLayout.CENTER);
 
         jPanel8.add(jPanel3, java.awt.BorderLayout.CENTER);
 
@@ -265,6 +278,9 @@ public class frmAdmin_Customer extends javax.swing.JInternalFrame {
 
     private void tableCusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableCusMouseClicked
         // TODO add your handling code here:
+        setNull();
+        setKhoa(true);//Mo khoa TextField
+        setButton(true);//Goi ham khoa cac Button
         try{
         //Lay chi so dong dang chon
         int row = this.tableCus.getSelectedRow(); //lỗi xàm ghê á :)))) laf seo
@@ -344,7 +360,7 @@ public class frmAdmin_Customer extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null,"Please pick a customer","Thong bao",1);
         else
         {
-            if(JOptionPane.showConfirmDialog(null, "Ban muon xoa user " + ml + " nay hay khong?","Thong bao",2)==0)
+            if(JOptionPane.showConfirmDialog(null, "Delete this customer and all relevant information ?","Thong bao",2)==0)
             {
                 int bien = Integer.parseInt(ml);
                 lsp.DeleteCustomer(bien);//goi ham xoa du lieu theo ma loai
@@ -366,7 +382,46 @@ public class frmAdmin_Customer extends javax.swing.JInternalFrame {
         txtName.setText("");
         txtPhone.setText("");
         
+        setKhoa(true);
+        setButton(true);
+        
+        try {
+            ShowData();
+        } catch (SQLException ex) {
+            Logger.getLogger(frmAdmin_Customer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_btnClearActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        // TODO add your handling code here:
+        String s = txtSearch.getText();
+        if (s.trim().isEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "Nothing to search");
+        }
+        else 
+        {
+            try {
+                ShowSearch(s);
+            } catch (SQLException ex) {
+                Logger.getLogger(frmAdmin_Customer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        btnSearch.setEnabled(true);
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void txtSearchKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyPressed
+        // TODO add your handling code here:
+        String s = txtSearch.getText();
+        try {
+            ShowSearch(s);
+        } catch (SQLException ex) {
+            Logger.getLogger(frmAdmin_Customer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        btnClear.setEnabled(true);
+    }//GEN-LAST:event_txtSearchKeyPressed
     
     
     // Xử lý hiện thị dữ liệu khi Form được mở
@@ -393,6 +448,27 @@ public class frmAdmin_Customer extends javax.swing.JInternalFrame {
         catch (SQLException e) {
             }
     }
+    
+    //Ham search
+    public void ShowSearch(String s) throws SQLException{
+        tableModel.getDataVector().removeAllElements(); ///refresh lại model
+        tableModel.fireTableDataChanged();
+       
+        ResultSet result= lsp.Customer_Search(s);
+        try {
+                while(result.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
+                String rows[] = new String[3];
+                rows[0] = result.getString(1); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
+                rows[1] = result.getString(2);
+                rows[2] = result.getString(3);// lấy dữ liệu tai cột số 2 ứng với tên hàng
+                tableModel.addRow(rows); // đưa dòng dữ liệu vào tableModel
+                //mỗi lần có sự thay đổi dữ liệu ở tableModel thì Jtable sẽ tự động update
+                }
+            }
+        catch (SQLException e) {
+            }
+    }
+    
     //Ham xoa du lieu trong tableModel
     public void ClearData() throws SQLException{
         //Lay chi so dong cuoi cung
@@ -452,10 +528,10 @@ public class frmAdmin_Customer extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTable tableCus;
     private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtName;
     private javax.swing.JTextField txtPhone;
+    private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }

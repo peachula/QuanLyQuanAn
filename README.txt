@@ -10,3 +10,10 @@ State in Receipt table: 1= done; 0 = undone
 Role in Staff table:  0 = quản lý, 1 = chi nhánh trưởng,
 2 = ca trưởng, 4 = nhân viên full-time 
 
+Database trong thư mục SQL.
+Script sql chỉ có các bảng, không có dữ liệu. Tạo database trước khi chạy Script. Tên db: QuanLyQuanAn
+
+Nhớ add thêm libary trong thư mục sql nếu lấy từ github về.
+
+Please ĐỪNG CÓ PUSH CONNECTION STRING LÊN NHE :)
+
