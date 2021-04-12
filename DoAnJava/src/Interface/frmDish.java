@@ -7,6 +7,17 @@ package Interface;
 
 import java.awt.event.MouseListener;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
+import Interface.frmCustomer;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import Process.Dish;//Lớp Dish trong Proccess đã thực hiện
+import java.awt.event.MouseListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -17,15 +28,36 @@ public class frmDish extends javax.swing.JInternalFrame {
     /**
      * Creates new form frmStaff
      */
-    public frmDish() {
+    public frmDish() throws SQLException {
         initComponents();
+        
+        
         setTitle("STAFF PAGE");
         
         BasicInternalFrameUI bs = ((javax.swing.plaf.basic.BasicInternalFrameUI) this.getUI());
         for (MouseListener l: bs.getNorthPane().getMouseListeners()){
             bs.getNorthPane().removeMouseListener(l);
         }
+        
+        String []colsName = {"ID Dish", "Name", "Price" };
+        // đặt tiêu đề cột cho tableModel
+        tableModel.setColumnIdentifiers(colsName);
+        // kết nối jtable với tableModel
+        tableDish.setModel(tableModel);
+        //gọi hàm ShowData để đưa dữ liệu vào tableModel
+        ShowData();
+        //goi Ham xoa trang cac TextField
+        setNull();
+        //Goi ham Khoa cac TextField
+        setKhoa(true);
+        //Goi vo hieu 2 button Luu, K.Luu. Mo khoa 4 button con lao
+        setButton(true);
     }
+
+//    frmDish(String msg) {
+//      initComponents();
+//      id.setText();
+//    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -41,14 +73,14 @@ public class frmDish extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        txtID = new javax.swing.JTextField();
+        txtDID = new javax.swing.JTextField();
         txtName = new javax.swing.JTextField();
-        txtRole = new javax.swing.JTextField();
-        txtPassword = new javax.swing.JPasswordField();
+        txtPrice = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtCate = new javax.swing.JTextField();
         jPanel10 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tableDish = new javax.swing.JTable();
         jPanel8 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         btnAdd = new javax.swing.JButton();
@@ -58,7 +90,7 @@ public class frmDish extends javax.swing.JInternalFrame {
         btnClear = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         btnSearch = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        txtSearch = new javax.swing.JTextField();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         setMaximumSize(new java.awt.Dimension(100, 563));
@@ -74,21 +106,19 @@ public class frmDish extends javax.swing.JInternalFrame {
         jPanel1.setBackground(new java.awt.Color(207, 244, 210));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("INFORMATION"));
 
-        jLabel1.setText("ID");
+        jLabel1.setText(" Dish ID ");
 
         jLabel2.setText("Name");
 
-        jLabel3.setText("Role");
+        jLabel3.setText("Dish Price");
 
-        jLabel4.setText("Pasword");
-
-        txtID.addActionListener(new java.awt.event.ActionListener() {
+        txtDID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtIDActionPerformed(evt);
+                txtDIDActionPerformed(evt);
             }
         });
 
-        txtPassword.setText("jPasswordField1");
+        jLabel4.setText("Category");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -101,17 +131,17 @@ public class frmDish extends javax.swing.JInternalFrame {
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtID)
+                    .addComponent(txtDID)
                     .addComponent(txtName, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE))
                 .addGap(130, 130, 130)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel3))
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtRole)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE))
-                .addContainerGap(52, Short.MAX_VALUE))
+                    .addComponent(txtPrice, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
+                    .addComponent(txtCate))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -120,14 +150,14 @@ public class frmDish extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel3)
-                    .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel4)
                     .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel4)
+                    .addComponent(txtCate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -139,20 +169,25 @@ public class frmDish extends javax.swing.JInternalFrame {
         jPanel10.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanel10.setLayout(new java.awt.BorderLayout());
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableDish.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "ID", "Name", "Role"
+                "ID Dish", "Name", "Price", "Category"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tableDish.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableDishMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tableDish);
 
-        jPanel10.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        jPanel10.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(jPanel10, java.awt.BorderLayout.CENTER);
 
@@ -170,6 +205,11 @@ public class frmDish extends javax.swing.JInternalFrame {
         btnAdd.setForeground(new java.awt.Color(255, 255, 255));
         btnAdd.setText("ADD");
         btnAdd.setBorderPainted(false);
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnAdd);
 
         btnEdit.setBackground(new java.awt.Color(32, 80, 114));
@@ -177,6 +217,11 @@ public class frmDish extends javax.swing.JInternalFrame {
         btnEdit.setForeground(new java.awt.Color(255, 255, 255));
         btnEdit.setText("EDIT");
         btnEdit.setBorderPainted(false);
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnEdit);
 
         btnSave.setBackground(new java.awt.Color(32, 80, 114));
@@ -184,6 +229,11 @@ public class frmDish extends javax.swing.JInternalFrame {
         btnSave.setForeground(new java.awt.Color(255, 255, 255));
         btnSave.setText("SAVE");
         btnSave.setBorderPainted(false);
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnSave);
 
         btnDelete.setBackground(new java.awt.Color(32, 80, 114));
@@ -191,6 +241,11 @@ public class frmDish extends javax.swing.JInternalFrame {
         btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setText("DELETE");
         btnDelete.setBorderPainted(false);
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnDelete);
 
         btnClear.setBackground(new java.awt.Color(32, 80, 114));
@@ -216,10 +271,15 @@ public class frmDish extends javax.swing.JInternalFrame {
         btnSearch.setForeground(new java.awt.Color(255, 255, 255));
         btnSearch.setText("SEARCH");
         btnSearch.setBorderPainted(false);
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
         jPanel3.add(btnSearch, java.awt.BorderLayout.LINE_END);
 
-        jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jPanel3.add(jTextField1, java.awt.BorderLayout.CENTER);
+        txtSearch.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jPanel3.add(txtSearch, java.awt.BorderLayout.CENTER);
 
         jPanel8.add(jPanel3, java.awt.BorderLayout.CENTER);
 
@@ -228,14 +288,212 @@ public class frmDish extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIDActionPerformed
+    private void txtDIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDIDActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtIDActionPerformed
+    }//GEN-LAST:event_txtDIDActionPerformed
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         // TODO add your handling code here:
+        txtName.setText("");
+        txtPrice.setText("");
+        txtCate.setText("");
+
     }//GEN-LAST:event_btnClearActionPerformed
 
+    private void tableDishMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableDishMouseClicked
+        // TODO add your handling code here:
+        try{
+        //Lay chi so dong dang chon
+            int row = this.tableDish.getSelectedRow(); //lỗi xàm ghê á :)))) laf seo
+
+            int ml=Integer.parseInt((this.tableDish.getModel().getValueAt(row,0)).toString());
+
+            ResultSet rs= lsp.Dish_ID(ml);//Goi ham lay du lieu theo ma loai
+
+            if(rs.next())//Neu co du lieu
+            {
+                txtDID.setText(rs.getString(1));
+                this.txtName.setText(rs.getString(2));
+                this.txtPrice.setText(rs.getString(3));///name nằm ở vị trí 2 trong kết quả trả về của sqlok
+            }
+        }
+        catch (SQLException e) {
+            
+        } 
+    }//GEN-LAST:event_tableDishMouseClicked
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        // TODO add your handling code here:
+        setNull();//Xoa trang TextField
+        setKhoa(false);//Mo khoa TextField
+        setButton(false);//Goi ham khoa cac Button
+        cothem=true;//Gan cothem = true de ghi nhan trang thai them moi
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        // TODO add your handling code here:
+        String tl=txtName.getText();
+        if(tl.length()==0) //Chua chon loai
+            JOptionPane.showMessageDialog(null,"Vui long chon loi can sua","Thong bao",1);
+        else
+        {
+        setKhoa(false);//Mo khoa cac TextField
+        this.txtName.enable(false);
+        setButton(false); //Khoa cac Button
+        cothem=false; //Gan cothem=false de ghi nhan trang thai la sua
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        // TODO add your handling code here:
+        // String Id= Id.setID(Id);
+
+        String tl=txtName.getText();
+        String p1=txtPrice.getText();
+        String c1=txtCate.getText();
+        int CategoryID = Integer.parseInt(c1);
+        long price = Long.parseLong(p1);
+        if(tl.length()==0 || p1.length()==0)
+        JOptionPane.showMessageDialog(null,"Vui long nhap Ma loai va ten loai","Thong bao",1);
+        else
+        { 
+//            if(ml>2 || tl.length()>30)
+//            JOptionPane.showMessageDialog(null,"Ma loai chi 2 ky tu, ten loai la 20","Thong bao",1);
+//            else
+//            {
+            try {
+            if(cothem==true){ //Luu cho tthem moi
+                
+                lsp.InsertDish(tl,price,CategoryID);
+            }
+            else //Luu cho sua
+            {
+                int ml= Integer.parseInt(txtDID.getText()); /// truyền cái id vô làm gì ?
+                lsp.EditDish(ml,tl , price,CategoryID);
+            }
+            //ClearData(); //goi ham xoa du lieu tron tableModel
+            ShowData(); //Do lai du lieu vao Table Model
+            }
+            catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null,"Cap nhat that bai","Thong bao",1);
+            }
+            setKhoa(false);
+            setButton(true);           
+        }
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+        String ml=txtDID.getText();
+//        int ml= Integer.parseInt(txtID.getText());
+        try {
+        if(ml.length()==0)
+            JOptionPane.showMessageDialog(null,"Chon 1 user de xoa","Thong bao",1);
+        else
+        {
+            if(JOptionPane.showConfirmDialog(null, "Ban muon xoa user " + ml + " nay hay khong?","Thong bao",2)==0)
+            {
+                int bien = Integer.parseInt(ml);
+                lsp.DeleteDish(bien);//goi ham xoa du lieu theo ma loai
+                //ClearData();//Xoa du lieu trong tableModel
+                ShowData();//Do du lieu vao table Model ủa nó nè :))))
+                setNull();//Xoa trang Textfield
+            }
+            
+        }
+        }
+        catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null,"Xóa thất bại","Thong bao",1);
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        // TODO add your handling code here:
+//        ResultSet result= lsp.Dish_ID(WIDTH)
+//        if(result.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
+//        txtTenloai.setText(result.getString("Tenloai"));
+        String i = txtSearch.getText();
+        int bien = Integer.parseInt(i);
+        try {
+           
+            lsp.Dish_ID(bien);
+            tableModel.setRowCount(0);
+//            while(tableModel.getRowCount() > 0)
+//                {
+//                    tableModel.removeRow(0);
+//                }
+
+//            tableDish.revalidate();
+            ShowData();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(frmDish.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    
+     // Xử lý hiện thị dữ liệu khi Form được mở
+//    String id= frmCustomer.txtID.getText();
+    private final Dish lsp = new Dish();
+    private boolean cothem=true;
+    private final DefaultTableModel tableModel = new DefaultTableModel();
+    
+    //Ham do du lieu vao tableModel
+    public void ShowData() throws SQLException{
+        tableModel.getDataVector().removeAllElements(); ///refresh lại model
+        ResultSet result= lsp.Dish();
+        try {
+                while(result.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
+                String rows[] = new String[3];
+                rows[0] = result.getString(1); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
+                rows[1] = result.getString(2);
+                rows[2] = result.getString(3);// lấy dữ liệu tai cột số 2 ứng với tên hàng
+                tableModel.addRow(rows); // đưa dòng dữ liệu vào tableModel
+                //mỗi lần có sự thay đổi dữ liệu ở tableModel thì Jtable sẽ tự động update
+                }
+            }
+        catch (SQLException e) {
+            }
+    }
+    //Ham xoa du lieu trong tableModel
+    public void ClearData() throws SQLException{
+        //Lay chi so dong cuoi cung
+        int n=tableDish.getRowCount()-1;
+        for(int i=n;i>=0;i--)
+        tableDish.remove(i);//Remove tung dong
+    } 
+    //Ham xoa cac TextField
+    private void setNull(){ 
+        //Xoa trang cac JtextField
+        this.txtDID.setText(null);
+        this.txtName.setText(null);
+        this.txtPrice.setText(null);
+        this.txtDID.requestFocus();
+    }
+    //Ham khoa cac TextField
+    private void setKhoa(boolean a)
+    {
+        //Khoa hoac mo khoa cho Cac JTextField
+        this.txtDID. setEnabled (a);
+        this.txtName. setEnabled (!a);
+        this.txtPrice. setEnabled (!a);
+
+    } 
+     //Ham khoa cac Button
+    private void setButton(boolean a){
+        //Vo hieu hoac co hieu luc cho cac JButton
+        this.btnAdd. setEnabled (a);
+        this.btnDelete. setEnabled (a);
+        this.btnEdit. setEnabled (a);
+        this.btnSave. setEnabled (!a);
+        this.btnClear. setEnabled (!a);
+        this.btnSearch. setEnabled (a);
+    }
+    public static void main(String args[]) throws SQLException {
+
+        frmDish s = new frmDish();
+        s.setVisible(true);
+ }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
@@ -254,12 +512,13 @@ public class frmDish extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField txtID;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable tableDish;
+    private javax.swing.JTextField txtCate;
+    private javax.swing.JTextField txtDID;
     private javax.swing.JTextField txtName;
-    private javax.swing.JPasswordField txtPassword;
-    private javax.swing.JTextField txtRole;
+    private javax.swing.JTextField txtPrice;
+    private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
+
 }

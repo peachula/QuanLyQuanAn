@@ -223,11 +223,7 @@ public class frmAdmin extends javax.swing.JFrame {
         
         if(frmCate == null || frmCate.isClosed())
         {
-            try {
-                frmCate = new frmCate();
-            } catch (SQLException ex) {
-                Logger.getLogger(frmAdmin.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            frmCate = new frmCate();
             jDesktopPane1.add(frmCate);
             frmCate.setSize(this.getWidth(),this.getHeight());
             frmCate.setLocation(0,0);

@@ -5,19 +5,31 @@
  */
 package Interface;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import Process.Customer;//Lớp Category trong Proccess đã thực hiện
 import java.awt.event.MouseListener;
+import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
-
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author kieef
  */
 public class frmCustomer extends javax.swing.JInternalFrame {
-
+    
+    private String ID;
+    
+    public String getID() {
+        return ID;
+    }
+    public void setID(String ID)  {
+        this.ID = this.txtID.getText();
+    }
     /**
      * Creates new form frmStaff
      */
-    public frmCustomer() {
+    public frmCustomer() throws SQLException {
         initComponents();
         setTitle("STAFF PAGE");
         
@@ -25,6 +37,19 @@ public class frmCustomer extends javax.swing.JInternalFrame {
         for (MouseListener l: bs.getNorthPane().getMouseListeners()){
             bs.getNorthPane().removeMouseListener(l);
         }
+        String []colsName = {"ID", "Name", "Phonenumber" };
+        // đặt tiêu đề cột cho tableModel
+        tableModel.setColumnIdentifiers(colsName);
+        // kết nối jtable với tableModel
+        tableCus.setModel(tableModel);
+        //gọi hàm ShowData để đưa dữ liệu vào tableModel
+        ShowData();
+        //goi Ham xoa trang cac TextField
+        setNull();
+        //Goi ham Khoa cac TextField
+        setKhoa(true);
+        //Goi vo hieu 2 button Luu, K.Luu. Mo khoa 4 button con lao
+        setButton(true);
     }
 
     /**
@@ -41,14 +66,12 @@ public class frmCustomer extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         txtID = new javax.swing.JTextField();
         txtName = new javax.swing.JTextField();
-        txtRole = new javax.swing.JTextField();
-        txtPassword = new javax.swing.JPasswordField();
+        txtPhone = new javax.swing.JTextField();
         jPanel10 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tableCus = new javax.swing.JTable();
         jPanel8 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         btnAdd = new javax.swing.JButton();
@@ -78,11 +101,9 @@ public class frmCustomer extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Name");
 
-        jLabel3.setText("Role");
+        jLabel3.setText("Phone number");
 
-        jLabel4.setText("Pasword");
-
-        txtPassword.setText("jPasswordField1");
+        txtID.setEnabled(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -97,15 +118,11 @@ public class frmCustomer extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtID)
                     .addComponent(txtName, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE))
-                .addGap(130, 130, 130)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel3))
+                .addGap(81, 81, 81)
+                .addComponent(jLabel3)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtRole)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE))
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(68, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -115,13 +132,11 @@ public class frmCustomer extends javax.swing.JInternalFrame {
                     .addComponent(jLabel1)
                     .addComponent(jLabel3)
                     .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel4)
-                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -133,7 +148,7 @@ public class frmCustomer extends javax.swing.JInternalFrame {
         jPanel10.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
         jPanel10.setLayout(new java.awt.BorderLayout());
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableCus.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -141,12 +156,18 @@ public class frmCustomer extends javax.swing.JInternalFrame {
                 {null, null, null}
             },
             new String [] {
-                "ID", "Name", "Role"
+                "ID", "Name", "Phonenumber"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tableCus.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tableCus.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableCusMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tableCus);
 
-        jPanel10.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        jPanel10.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(jPanel10, java.awt.BorderLayout.CENTER);
 
@@ -164,6 +185,11 @@ public class frmCustomer extends javax.swing.JInternalFrame {
         btnAdd.setForeground(new java.awt.Color(255, 255, 255));
         btnAdd.setText("ADD");
         btnAdd.setBorderPainted(false);
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnAdd);
 
         btnEdit.setBackground(new java.awt.Color(32, 80, 114));
@@ -171,6 +197,11 @@ public class frmCustomer extends javax.swing.JInternalFrame {
         btnEdit.setForeground(new java.awt.Color(255, 255, 255));
         btnEdit.setText("EDIT");
         btnEdit.setBorderPainted(false);
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnEdit);
 
         btnSave.setBackground(new java.awt.Color(32, 80, 114));
@@ -178,6 +209,11 @@ public class frmCustomer extends javax.swing.JInternalFrame {
         btnSave.setForeground(new java.awt.Color(255, 255, 255));
         btnSave.setText("SAVE");
         btnSave.setBorderPainted(false);
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnSave);
 
         btnDelete.setBackground(new java.awt.Color(32, 80, 114));
@@ -185,6 +221,11 @@ public class frmCustomer extends javax.swing.JInternalFrame {
         btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setText("DELETE");
         btnDelete.setBorderPainted(false);
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnDelete);
 
         btnClear.setBackground(new java.awt.Color(32, 80, 114));
@@ -192,6 +233,11 @@ public class frmCustomer extends javax.swing.JInternalFrame {
         btnClear.setForeground(new java.awt.Color(255, 255, 255));
         btnClear.setText("CLEAR");
         btnClear.setBorderPainted(false);
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearActionPerformed(evt);
+            }
+        });
         jPanel2.add(btnClear);
 
         jPanel8.add(jPanel2, java.awt.BorderLayout.LINE_END);
@@ -217,7 +263,182 @@ public class frmCustomer extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void tableCusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableCusMouseClicked
+        // TODO add your handling code here:
+        try{
+        //Lay chi so dong dang chon
+        int row = this.tableCus.getSelectedRow(); //lỗi xàm ghê á :)))) laf seo
+        
+        int ml=Integer.parseInt((this.tableCus.getModel().getValueAt(row,0)).toString());
+        
+        ResultSet rs= lsp.Customer_ID(ml);//Goi ham lay du lieu theo ma loai
+        
+        if(rs.next())//Neu co du lieu
+        {
+            txtID.setText(rs.getString(1));
+            this.txtName.setText(rs.getString(2));
+            this.txtPhone.setText(rs.getString(3));///name nằm ở vị trí 2 trong kết quả trả về của sqlok
+        }
+        }
+        catch (SQLException e) {
+        } 
+    }//GEN-LAST:event_tableCusMouseClicked
 
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        // TODO add your handling code here:
+        setNull();//Xoa trang TextField
+        setKhoa(false);//Mo khoa TextField
+        setButton(false);//Goi ham khoa cac Button
+        cothem=true;//Gan cothem = true de ghi nhan trang thai them moi
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        // TODO add your handling code here:
+        String tl=txtName.getText();
+        if(tl.length()==0) //Chua chon Ma loai
+            JOptionPane.showMessageDialog(null,"Vui long chon loi can sua","Thong bao",1);
+        else
+        {
+        setKhoa(false);//Mo khoa cac TextField
+        this.txtName.enable(false);
+        setButton(false); //Khoa cac Button
+        cothem=false; //Gan cothem=false de ghi nhan trang thai la sua
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        // TODO add your handling code here:
+//        String msg= txtID.getText();
+//        new frmDish(msg).setVisible(true);
+        
+        String tl=txtName.getText();
+        String p1=txtPhone.getText();
+        int phone_number = Integer.parseInt(p1);
+        if(tl.length()==0 || p1.length()==0)
+        JOptionPane.showMessageDialog(null,"Vui long nhap Ma loai va ten loai","Thong bao",1);
+        else
+        { 
+//            if(ml>2 || tl.length()>30)
+//            JOptionPane.showMessageDialog(null,"Ma loai chi 2 ky tu, ten loai la 20","Thong bao",1);
+//            else
+//            {
+            try {
+            if(cothem==true) //Luu cho tthem moi
+                lsp.InsertCustomer(tl,phone_number);
+            else //Luu cho sua
+            {
+                int ml= Integer.parseInt(txtID.getText()); /// truyền cái id vô làm gì ?
+                lsp.EditCustomer(ml, tl , phone_number);
+            }
+            //ClearData(); //goi ham xoa du lieu tron tableModel
+            ShowData(); //Do lai du lieu vao Table Model
+            }
+            catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null,"Cap nhat that bai","Thong bao",1);
+            }
+            setKhoa(false);
+            setButton(true);           
+        }
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+         String ml=txtID.getText();
+//        int ml= Integer.parseInt(txtID.getText());
+        try {
+        if(ml.length()==0)
+            JOptionPane.showMessageDialog(null,"Chon 1 user de xoa","Thong bao",1);
+        else
+        {
+            if(JOptionPane.showConfirmDialog(null, "Ban muon xoa user " + ml + " nay hay khong?","Thong bao",2)==0)
+            {
+                int bien = Integer.parseInt(ml);
+                lsp.DeleteCustomer(bien);//goi ham xoa du lieu theo ma loai
+                //ClearData();//Xoa du lieu trong tableModel
+                ShowData();//Do du lieu vao table Model ủa nó nè :))))
+                setNull();//Xoa trang Textfield
+            }
+            
+        }
+        }
+        catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null,"Xóa thất bại","Thong bao",1);
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        // TODO add your handling code here:
+        txtID.setText("");
+        txtName.setText("");
+        txtPhone.setText("");
+        
+    }//GEN-LAST:event_btnClearActionPerformed
+    
+    
+    // Xử lý hiện thị dữ liệu khi Form được mở
+    private final Customer lsp = new Customer();
+    private boolean cothem=true;
+    private final DefaultTableModel tableModel = new DefaultTableModel();
+    
+    //Ham do du lieu vao tableModel
+    public void ShowData() throws SQLException{
+        tableModel.getDataVector().removeAllElements(); ///refresh lại model
+        ResultSet result= lsp.Customer();
+        try {
+                while(result.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
+                String rows[] = new String[3];
+                rows[0] = result.getString(1); // lấy dữ liệu tại cột số 1 (ứng với mã hàng)
+                rows[1] = result.getString(2);
+                rows[2] = result.getString(3);// lấy dữ liệu tai cột số 2 ứng với tên hàng
+                tableModel.addRow(rows); // đưa dòng dữ liệu vào tableModel
+                //mỗi lần có sự thay đổi dữ liệu ở tableModel thì Jtable sẽ tự động update
+                }
+            }
+        catch (SQLException e) {
+            }
+    }
+    //Ham xoa du lieu trong tableModel
+    public void ClearData() throws SQLException{
+        //Lay chi so dong cuoi cung
+        int n=tableCus.getRowCount()-1;
+        for(int i=n;i>=0;i--)
+        tableCus.remove(i);//Remove tung dong
+    } 
+    //Ham xoa cac TextField
+    private void setNull(){ 
+        //Xoa trang cac JtextField
+        this.txtID.setText(null);
+        this.txtName.setText(null);
+        this.txtPhone.setText(null);
+        this.txtID.requestFocus();
+    }
+    //Ham khoa cac TextField
+    private void setKhoa(boolean a)
+    {
+        //Khoa hoac mo khoa cho Cac JTextField
+        //this.txtID. setEnabled (!a);
+        this.txtName. setEnabled (!a);
+        this.txtPhone. setEnabled (!a);
+
+    } 
+     //Ham khoa cac Button
+    private void setButton(boolean a){
+        //Vo hieu hoac co hieu luc cho cac JButton
+        this.btnAdd. setEnabled (a);
+        this.btnDelete. setEnabled (a);
+        this.btnEdit. setEnabled (a);
+        this.btnSave. setEnabled (!a);
+        this.btnClear. setEnabled (!a);
+        this.btnSearch. setEnabled (a);
+    }
+    
+    public static void main(String args[]) throws SQLException {
+
+        frmCustomer s = new frmCustomer();
+        s.setVisible(true);
+ }
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnClear;
@@ -228,19 +449,17 @@ public class frmCustomer extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable tableCus;
     private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtName;
-    private javax.swing.JPasswordField txtPassword;
-    private javax.swing.JTextField txtRole;
+    private javax.swing.JTextField txtPhone;
     // End of variables declaration//GEN-END:variables
 }
