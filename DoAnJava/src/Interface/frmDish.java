@@ -297,9 +297,6 @@ public class frmDish extends javax.swing.JInternalFrame {
         txtName.setText("");
         txtPrice.setText("");
         txtCate.setText("");
-        
-
-
 
     }//GEN-LAST:event_btnClearActionPerformed
 
@@ -321,6 +318,7 @@ public class frmDish extends javax.swing.JInternalFrame {
             }
         }
         catch (SQLException e) {
+            
         } 
     }//GEN-LAST:event_tableDishMouseClicked
 
