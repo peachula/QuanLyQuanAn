@@ -16,6 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -47,21 +48,28 @@ public class frmOrder extends javax.swing.JFrame {
     private final DefaultTableModel tableModelCate = new DefaultTableModel();
     private final DefaultTableModel tableModelDetail = new DefaultTableModel();
     
-//    int full_screen = 1;
+    //boolean full_screen = frmLogIn.full_screen;
+    
     /**
      * Creates new form frmOrder
      */
     public frmOrder() throws SQLException {
         initComponents();
-//        if (full_screen == 1)
-//        {  
-//            setExtendedState(JFrame.MAXIMIZED_BOTH);
-//        }
-//        else
-//        {
+        
+        ImageIcon img = new ImageIcon(frmLogIn.iconPath);
+        setIconImage(img.getImage());
+        
+        if (frmLogIn.full_screen == true)
+        {  
+            setExtendedState(JFrame.MAXIMIZED_BOTH);
+        }
+        else
+        {
             setSize(794,612);
-        //}
+        }
+        
         setLocationRelativeTo(null);
+        
         
         
         ///setting for tbOrderID
@@ -163,6 +171,11 @@ public class frmOrder extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(794, 612));
         setPreferredSize(new java.awt.Dimension(794, 612));
         setSize(new java.awt.Dimension(794, 612));
+        addWindowStateListener(new java.awt.event.WindowStateListener() {
+            public void windowStateChanged(java.awt.event.WindowEvent evt) {
+                formWindowStateChanged(evt);
+            }
+        });
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setMinimumSize(new java.awt.Dimension(612, 320));
@@ -749,13 +762,18 @@ public class frmOrder extends javax.swing.JFrame {
     private void btnDeleteOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteOrderActionPerformed
         // TODO add your handling code here:
         ///xóa order xuông và hiện thông báo
-        try {
-            main_order.DeleteReceipt(order_id);
-            JOptionPane.showMessageDialog(this, "Delete completed");
-            ShowUncompleteOrderData();
-        } catch (SQLException ex) {
-            Logger.getLogger(frmOrder.class.getName()).log(Level.SEVERE, null, ex);
+        int opt = JOptionPane.showConfirmDialog(null, "Are you sure to delete ? ", "Delete", JOptionPane.YES_NO_OPTION);
+        if (opt==0)
+        {
+            try {
+                main_order.DeleteReceipt(order_id);
+                JOptionPane.showMessageDialog(this, "Delete completed");
+                ShowUncompleteOrderData();
+            } catch (SQLException ex) {
+                Logger.getLogger(frmOrder.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+        
         
     }//GEN-LAST:event_btnDeleteOrderActionPerformed
 
@@ -909,6 +927,18 @@ public class frmOrder extends javax.swing.JFrame {
             Logger.getLogger(frmOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_cbCustomerActionPerformed
+
+    private void formWindowStateChanged(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowStateChanged
+        // TODO add your handling code here:
+        if (frmLogIn.full_screen == true)
+        {
+            frmLogIn.full_screen = false;
+        }
+        else
+        {
+            frmLogIn.full_screen = true;
+        }
+    }//GEN-LAST:event_formWindowStateChanged
 
     /**
      * @param args the command line arguments
