@@ -17,3 +17,5 @@ Nhớ add thêm libary trong thư mục sql nếu lấy từ github về.
 
 Please ĐỪNG CÓ PUSH CONNECTION STRING LÊN NHE :)
 
+Link github: https://github.com/plasticdino/QuanLyQuanAn.git
+Branch: Sơn main - Kiều kieu - Thắng thang - Khoa Khoa
