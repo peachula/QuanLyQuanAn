@@ -94,8 +94,8 @@ public class frmAdmin_Dish extends javax.swing.JInternalFrame {
         btnAdd = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
         btnSave = new javax.swing.JButton();
-        btnDelete = new javax.swing.JButton();
         btnClear = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         btnSearch = new javax.swing.JButton();
         txtSearch = new javax.swing.JTextField();
@@ -245,18 +245,6 @@ public class frmAdmin_Dish extends javax.swing.JInternalFrame {
         });
         jPanel2.add(btnSave);
 
-        btnDelete.setBackground(new java.awt.Color(237, 163, 35));
-        btnDelete.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnDelete.setForeground(new java.awt.Color(255, 255, 255));
-        btnDelete.setText("DELETE");
-        btnDelete.setBorderPainted(false);
-        btnDelete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btnDelete);
-
         btnClear.setBackground(new java.awt.Color(237, 163, 35));
         btnClear.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnClear.setForeground(new java.awt.Color(255, 255, 255));
@@ -268,6 +256,18 @@ public class frmAdmin_Dish extends javax.swing.JInternalFrame {
             }
         });
         jPanel2.add(btnClear);
+
+        btnDelete.setBackground(new java.awt.Color(237, 163, 35));
+        btnDelete.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnDelete.setForeground(new java.awt.Color(255, 255, 255));
+        btnDelete.setText("DELETE");
+        btnDelete.setBorderPainted(false);
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btnDelete);
 
         jPanel8.add(jPanel2, java.awt.BorderLayout.LINE_END);
 
@@ -288,6 +288,11 @@ public class frmAdmin_Dish extends javax.swing.JInternalFrame {
         jPanel3.add(btnSearch, java.awt.BorderLayout.LINE_END);
 
         txtSearch.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtSearchKeyPressed(evt);
+            }
+        });
         jPanel3.add(txtSearch, java.awt.BorderLayout.CENTER);
 
         jPanel8.add(jPanel3, java.awt.BorderLayout.CENTER);
@@ -303,8 +308,21 @@ public class frmAdmin_Dish extends javax.swing.JInternalFrame {
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         // TODO add your handling code here:
+        ResultSet result = null;
+        try {
+            result = lsp.Dish();
+        } catch (SQLException ex) {
+            Logger.getLogger(frmAdmin_Dish.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            ShowData(result);
+        } catch (SQLException ex) {
+            Logger.getLogger(frmAdmin_Dish.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         setNull();
-        setButton("add");
+        setKhoa(true);
+        setButton("");
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void tableDishMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableDishMouseClicked
@@ -324,7 +342,7 @@ public class frmAdmin_Dish extends javax.swing.JInternalFrame {
                 this.txtPrice.setText(rs.getString(3));///name nằm ở vị trí 2 trong kết quả trả về của sqlok
                 int cate_id = Integer.parseInt(rs.getString(4)) ;
                 String cate_name = ConvertCateBack(cate_id);
-                cbCate.setSelectedIndex(cate_id);
+                cbCate.setSelectedItem(cate_name);
             }
             setButton("clicked");
         }
@@ -361,39 +379,56 @@ public class frmAdmin_Dish extends javax.swing.JInternalFrame {
 
         String name=txtName.getText();
         String gia=txtPrice.getText();
-        String cate_name  = cbCate.getSelectedItem().toString();
-        try {
-            int cate_id = ConvertCate(cate_name);
-            long price = Long.parseLong(gia);
-            if(!CheckInput())
-            JOptionPane.showMessageDialog(null,"Vui long nhap Ten mon an va gia","Thong bao",1);
-            else
-            { 
-//           
+        
+        if (name.trim().isEmpty() || gia.trim().isEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "Please fill out the blank");
+        }
+        else
+        {
+            String cate_name  = cbCate.getSelectedItem().toString();
             try {
-            if(cothem==true){ //Luu cho tthem moi
+                int cate_id = ConvertCate(cate_name);
+                long price = Long.parseLong(gia);
+                if(!CheckInput())
+                JOptionPane.showMessageDialog(null,"Vui long nhap Ten mon an va gia","Thong bao",1);
+                else
+                { 
+    //           
+                try {
+                if(cothem==true){ //Luu cho tthem moi
+
+                    lsp.InsertDish(name,price,cate_id);
+                    JOptionPane.showMessageDialog(null,"Them thanh cong","Thong bao",1);
+                }
+                else //Luu cho sua
+                {
+                    int d_id= Integer.parseInt(txtDID.getText()); /// truyền cái id vô làm gì ?
+                    lsp.EditDish(d_id,name , price,cate_id);
+                    JOptionPane.showMessageDialog(null,"Sua thanh cong","Thong bao",1);
+                }
+                //ClearData(); //goi ham xoa du lieu tron tableModel
+                ResultSet result = lsp.Dish();
+                ShowData(result); //Do lai du lieu vao Table Model
                 
-                lsp.InsertDish(name,price,cate_id);
-                JOptionPane.showMessageDialog(null,"Them thanh cong","Thong bao",1);
-            }
-            else //Luu cho sua
+                setKhoa(false);
+
+                setButton("save");
+                
+                setNull();
+                setKhoa(true);
+                }
+                catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null,"Cap nhat that bai","Thong bao",1);
+                }          
+                }
+            } catch (SQLException ex) {
+
+            } catch (NumberFormatException n)
             {
-                int d_id= Integer.parseInt(txtDID.getText()); /// truyền cái id vô làm gì ?
-                lsp.EditDish(d_id,name , price,cate_id);
-                JOptionPane.showMessageDialog(null,"Sua thanh cong","Thong bao",1);
+                JOptionPane.showMessageDialog(this, "Price is number");
             }
-            //ClearData(); //goi ham xoa du lieu tron tableModel
-            ResultSet result = lsp.Dish();
-            ShowData(result); //Do lai du lieu vao Table Model
-            }
-            catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null,"Cap nhat that bai","Thong bao",1);
-            }
-            setKhoa(false);
-            setButton("save");           
-            }
-        } catch (SQLException ex) {
-            
+
         }
         
     }//GEN-LAST:event_btnSaveActionPerformed
@@ -424,12 +459,8 @@ public class frmAdmin_Dish extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
-    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        // TODO add your handling code here:
-//        ResultSet result= lsp.Dish_ID(WIDTH)
-//        if(result.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
-//        txtTenloai.setText(result.getString("Tenloai"));
-        String i = txtSearch.getText();       
+    public void Search(String i)
+    {
         try {
            
             tableModel.setRowCount(0);
@@ -439,7 +470,28 @@ public class frmAdmin_Dish extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             Logger.getLogger(frmAdmin_Dish.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        // TODO add your handling code here:
+//        ResultSet result= lsp.Dish_ID(WIDTH)
+//        if(result.next()){ // nếu còn đọc tiếp được một dòng dữ liệu
+//        txtTenloai.setText(result.getString("Tenloai"));
+        String i = txtSearch.getText();       
+        if (i.trim().isEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "Search fill is blank");
+        }
+        else
+        {
+            Search(i);
+        }
     }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void txtSearchKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyPressed
+        // TODO add your handling code here:
+        String i = txtSearch.getText(); 
+        Search(i);
+    }//GEN-LAST:event_txtSearchKeyPressed
 
     
      // Xử lý hiện thị dữ liệu khi Form được mở
@@ -485,7 +537,6 @@ public class frmAdmin_Dish extends javax.swing.JInternalFrame {
     private void setKhoa(boolean a)
     {
         //Khoa hoac mo khoa cho Cac JTextField
-        
         this.txtName.setEnabled (!a);
         this.txtPrice.setEnabled (!a);
 

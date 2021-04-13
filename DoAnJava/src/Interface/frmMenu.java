@@ -46,7 +46,7 @@ public class frmMenu extends javax.swing.JFrame {
         role = frmLogIn.get_role();
         name = frmLogIn.get_name();
         
-        if (role != 4)
+        if (role == 4)
         {
             btnAdmin.setVisible(false);
         }

@@ -331,23 +331,28 @@ public class frmAdmin_Customer extends javax.swing.JInternalFrame {
         if(tl.trim().isEmpty() || p1.trim().isEmpty())
             JOptionPane.showMessageDialog(null,"Fields are blank","Warning",1);
         else
-        {             
-            int phone_number = Integer.parseInt(p1);
-            try {
-            if(cothem==true) //Luu cho tthem moi
-                lsp.InsertCustomer(tl,phone_number);
-            else //Luu cho sua
-            {
-                int ml= Integer.parseInt(txtID.getText()); 
-                lsp.EditCustomer(ml, tl , phone_number);
-            }
-            ShowData(); //Do lai du lieu vao Table Model
+        {        
+            try {     
+                int phone_number = Integer.parseInt(p1);
+                if(cothem==true) //Luu cho tthem moi
+                    lsp.InsertCustomer(tl,phone_number);
+                else //Luu cho sua
+                {
+                    int ml= Integer.parseInt(txtID.getText()); 
+                    lsp.EditCustomer(ml, tl , phone_number);
+                }
+                ShowData(); //Do lai du lieu vao Table Model
+
+                setKhoa(true);
+                setButton(true);
             }
             catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null,"Cap nhat that bai","Thong bao",1);
+            }    
+            catch (NumberFormatException n)
+            {
+                JOptionPane.showMessageDialog(this, "Phone number has to be number :)");
             }
-            setKhoa(true);
-            setButton(true);           
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
